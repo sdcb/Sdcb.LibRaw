@@ -7,6 +7,9 @@ namespace Sdcb.LibRaw.Natives;
 /// <summary>
 /// Represents the open bayer patterns in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enumeration: LibRaw_openbayer_patterns
+/// </remarks>
 public enum OpenBayerPattern
 {
     Rggb = 0x94,
@@ -18,6 +21,9 @@ public enum OpenBayerPattern
 /// <summary>
 /// Represents the DNG fields marks in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enumeration: LibRaw_dngfields_marks
+/// </remarks>
 public enum DngFieldMark
 {
     ForwardMatrix = 1,
@@ -43,6 +49,9 @@ public enum DngFieldMark
 /// <summary>
 /// Represents the As Shot WB applied codes in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enumeration: LibRaw_As_Shot_WB_Applied_codes
+/// </remarks>
 public enum AsShotWbAppliedCode
 {
     Applied = 1,
@@ -55,6 +64,9 @@ public enum AsShotWbAppliedCode
 /// <summary>
 /// Represents the Exif tag types in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enumeration: LibRaw_ExifTagTypes
+/// </remarks>
 public enum ExifTagType
 {
     Unknown = 0,
@@ -78,6 +90,9 @@ public enum ExifTagType
     Ifd8 = 18
 }
 
+/// <remarks>
+/// Original C API macros: LIBRAW_EXIFTOOLTAGTYPE_**
+/// </remarks>
 public static class ExifToolTagType
 {
     public const ExifTagType Int8u = ExifTagType.Byte;
@@ -104,6 +119,9 @@ public static class ExifToolTagType
 /// <summary>
 /// Represents the white balance codes in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enumeration: LibRaw_whitebalance_code
+/// </remarks>
 public enum WhiteBalanceCode
 {
     Unknown = 0,
@@ -159,6 +177,9 @@ public enum WhiteBalanceCode
 /// <summary>
 /// Represents the multi-exposure related codes in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enumeration: LibRaw_MultiExposure_related
+/// </remarks>
 public enum MultiExposureRelated
 {
     None = 0,
@@ -170,6 +191,9 @@ public enum MultiExposureRelated
 /// <summary>
 /// Represents the DNG processing codes in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enumeration: LibRaw_dng_processing
+/// </remarks>
 public enum DngProcessing
 {
     None = 0,
@@ -186,6 +210,9 @@ public enum DngProcessing
 /// <summary>
 /// Represents the output flags in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enumeration: LibRaw_output_flags
+/// </remarks>
 public enum OutputFlag
 {
     None = 0,
@@ -195,6 +222,9 @@ public enum OutputFlag
 /// <summary>
 /// Represents the runtime capabilities in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enumeration: LibRaw_runtime_capabilities
+/// </remarks>
 public enum RuntimeCapability
 {
     RawSpeed = 1,
@@ -212,6 +242,9 @@ public enum RuntimeCapability
 /// <summary>
 /// Represents the color spaces in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enumeration: LibRaw_colorspace
+/// </remarks>
 public enum ColorSpace
 {
     NotFound = 0,
@@ -233,6 +266,9 @@ public enum ColorSpace
 /// <summary>
 /// Represents the camera maker indexes in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enumeration: LibRaw_cameramaker_index
+/// </remarks>
 public enum CameraMakerIndex
 {
     Unknown = 0,
@@ -320,6 +356,9 @@ public enum CameraMakerIndex
 /// <summary>
 /// Represents the camera mounts in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enumeration: LibRaw_camera_mounts
+/// </remarks>
 public enum CameraMount
 {
     Unknown = 0,
@@ -373,6 +412,9 @@ public enum CameraMount
 /// <summary>
 /// Represents the camera formats in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enumeration: LibRaw_camera_formats
+/// </remarks>
 public enum CameraFormat
 {
     Unknown = 0,
@@ -403,6 +445,9 @@ public enum CameraFormat
 /// <summary>
 /// Represents the image aspects in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enumeration: LibRawImageAspects
+/// </remarks>
 public enum ImageAspect
 {
     Unknown = 0,
@@ -422,6 +467,9 @@ public enum ImageAspect
 /// <summary>
 /// Represents the lens focal types in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LibRaw_lens_focal_types
+/// </remarks>
 public enum LensFocalType
 {
     Undefined = 0,
@@ -434,6 +482,9 @@ public enum LensFocalType
 /// <summary>
 /// Represents the Canon record modes in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LibRaw_Canon_RecordModes
+/// </remarks>
 public enum CanonRecordMode
 {
     Undefined = 0,
@@ -458,6 +509,9 @@ public enum CanonRecordMode
 /// <summary>
 /// Represents the Minolta storage methods in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LibRaw_minolta_storagemethods
+/// </remarks>
 public enum MinoltaStorageMethod
 {
     Unpacked = 0x52,
@@ -467,6 +521,9 @@ public enum MinoltaStorageMethod
 /// <summary>
 /// Represents the Minolta bayer patterns in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LibRaw_minolta_bayerpatterns
+/// </remarks>
 public enum MinoltaBayerPattern
 {
     Rggb = 0x01,
@@ -476,6 +533,9 @@ public enum MinoltaBayerPattern
 /// <summary>
 /// Represents the Sony camera types in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LibRaw_sony_cameratypes
+/// </remarks>
 public enum SonyCameraType
 {
     Dsc = 1,
@@ -490,6 +550,9 @@ public enum SonyCameraType
 /// <summary>
 /// Represents the Sony 0x2010 types in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LibRaw_Sony_0x2010_Type
+/// </remarks>
 public enum Sony0x2010Type
 {
     None = 0,
@@ -507,6 +570,9 @@ public enum Sony0x2010Type
 /// <summary>
 /// Represents the Sony 0x9050 types in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LibRaw_Sony_0x9050_Type
+/// </remarks>
 public enum Sony0x9050Type
 {
     None = 0,
@@ -518,6 +584,9 @@ public enum Sony0x9050Type
 /// <summary>
 /// Represents the Sony focus mode modes in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LIBRAW_SONY_FOCUSMODEmodes
+/// </remarks>
 public enum SonyFocusMode
 {
     Mf = 0,
@@ -535,6 +604,9 @@ public enum SonyFocusMode
 /// <summary>
 /// Represents the Kodak sensors in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LibRaw_KodakSensors
+/// </remarks>
 public enum KodakSensor
 {
     UnknownSensor = 0,
@@ -556,6 +628,9 @@ public enum KodakSensor
 /// <summary>
 /// Represents the Hasselblad format codes in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LibRaw_HasselbladFormatCodes
+/// </remarks>
 public enum HasselbladFormatCode
 {
     Unknown = 0,
@@ -570,6 +645,9 @@ public enum HasselbladFormatCode
 /// <summary>
 /// Represents the raw special types in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LibRaw_rawspecial_t
+/// </remarks>
 public enum RawSpecialType
 {
     SonyArw2None = 0,
@@ -587,6 +665,9 @@ public enum RawSpecialType
 /// <summary>
 /// Represents the raw speed bits in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LibRaw_rawspeed_bits_t
+/// </remarks>
 public enum RawSpeedBits
 {
     RawSpeedV1Use = 1,
@@ -600,6 +681,9 @@ public enum RawSpeedBits
 /// <summary>
 /// Represents the processing options in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LibRaw_processing_options
+/// </remarks>
 public enum ProcessingOption
 {
     PentaxPsAllFrames = 1,
@@ -630,6 +714,9 @@ public enum ProcessingOption
 /// <summary>
 /// Represents the decoder flags in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LibRaw_decoder_flags
+/// </remarks>
 public enum DecoderFlag
 {
     HasCurve = 1 << 4,
@@ -651,6 +738,9 @@ public enum DecoderFlag
 /// <summary>
 /// Represents the constructor flags in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LibRaw_constructor_flags
+/// </remarks>
 public enum ConstructorFlag
 {
     None = 0,
@@ -661,6 +751,9 @@ public enum ConstructorFlag
 /// <summary>
 /// Represents the warnings in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LibRaw_warnings
+/// </remarks>
 public enum LibRawWarning
 {
     None = 0,
@@ -692,6 +785,9 @@ public enum LibRawWarning
 /// <summary>
 /// Represents the exceptions in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LibRaw_exceptions
+/// </remarks>
 public enum LibRawException
 {
     None = 0,
@@ -712,6 +808,9 @@ public enum LibRawException
 /// <summary>
 /// Represents the progress stages in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LibRaw_progress
+/// </remarks>
 public enum LibRawProgress
 {
     Start = 0,
@@ -751,6 +850,9 @@ public enum LibRawProgress
 /// <summary>
 /// Represents the error codes in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LibRaw_errors
+/// </remarks>
 public enum LibRawError
 {
     Success = 0,
@@ -775,6 +877,9 @@ public enum LibRawError
 /// <summary>
 /// Represents the internal thumbnail formats in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LibRaw_internal_thumbnail_formats
+/// </remarks>
 public enum InternalThumbnailFormat
 {
     Unknown = 0,
@@ -792,6 +897,9 @@ public enum InternalThumbnailFormat
 /// <summary>
 /// Represents the thumbnail formats in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LibRaw_thumbnail_formats
+/// </remarks>
 public enum ThumbnailFormat
 {
     Unknown = 0,
@@ -806,6 +914,9 @@ public enum ThumbnailFormat
 /// <summary>
 /// Represents the image formats in LibRaw.
 /// </summary>
+/// <remarks>
+/// Original C API enum: LibRaw_image_formats
+/// </remarks>
 public enum ImageFormat
 {
     Jpeg = 1,
