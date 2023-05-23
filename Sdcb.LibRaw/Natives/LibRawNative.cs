@@ -116,7 +116,7 @@ public static class LibRawNative
     /// <returns>True if the error code is a fatal error, otherwise false.</returns>
     public static bool IsFatalError(LibRawError errorCode)
     {
-        return errorCode < -100000;
+        return IsFatalError((int)errorCode);
     }
 
     /// <summary>

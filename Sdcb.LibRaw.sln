@@ -3,7 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33712.159
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sdcb.LibRaw", "Sdcb.LibRaw\Sdcb.LibRaw.csproj", "{5EC65351-3E87-40F6-882C-DD1457F8EF41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sdcb.LibRaw", "Sdcb.LibRaw\Sdcb.LibRaw.csproj", "{5EC65351-3E87-40F6-882C-DD1457F8EF41}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{3B7258DA-C020-466A-AD54-55AFFF90018B}"
+	ProjectSection(SolutionItems) = preProject
+		docs\c-api-mapping.md = docs\c-api-mapping.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{ACCAD6B8-EF02-454D-B982-97C4FD16837E}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
