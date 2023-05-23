@@ -1,4 +1,4 @@
-# API mappings
+# Functions mappings
 * libraw_strerror: GetErrorMessage
 * libraw_strprogress: GetProgressMessage
 * libraw_init: Initialize
@@ -56,41 +56,41 @@
 * libraw_get_lensinfo: GetLensInformation
 * libraw_get_imgother: GetImageData
 
-# Enum mappings:
-* OpenBayerPattern
-* DngFieldMark
-* AsShotWbAppliedCode
-* ExifTagType
-* ExifToolTagType
-* WhiteBalanceCode
-* MultiExposureRelated
-* DngProcessing
-* OutputFlag
-* RuntimeCapability
-* ColorSpace
-* CameraMakerIndex
-* CameraMount
-* CameraFormat
-* ImageAspect
-* LensFocalType
-* CanonRecordMode
-* MinoltaStorageMethod
-* MinoltaBayerPattern
-* SonyCameraType
-* Sony2010Type
-* Sony9050Type
-* SonyFocusMode
-* KodakSensor
-* HasselbladFormatCode
-* RawSpecialType
-* RawSpeedBits
-* ProcessingOption
-* DecoderFlag
-* ConstructorFlag
-* LibRawWarning
-* LibRawException
-* LibRawProgress
-* LibRawError
-* InternalThumbnailFormat
-* ThumbnailFormat
-* ImageFormat
+# Enums mappings:
+* LibRaw_openbayer_patterns: OpenBayerPattern
+* LibRaw_dngfields_marks: DngFieldMark
+* LibRaw_As_Shot_WB_Applied_codes: AsShotWbAppliedCode
+* LibRaw_ExifTagTypes: ExifTagType
+* LIBRAW_EXIFTOOLTAGTYPE_**: ExifToolTagType
+* LibRaw_whitebalance_code: WhiteBalanceCode
+* LibRaw_MultiExposure_related: MultiExposureRelated
+* LibRaw_dng_processing: DngProcessing
+* LibRaw_output_flags: OutputFlag
+* LibRaw_runtime_capabilities: RuntimeCapability
+* LibRaw_colorspace: ColorSpace
+* LibRaw_cameramaker_index: CameraMakerIndex
+* LibRaw_camera_mounts: CameraMount
+* LibRaw_camera_formats: CameraFormat
+* LibRawImageAspects: ImageAspect
+* LibRaw_lens_focal_types: LensFocalType
+* LibRaw_Canon_RecordModes: CanonRecordMode
+* LibRaw_minolta_storagemethods: MinoltaStorageMethod
+* LibRaw_minolta_bayerpatterns: MinoltaBayerPattern
+* LibRaw_sony_cameratypes: SonyCameraType
+* LibRaw_Sony_0x2010_Type: Sony0x2010Type
+* LibRaw_Sony_0x9050_Type: Sony0x9050Type
+* LIBRAW_SONY_FOCUSMODEmodes: SonyFocusMode
+* LibRaw_KodakSensors: KodakSensor
+* LibRaw_HasselbladFormatCodes: HasselbladFormatCode
+* LibRaw_rawspecial_t: RawSpecialType
+* LibRaw_rawspeed_bits_t: RawSpeedBits
+* LibRaw_processing_options: ProcessingOption
+* LibRaw_decoder_flags: DecoderFlag
+* LibRaw_constructor_flags: ConstructorFlag
+* LibRaw_warnings: LibRawWarning
+* LibRaw_exceptions: LibRawException
+* LibRaw_progress: LibRawProgress
+* LibRaw_errors: LibRawError
+* LibRaw_internal_thumbnail_formats: InternalThumbnailFormat
+* LibRaw_thumbnail_formats: ThumbnailFormat
+* LibRaw_image_formats: ImageFormat
