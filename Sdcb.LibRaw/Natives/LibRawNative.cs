@@ -281,7 +281,7 @@ public static class LibRawNative
     /// </summary>
     /// <returns>The LibRaw version string.</returns>
     [DllImport(Dll, EntryPoint = "libraw_version")]
-    public static extern IntPtr GetVersion();
+    public static extern string GetVersion();
 
     /// <summary>
     /// Get the LibRaw version number.
