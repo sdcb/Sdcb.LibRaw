@@ -11,7 +11,7 @@ public static class LibRawNative
         LibRawNativeLoader.Init();
     }
 
-    public const string Dll = "raw_r.dll";
+    public const string Dll = "libraw.dll";
 
     #region consts/macros
     /// <summary>

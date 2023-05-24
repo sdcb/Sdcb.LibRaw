@@ -13,18 +13,24 @@
 async Task Main()
 {
 	await SetupAsync(QueryCancelToken);
-	await new WindowsNugetSource("win-x64", "win64", "gmp-10.dll", @"C:\_\3rd\vcpkg\packages\gmp_x64-windows\bin", "Sdcb.Arithmetic.Gmp", deps: new string[0])
+	await new WindowsNugetSource("win-x64", "win64", "libraw.dll", @"https://io.starworks.cc:88/cv-public/2023/LibRaw-0.21.1-Win64.zip", "Sdcb.LibRaw", deps: new string[0])
 		.Process(QueryCancelToken);
-	await new WindowsNugetSource("win-x86", "win32", "gmp-10.dll", @"C:\_\3rd\vcpkg\packages\gmp_x86-windows\bin", "Sdcb.Arithmetic.Gmp", deps: new string[0])
-		.Process(QueryCancelToken);
+	//await new WindowsNugetSource("win-x86", "win32", "gmp-10.dll", @"C:\_\3rd\vcpkg\packages\gmp_x86-windows\bin", "Sdcb.Arithmetic.Gmp", deps: new string[0])
+	//	.Process(QueryCancelToken);
 }
 
 static string BuildNuspec(string[] libs, string rid, string titleRid, string folder, string pkgName, string[] deps)
 {
 	// props
 	{
-		string propsFile = $"./{pkgName}.runtime.props";
-		XDocument props = XDocument.Parse(File.ReadAllText(propsFile));
+		XDocument props = XDocument.Parse($"""
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+	</PropertyGroup>
+	<ItemGroup Condition="$(TargetFrameworkVersion.StartsWith('v4')) Or $(TargetFramework.StartsWith('net4'))">
+	</ItemGroup>
+</Project>
+""");
 		string normalizedName = pkgName.Replace(".", "") + "Dlls";
 		string ns = props.Root.GetDefaultNamespace().NamespaceName;
 		XmlNamespaceManager nsr = new(new NameTable());
@@ -33,7 +39,7 @@ static string BuildNuspec(string[] libs, string rid, string titleRid, string fol
 		string platform = rid.Split("-").Last();
 
 		XElement? itemGroup = props.XPathSelectElement("/p:Project/p:ItemGroup", nsr);
-		if (itemGroup == null) throw new Exception($"{nameof(itemGroup)} invalid in {propsFile}");
+		if (itemGroup == null) throw new Exception($"{nameof(itemGroup)} invalid in props file.");
 		itemGroup.Add(
 		libs
 			.Select(x => Path.GetFileName(x))
@@ -44,26 +50,49 @@ static string BuildNuspec(string[] libs, string rid, string titleRid, string fol
 				);
 
 		XElement? propGroup = props.XPathSelectElement("/p:Project/p:PropertyGroup", nsr);
-		if (propGroup == null) throw new Exception($"{nameof(propGroup)} invalid in {propsFile}");
+		if (propGroup == null) throw new Exception($"{nameof(propGroup)} invalid in props file.");
 		propGroup.Add(new XElement(XName.Get(normalizedName, ns), @"$(MSBuildThisFileDirectory)..\..\runtimes"));
 		props.Save(Path.Combine(folder, $"{titleRid}.props"));
 	}
 
 	// nuspec
 	{
-		string nuspecFile = $"./{pkgName}.runtime.nuspec";
-		XDocument nuspec = XDocument.Parse(File
-			.ReadAllText(nuspecFile)
-			.Replace("{rid}", rid)
-			.Replace("{pkgName}", pkgName)
-			.Replace("{titleRid}", titleRid));
+		string masterName = "LibRaw";
+		XDocument nuspec = XDocument.Parse($"""
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>{pkgName}.runtime.{titleRid}</id>
+        <version>2.2.1</version>
+        <title>{masterName} native bindings for {titleRid}</title>
+        <authors>sdcb</authors>
+        <license type="expression">(LGPL-2.1-only OR CDDL-1.0)</license>
+        <projectUrl>https://github.com/sdcb/{pkgName}</projectUrl>
+        <icon>images\icon.png</icon>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <description>Native binding for {masterName} to work on {titleRid}.</description>
+        <summary>Native binding for {masterName} to work on {titleRid}.</summary>
+        <releaseNotes></releaseNotes>
+        <copyright>Copyright {DateTime.Now.Year}</copyright>
+        <tags>libraw;raw;image;sony;canon;nikon;arw;cr3;nef;linqpad-samples</tags>
+        <repository type="git" url="https://github.com/sdcb/{pkgName}.git" />
+        <dependencies>
+        </dependencies>
+        <frameworkAssemblies>
+        </frameworkAssemblies>
+    </metadata>
+    <files>
+        <file src="..\{pkgName}.png" target="images\icon.png" />
+    </files>
+</package>
+""");
 
 		string ns = nuspec.Root.GetDefaultNamespace().NamespaceName;
 		XmlNamespaceManager nsr = new(new NameTable());
 		nsr.AddNamespace("p", ns);
 
 		XElement? files = nuspec.XPathSelectElement("/p:package/p:files", nsr);
-		if (files == null) throw new Exception($"{nameof(files)} invalid in {nuspecFile}");
+		if (files == null) throw new Exception($"{nameof(files)} invalid in nuspec file.");
 		files.Add(libs.Select(x => new XElement(
 			XName.Get("file", ns),
 			new XAttribute("src", x.Split('\\', 2)[1]),
@@ -76,7 +105,7 @@ static string BuildNuspec(string[] libs, string rid, string titleRid, string fol
 		if (deps.Any())
 		{
 			XElement? dependencies = nuspec.XPathSelectElement("/p:package/p:metadata/p:dependencies", nsr);
-			if (dependencies == null) throw new Exception($"{nameof(dependencies)} invalid in {nuspecFile}");
+			if (dependencies == null) throw new Exception($"{nameof(dependencies)} invalid in nuspec file.");
 			dependencies.Add(deps.Select(depId => new XElement(XName.Get("dependency", ns), 
 				new XAttribute("id", $"{depId}.runtime.{titleRid}"), 
 				new XAttribute("version", Projects.First(x => x.name == depId).version))));
@@ -90,17 +119,20 @@ static string BuildNuspec(string[] libs, string rid, string titleRid, string fol
 
 public record WindowsNugetSource(string rid, string titleRid, string libName, string folder, string pkgName, string[] deps) : NupkgBuildSource(rid, titleRid, libName, folder, pkgName, deps)
 {
-	protected override Task Decompress(string folder, CancellationToken cancellationToken)
+	protected override async Task Decompress(string url, CancellationToken cancellationToken)
 	{
+		using HttpClient http = new HttpClient();
+		Stream compressed = await http.GetStreamAsync(url);
+		using ZipArchive zip = new ZipArchive(compressed);
+
 		Directory.CreateDirectory(CLibFolder);
-		foreach (string entry in Directory.EnumerateFiles(folder).Where(x => Path.GetFileName(x) == libName))
+		foreach (ZipArchiveEntry entry in zip.Entries.Where(x => x.Name == "libraw.dll"))
 		{
-			string localEntryDest = Path.Combine(CLibFolder, Path.GetFileName(entry));
+			string localEntryDest = Path.Combine(CLibFolder, entry.Name);
 			Console.Write($"Expand {entry} -> {localEntryDest}... ");
-			File.Copy(entry, localEntryDest, overwrite: true);
+			entry.ExtractToFile(localEntryDest, overwrite: true);
 			Console.WriteLine("Done");
 		}
-		return Task.CompletedTask;
 	}
 
 	protected override string[] GetDlls()
