@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/build/win32-raw_r
+/build/win64-raw_r
+/build/nuget.exe
