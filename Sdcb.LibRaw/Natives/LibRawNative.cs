@@ -134,40 +134,39 @@ public static class LibRawNative
     #endregion
 
     #region functions
-    [DllImport(Dll, EntryPoint = "libraw_strerror")]
     /// <summary>
     /// Get the error message related to the error code.
     /// </summary>
     /// <param name="errorcode">The error code.</param>
     /// <returns>The error message.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_strerror")]
     public static extern string GetErrorMessage(LibRawError errorcode);
 
-    [DllImport(Dll, EntryPoint = "libraw_strprogress")]
     /// <summary>
     /// Get the progress message related to the progress status.
     /// </summary>
     /// <param name="progress">The progress status.</param>
     /// <returns>The progress message.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_strprogress")]
     public static extern string GetProgressMessage(LibRawProgress progress);
 
-    [DllImport(Dll, EntryPoint = "libraw_init")]
     /// <summary>
     /// Initialize LibRaw with the specified flags.
     /// </summary>
     /// <param name="flags">The flags to initialize LibRaw with.</param>
     /// <returns>An IntPtr to the initialized LibRaw data.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_init")]
     public static extern IntPtr Initialize(uint flags);
 
-    [DllImport(Dll, EntryPoint = "libraw_open_file")]
     /// <summary>
     /// Open the specified file for use with LibRaw.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="fileName">The file name to open.</param>
     /// <returns>The status of the operation.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_open_file")]
     public static extern LibRawError OpenFile(IntPtr data, string fileName);
 
-    [DllImport(Dll, EntryPoint = "libraw_open_wfile")]
     /// <summary>
     /// Open the specified wide-character file for use with LibRaw.
     /// </summary>
@@ -175,9 +174,9 @@ public static class LibRawNative
     /// <param name="fileName">The wide-character file name to open.</param>
     /// <returns>The status of the operation.</returns>
     [SupportedOSPlatform("windows")]
+    [DllImport(Dll, EntryPoint = "libraw_open_wfile")]
     public static extern LibRawError OpenFileW(IntPtr data, [MarshalAs(UnmanagedType.LPWStr)] string fileName);
 
-    [DllImport(Dll, EntryPoint = "libraw_open_buffer")]
     /// <summary>
     /// Open the buffer for use with LibRaw.
     /// </summary>
@@ -185,9 +184,9 @@ public static class LibRawNative
     /// <param name="buffer">The IntPtr to the buffer to open.</param>
     /// <param name="size">The size of the buffer.</param>
     /// <returns>The status of the operation.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_open_buffer")]
     public static extern LibRawError OpenBuffer(IntPtr data, IntPtr buffer, ulong size);
 
-    [DllImport(Dll, EntryPoint = "libraw_open_bayer")]
     /// <summary>
     /// Open the Bayer data for use with LibRaw.
     /// </summary>
@@ -206,149 +205,149 @@ public static class LibRawNative
     /// <param name="otherFlags">The other flags associated with the Bayer data.</param>
     /// <param name="blackLevel">The black level value of the Bayer data.</param>
     /// <returns>The status of the operation.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_open_bayer")]
     public static extern int OpenBayerData(IntPtr data, IntPtr rawData, uint rawDataLength, ushort rawWidth, ushort rawHeight, ushort leftMargin, ushort topMargin, ushort rightMargin, ushort bottomMargin, byte procFlags, byte bayerPattern, uint unusedBits, uint otherFlags, uint blackLevel);
 
-    [DllImport(Dll, EntryPoint = "libraw_unpack")]
     /// <summary>
     /// Unpack the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <returns>The status of the operation.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_unpack")]
     public static extern int Unpack(IntPtr data);
 
-    [DllImport(Dll, EntryPoint = "libraw_unpack_thumb")]
     /// <summary>
     /// Unpack the thumbnail from the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <returns>The status of the operation.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_unpack_thumb")]
     public static extern int UnpackThumbnail(IntPtr data);
 
-    [DllImport(Dll, EntryPoint = "libraw_unpack_thumb_ex")]
     /// <summary>
     /// Unpack the thumbnail with the specified format from the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="thumbformat">The format of the thumbnail to unpack.</param>
     /// <returns>The status of the operation.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_unpack_thumb_ex")]
     public static extern int UnpackThumbnailExtended(IntPtr data, int thumbformat);
 
-    [DllImport(Dll, EntryPoint = "libraw_recycle_datastream")]
     /// <summary>
     /// Recycle the LibRaw data stream.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
+    [DllImport(Dll, EntryPoint = "libraw_recycle_datastream")]
     public static extern void RecycleDataStream(IntPtr data);
 
-    [DllImport(Dll, EntryPoint = "libraw_recycle")]
     /// <summary>
     /// Recycle the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
+    [DllImport(Dll, EntryPoint = "libraw_recycle")]
     public static extern void Recycle(IntPtr data);
 
-    [DllImport(Dll, EntryPoint = "libraw_close")]
     /// <summary>
     /// Close the LibRaw data and free memory.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
+    [DllImport(Dll, EntryPoint = "libraw_close")]
     public static extern void Close(IntPtr data);
 
-    [DllImport(Dll, EntryPoint = "libraw_subtract_black")]
     /// <summary>
     /// Subtract black level from the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
+    [DllImport(Dll, EntryPoint = "libraw_subtract_black")]
     public static extern void SubtractBlack(IntPtr data);
 
-    [DllImport(Dll, EntryPoint = "libraw_raw2image")]
     /// <summary>
     /// Convert raw data to an image in memory.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <returns>The status of the operation.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_raw2image")]
     public static extern int RawToImage(IntPtr data);
 
-    [DllImport(Dll, EntryPoint = "libraw_free_image")]
     /// <summary>
     /// Free the memory allocated for the image data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
+    [DllImport(Dll, EntryPoint = "libraw_free_image")]
     public static extern void FreeImage(IntPtr data);
 
-    [DllImport(Dll, EntryPoint = "libraw_version")]
     /// <summary>
     /// Get the LibRaw version string.
     /// </summary>
     /// <returns>The LibRaw version string.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_version")]
     public static extern IntPtr GetVersion();
 
-    [DllImport(Dll, EntryPoint = "libraw_versionNumber")]
     /// <summary>
     /// Get the LibRaw version number.
     /// </summary>
     /// <returns>The LibRaw version number.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_versionNumber")]
     public static extern int GetVersionNumber();
 
-    [DllImport(Dll, EntryPoint = "libraw_cameraList")]
     /// <summary>
     /// Get the list of supported cameras.
     /// </summary>
     /// <returns>An IntPtr pointing to the list of supported cameras.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_cameraList")]
     public static extern IntPtr GetCameraList();
 
-    [DllImport(Dll, EntryPoint = "libraw_cameraCount")]
     /// <summary>
     /// Get the number of supported cameras.
     /// </summary>
     /// <returns>The number of supported cameras.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_cameraCount")]
     public static extern int GetCameraCount();
 
-    [DllImport(Dll, EntryPoint = "libraw_set_exifparser_handler")]
     /// <summary>
     /// Set the Exif parser callback handler.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="cb">The Exif parser callback handler function.</param>
     /// <param name="datap">The LibRaw data handler IntPtr.</param>
+    [DllImport(Dll, EntryPoint = "libraw_set_exifparser_handler")]
     public static unsafe extern void SetExifParserHandler(IntPtr data, delegate*<void*, int, int, int, uint, void*, long, void> cb, IntPtr datap);
 
-    [DllImport(Dll, EntryPoint = "libraw_set_dataerror_handler")]
     /// <summary>
     /// Set the data error callback handler.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="func">The data error callback handler function.</param>
     /// <param name="datap">The LibRaw data error handler IntPtr.</param>
+    [DllImport(Dll, EntryPoint = "libraw_set_dataerror_handler")]
     public static unsafe extern void SetDataErrorHandler(IntPtr data, delegate*<void*, string, int, void> func, IntPtr datap);
 
-    [DllImport(Dll, EntryPoint = "libraw_set_progress_handler")]
     /// <summary>
     /// Set the progress callback handler.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="cb">The progress callback handler function.</param>
     /// <param name="datap">The LibRaw progress handler IntPtr.</param>
+    [DllImport(Dll, EntryPoint = "libraw_set_progress_handler")]
     public static unsafe extern void SetProgressHandler(IntPtr data, delegate*<void*, LibRawProgress, int, int, int> cb, IntPtr datap);
 
-    [DllImport(Dll, EntryPoint = "libraw_unpack_function_name")]
     /// <summary>
     /// Get the name of the unpack function used for the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <returns>The name of the unpack function.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_unpack_function_name")]
     public static extern IntPtr GetUnpackFunctionName(IntPtr data);
 
-    [DllImport(Dll, EntryPoint = "libraw_get_decoder_info")]
     /// <summary>
     /// Get the decoder information for the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="decoderInfo">The libraw_decoder_info_t struct to fill with decoder information.</param>
     /// <returns>The status of the operation.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_get_decoder_info")]
     public static extern int GetDecoderInfo(IntPtr data, out LibRawDecoderInfo decoderInfo);
 
-    [DllImport(Dll, EntryPoint = "libraw_COLOR")]
     /// <summary>
     /// Get the color value for the specified row and column from the LibRaw data.
     /// </summary>
@@ -356,195 +355,196 @@ public static class LibRawNative
     /// <param name="row">The row index.</param>
     /// <param name="col">The column index.</param>
     /// <returns>The color value for the specified row and column.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_COLOR")]
     public static extern int GetColor(IntPtr data, int row, int col);
 
-    [DllImport(Dll, EntryPoint = "libraw_capabilities")]
     /// <summary>
     /// Get the capabilities of the LibRaw library.
     /// </summary>
     /// <returns>The capabilities of the LibRaw library.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_capabilities")]
     public static extern uint GetCapabilities();
 
-    [DllImport(Dll, EntryPoint = "libraw_adjust_sizes_info_only")]
     /// <summary>
     /// Adjust the sizes of the LibRaw data for information purposes only.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <returns>The status of the operation.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_adjust_sizes_info_only")]
     public static extern int AdjustSizesInfoOnly(IntPtr data);
 
-    [DllImport(Dll, EntryPoint = "libraw_dcraw_ppm_tiff_writer")]
     /// <summary>
     /// Write the LibRaw data to a PPM/ TIFF file.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="fileName">The output file name.</param>
     /// <returns>The status of the operation.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_dcraw_ppm_tiff_writer")]
     public static extern int WriteDcrawPpmTiff(IntPtr data, string fileName);
 
-    [DllImport(Dll, EntryPoint = "libraw_dcraw_thumb_writer")]
     /// <summary>
     /// Write the LibRaw thumbnail data to an output file.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="fileName">The output file name.</param>
     /// <returns>The status of the operation.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_dcraw_thumb_writer")]
     public static extern int WriteDcrawThumbnail(IntPtr data, string fileName);
 
-    [DllImport(Dll, EntryPoint = "libraw_dcraw_process")]
     /// <summary>
     /// Process the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <returns>The status of the operation.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_dcraw_process")]
     public static extern int ProcessDcraw(IntPtr data);
 
-    [DllImport(Dll, EntryPoint = "libraw_dcraw_make_mem_image")]
     /// <summary>
     /// Create a memory-based image from the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="errorCode">Pointer to an integer that will hold the error code (if any).</param>
     /// <returns>An IntPtr to the created memory-based image (null if an error occurred).</returns>
+    [DllImport(Dll, EntryPoint = "libraw_dcraw_make_mem_image")]
     public static extern IntPtr MakeDcrawMemoryImage(IntPtr data, out int errorCode);
 
-    [DllImport(Dll, EntryPoint = "libraw_dcraw_make_mem_thumb")]
     /// <summary>
     /// Create a memory-based thumbnail from the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="errorCode">Pointer to an integer that will hold the error code (if any).</param>
     /// <returns>An IntPtr to the created memory-based thumbnail (null if an error occurred).</returns>
+    [DllImport(Dll, EntryPoint = "libraw_dcraw_make_mem_thumb")]
     public static extern IntPtr MakeDcrawMemoryThumbnail(IntPtr data, out int errorCode);
 
-    [DllImport(Dll, EntryPoint = "libraw_dcraw_clear_mem")]
     /// <summary>
     /// Clear and free the memory allocated by libraw_dcraw_make_mem_image or libraw_dcraw_make_mem_thumb functions.
     /// </summary>
     /// <param name="processDataImage">An IntPtr to the memory-based image or thumbnail.</param>
+    [DllImport(Dll, EntryPoint = "libraw_dcraw_clear_mem")]
     public static extern void ClearDcrawMemory(IntPtr processDataImage);
 
-    [DllImport(Dll, EntryPoint = "libraw_set_demosaic")]
     /// <summary>
     /// Set the demosaic algorithm for the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="value">The demosaic algorithm value.</param>
+    [DllImport(Dll, EntryPoint = "libraw_set_demosaic")]
     public static extern void SetDemosaicAlgorithm(IntPtr data, int value);
 
-    [DllImport(Dll, EntryPoint = "libraw_set_output_color")]
     /// <summary>
     /// Set the output color space for the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="value">The output color space value.</param>
+    [DllImport(Dll, EntryPoint = "libraw_set_output_color")]
     public static extern void SetOutputColorSpace(IntPtr data, int value);
 
-    [DllImport(Dll, EntryPoint = "libraw_set_adjust_maximum_thr")]
     /// <summary>
     /// Set the adjust maximum threshold for the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="value">The adjust maximum threshold value.</param>
+    [DllImport(Dll, EntryPoint = "libraw_set_adjust_maximum_thr")]
     public static extern void SetAdjustMaximumThreshold(IntPtr data, float value);
 
-    [DllImport(Dll, EntryPoint = "libraw_set_user_mul")]
     /// <summary>
     /// Set the user multiplier value at a specified index for the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="index">The index of the user multiplier value to set.</param>
     /// <param name="value">The user multiplier value.</param>
+    [DllImport(Dll, EntryPoint = "libraw_set_user_mul")]
     public static extern void SetUserMultiplier(IntPtr data, int index, float value);
 
-    [DllImport(Dll, EntryPoint = "libraw_set_output_bps")]
     /// <summary>
     /// Set the output bits-per-sample for the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="value">The output bits-per-sample value.</param>
+    [DllImport(Dll, EntryPoint = "libraw_set_output_bps")]
     public static extern void SetOutputBitsPerSample(IntPtr data, int value);
 
-    [DllImport(Dll, EntryPoint = "libraw_set_gamma")]
     /// <summary>
     /// Set the gamma value at a specified index for the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="index">The index of the gamma value to set.</param>
     /// <param name="value">The gamma value.</param>
+    [DllImport(Dll, EntryPoint = "libraw_set_gamma")]
     public static extern void SetGamma(IntPtr data, int index, float value);
 
-    [DllImport(Dll, EntryPoint = "libraw_set_no_auto_bright")]
     /// <summary>
     /// Enable or disable automatic brightness correction for the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="value">0 to enable automatic brightness correction, or 1 to disable it.</param>
+    [DllImport(Dll, EntryPoint = "libraw_set_no_auto_bright")]
     public static extern void SetAutoBrightnessCorrection(IntPtr data, int value);
 
-    [DllImport(Dll, EntryPoint = "libraw_set_bright")]
     /// <summary>
     /// Set the brightness adjustment value for the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="value">The brightness adjustment value.</param>
+    [DllImport(Dll, EntryPoint = "libraw_set_bright")]
     public static extern void SetBrightness(IntPtr data, float value);
 
-    [DllImport(Dll, EntryPoint = "libraw_set_highlight")]
     /// <summary>
     /// Set the highlight mode for the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="value">The highlight mode value.</param>
+    [DllImport(Dll, EntryPoint = "libraw_set_highlight")]
     public static extern void SetHighlightMode(IntPtr data, int value);
 
-    [DllImport(Dll, EntryPoint = "libraw_set_fbdd_noiserd")]
     /// <summary>
     /// Set the noise reduction mode for the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="value">The noise reduction mode value.</param>
+    [DllImport(Dll, EntryPoint = "libraw_set_fbdd_noiserd")]
     public static extern void SetNoiseReductionMode(IntPtr data, int value);
 
-    [DllImport(Dll, EntryPoint = "libraw_get_raw_height")]
     /// <summary>
     /// Get the raw image height from the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <returns>The raw image height.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_get_raw_height")]
     public static extern int GetRawImageHeight(IntPtr data);
 
-    [DllImport(Dll, EntryPoint = "libraw_get_raw_width")]
     /// <summary>
     /// Get the raw image width from the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <returns>The raw image width.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_get_raw_width")]
     public static extern int GetRawImageWidth(IntPtr data);
 
-    [DllImport(Dll, EntryPoint = "libraw_get_iheight")]
     /// <summary>
     /// Get the processed image height from the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <returns>The processed image height.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_get_iheight")]
     public static extern int GetProcessedImageHeight(IntPtr data);
 
-    [DllImport(Dll, EntryPoint = "libraw_get_iwidth")]
     /// <summary>
     /// Get the processed image width from the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <returns>The processed image width.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_get_iwidth")]
     public static extern int GetProcessedImageWidth(IntPtr data);
 
-    [DllImport(Dll, EntryPoint = "libraw_get_cam_mul")]
     /// <summary>
     /// Get the camera multiplier value at a specified index from the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="index">The index of the camera multiplier value to get.</param>
     /// <returns>The camera multiplier value at the specified index.</returns>
+    [DllImport(Dll, EntryPoint = "libraw_get_cam_mul")]
     public static extern float GetCameraMultiplier(IntPtr data, int index);
 
     /// <summary>
@@ -618,7 +618,5 @@ public static class LibRawNative
     /// </remarks>
     [DllImport(Dll, EntryPoint = "default_data_callback")]
     public static extern void DefaultDataCallback(IntPtr data, string file, int offset);
-#endregion
-
-    
+    #endregion
 }
