@@ -6,6 +6,11 @@ namespace Sdcb.LibRaw.Natives;
 
 public static class LibRawNative
 {
+    static LibRawNative()
+    {
+        LibRawNativeLoader.Init();
+    }
+
     public const string Dll = "raw_r.dll";
 
     #region consts/macros
@@ -169,9 +174,7 @@ public static class LibRawNative
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="fileName">The wide-character file name to open.</param>
     /// <returns>The status of the operation.</returns>
-#if NET6_0_OR_GREATER
     [SupportedOSPlatform("windows")]
-#endif
     public static extern LibRawError OpenFileW(IntPtr data, [MarshalAs(UnmanagedType.LPWStr)] string fileName);
 
     [DllImport(Dll, EntryPoint = "libraw_open_buffer")]

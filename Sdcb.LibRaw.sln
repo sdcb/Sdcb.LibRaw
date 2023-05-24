@@ -20,6 +20,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{034759FB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sdcb.LibRaw.UnitTests", "tests\Sdcb.LibRaw.UnitTests\Sdcb.LibRaw.UnitTests.csproj", "{3DF6FE9B-E854-456D-9749-6F8957B8361B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{39A9EC01-3823-49BC-B52C-2927BECCB4BC}"
+	ProjectSection(SolutionItems) = preProject
+		build\00-common.linq = build\00-common.linq
+		build\01-build-native.linq = build\01-build-native.linq
+		build\02-build-packages.linq = build\02-build-packages.linq
+		build\03-publish-proget-nuget.linq = build\03-publish-proget-nuget.linq
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
