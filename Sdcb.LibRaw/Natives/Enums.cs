@@ -796,8 +796,7 @@ public enum LibRawWarning
 /// <remarks>
 /// Original C API enum: LibRaw_exceptions
 /// </remarks>
-[Flags]
-public enum LibRawException
+public enum LibRawExceptions
 {
     None = 0,
     Alloc = 1,

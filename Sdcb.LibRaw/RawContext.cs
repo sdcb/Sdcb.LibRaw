@@ -1,8 +1,5 @@
 ﻿using Sdcb.LibRaw.Natives;
 using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Sdcb.LibRaw;
 
@@ -36,11 +33,7 @@ public class RawContext : IDisposable
     /// </summary>
     /// <param name="errorcode">The error code.</param>
     /// <returns>The error message.</returns>
-    public static string GetErrorMessage(int errorcode)
-    {
-        IntPtr messagePtr = LibRawNative.GetErrorMessage(errorcode);
-        return Marshal.PtrToStringAnsi(messagePtr);
-    }
+    public static string GetErrorMessage(LibRawError errorcode) => LibRawNative.GetErrorMessage(errorcode);
 
     /// <summary>
     /// Releases all resources used by the current instance of the <see cref="RawContext"/> class.
@@ -76,10 +69,54 @@ public class RawContext : IDisposable
     /// <param name="filePath">The file path to the raw file.</param>
     /// <param name="flags">The flags to use when initialize the libraw context.</param>
     /// <returns></returns>
-    public static RawContext OpenFile(string filePath, ConstructorFlag flags)
+    public static RawContext OpenFile(string filePath, ConstructorFlag flags = ConstructorFlag.None)
     {
         IntPtr raw = LibRawNative.Initialize((uint)flags);
-        return LibRawNative.OpenFile(, filePath);
+        LibRawError error = Environment.OSVersion.Platform switch
+        {
+#pragma warning disable CA1416 // Validate platform compatibility
+            PlatformID.Win32NT => LibRawNative.OpenFileW(raw, filePath),
+#pragma warning restore CA1416 // Validate platform compatibility
+            _ => LibRawNative.OpenFile(raw, filePath),
+        };
+
+        if (error == LibRawError.Success)
+        {
+            return new RawContext(raw);
+        }
+        else
+        {
+            LibRawNative.Recycle(raw);
+            throw new LibRawException(error, $"Failed opening file: {filePath}");
+        }
+    }
+
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RawContext"/> class from an input buffer.
+    /// </summary>
+    /// <param name="buffer">The input buffer of raw image data.</param>
+    /// <param name="flags">The flags to use when initialize the libraw context.</param>
+    /// <returns>A new instance of the <see cref="RawContext"/> class.</returns>
+    public static unsafe RawContext FromBuffer(ReadOnlySpan<byte> buffer, ConstructorFlag flags = ConstructorFlag.None)
+    {
+        IntPtr raw = LibRawNative.Initialize((uint)flags);
+
+        LibRawError error;
+        fixed (byte* p = buffer)
+        {
+            error = LibRawNative.OpenBuffer(raw, (IntPtr)p, (ulong)buffer.Length);
+        }
+
+        if (error == LibRawError.Success)
+        {
+            return new RawContext(raw);
+        }
+        else
+        {
+            LibRawNative.Recycle(raw);
+            throw new LibRawException(error, $"Failed opening buffer");
+        }
     }
 
     /// <summary>

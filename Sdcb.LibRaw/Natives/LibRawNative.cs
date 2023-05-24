@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 namespace Sdcb.LibRaw.Natives;
 
@@ -134,7 +135,7 @@ public static class LibRawNative
     /// </summary>
     /// <param name="errorcode">The error code.</param>
     /// <returns>The error message.</returns>
-    public static extern IntPtr GetErrorMessage(int errorcode);
+    public static extern string GetErrorMessage(LibRawError errorcode);
 
     [DllImport(Dll, EntryPoint = "libraw_strprogress")]
     /// <summary>
@@ -142,7 +143,7 @@ public static class LibRawNative
     /// </summary>
     /// <param name="progress">The progress status.</param>
     /// <returns>The progress message.</returns>
-    public static extern IntPtr GetProgressMessage(LibRawProgress progress);
+    public static extern string GetProgressMessage(LibRawProgress progress);
 
     [DllImport(Dll, EntryPoint = "libraw_init")]
     /// <summary>
@@ -159,7 +160,7 @@ public static class LibRawNative
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="fileName">The file name to open.</param>
     /// <returns>The status of the operation.</returns>
-    public static extern int OpenFile(IntPtr data, string fileName);
+    public static extern LibRawError OpenFile(IntPtr data, string fileName);
 
     [DllImport(Dll, EntryPoint = "libraw_open_wfile")]
     /// <summary>
@@ -168,7 +169,10 @@ public static class LibRawNative
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="fileName">The wide-character file name to open.</param>
     /// <returns>The status of the operation.</returns>
-    public static extern int OpenWideFile(IntPtr data, [MarshalAs(UnmanagedType.LPWStr)] string fileName);
+#if NET6_0_OR_GREATER
+    [SupportedOSPlatform("windows")]
+#endif
+    public static extern LibRawError OpenFileW(IntPtr data, [MarshalAs(UnmanagedType.LPWStr)] string fileName);
 
     [DllImport(Dll, EntryPoint = "libraw_open_buffer")]
     /// <summary>
@@ -178,7 +182,7 @@ public static class LibRawNative
     /// <param name="buffer">The IntPtr to the buffer to open.</param>
     /// <param name="size">The size of the buffer.</param>
     /// <returns>The status of the operation.</returns>
-    public static extern int OpenBuffer(IntPtr data, IntPtr buffer, ulong size);
+    public static extern LibRawError OpenBuffer(IntPtr data, IntPtr buffer, ulong size);
 
     [DllImport(Dll, EntryPoint = "libraw_open_bayer")]
     /// <summary>
@@ -611,7 +615,7 @@ public static class LibRawNative
     /// </remarks>
     [DllImport(Dll, EntryPoint = "default_data_callback")]
     public static extern void DefaultDataCallback(IntPtr data, string file, int offset);
-    #endregion
+#endregion
 
     
 }

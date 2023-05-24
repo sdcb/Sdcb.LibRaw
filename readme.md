@@ -9,7 +9,7 @@ Mapped to class: `LibRawNative`:
 | libraw_strprogress            | GetProgressMessage          |
 | libraw_init                   | Initialize                  |
 | libraw_open_file              | OpenFile                    |
-| libraw_open_wfile             | OpenWideFile                |
+| libraw_open_wfile             | OpenFileW                   |
 | libraw_open_buffer            | OpenBuffer                  |
 | libraw_open_bayer             | OpenBayerData               |
 | libraw_unpack                 | Unpack                      |
@@ -96,7 +96,7 @@ Mapped to class: `LibRawNative`:
 | LibRaw_decoder_flags              | DecoderFlag             |
 | LibRaw_constructor_flags          | ConstructorFlag         |
 | LibRaw_warnings                   | LibRawWarning           |
-| LibRaw_exceptions                 | LibRawException         |
+| LibRaw_exceptions                 | LibRawExceptions        |
 | LibRaw_progress                   | LibRawProgress          |
 | LibRaw_errors                     | LibRawError             |
 | LibRaw_internal_thumbnail_formats | InternalThumbnailFormat |
