@@ -16,6 +16,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决�
 		readme.md = readme.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{034759FB-3A53-4F6C-970F-5D4418A2537E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sdcb.LibRaw.UnitTests", "tests\Sdcb.LibRaw.UnitTests\Sdcb.LibRaw.UnitTests.csproj", "{3DF6FE9B-E854-456D-9749-6F8957B8361B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,9 +30,16 @@ Global
 		{5EC65351-3E87-40F6-882C-DD1457F8EF41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EC65351-3E87-40F6-882C-DD1457F8EF41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EC65351-3E87-40F6-882C-DD1457F8EF41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DF6FE9B-E854-456D-9749-6F8957B8361B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DF6FE9B-E854-456D-9749-6F8957B8361B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DF6FE9B-E854-456D-9749-6F8957B8361B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DF6FE9B-E854-456D-9749-6F8957B8361B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3DF6FE9B-E854-456D-9749-6F8957B8361B} = {034759FB-3A53-4F6C-970F-5D4418A2537E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DC3E07B6-5C22-4F69-89AD-4C7ADD4B7B5A}
