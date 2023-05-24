@@ -7,6 +7,7 @@ public static class LibRawNative
 {
     public const string Dll = "raw_r.dll";
 
+    #region consts/macros
     /// <summary>
     /// The original C API macro: LIBRAW_DEFAULT_ADJUST_MAXIMUM_THRESHOLD
     /// Represents the default adjust maximum threshold, which is 0.75f.
@@ -124,7 +125,9 @@ public static class LibRawNative
     /// Represents the X-Trans sensor type, which has a value of 9.
     /// </summary>
     public const int XTrans = 9;
+    #endregion
 
+    #region functions
     [DllImport(Dll, EntryPoint = "libraw_strerror")]
     /// <summary>
     /// Get the error message related to the error code.
@@ -301,7 +304,7 @@ public static class LibRawNative
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="cb">The Exif parser callback handler function.</param>
     /// <param name="datap">The LibRaw data handler IntPtr.</param>
-    public static extern void SetExifParserHandler(IntPtr data, exif_parser_callback cb, IntPtr datap);
+    public static unsafe extern void SetExifParserHandler(IntPtr data, delegate*<void*, int, int, int, uint, void*, long, void> cb, IntPtr datap);
 
     [DllImport(Dll, EntryPoint = "libraw_set_dataerror_handler")]
     /// <summary>
@@ -310,7 +313,7 @@ public static class LibRawNative
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="func">The data error callback handler function.</param>
     /// <param name="datap">The LibRaw data error handler IntPtr.</param>
-    public static extern void SetDataErrorHandler(IntPtr data, data_callback func, IntPtr datap);
+    public static unsafe extern void SetDataErrorHandler(IntPtr data, delegate*<void*, string, int, void> func, IntPtr datap);
 
     [DllImport(Dll, EntryPoint = "libraw_set_progress_handler")]
     /// <summary>
@@ -319,7 +322,7 @@ public static class LibRawNative
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="cb">The progress callback handler function.</param>
     /// <param name="datap">The LibRaw progress handler IntPtr.</param>
-    public static extern void SetProgressHandler(IntPtr data, progress_callback cb, IntPtr datap);
+    public static unsafe extern void SetProgressHandler(IntPtr data, delegate*<void*, LibRawProgress, int, int, int> cb, IntPtr datap);
 
     [DllImport(Dll, EntryPoint = "libraw_unpack_function_name")]
     /// <summary>
@@ -336,7 +339,7 @@ public static class LibRawNative
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="decoderInfo">The libraw_decoder_info_t struct to fill with decoder information.</param>
     /// <returns>The status of the operation.</returns>
-    public static extern int GetDecoderInfo(IntPtr data, out libraw_decoder_info_t decoderInfo);
+    public static extern int GetDecoderInfo(IntPtr data, out LibRawDecoderInfo decoderInfo);
 
     [DllImport(Dll, EntryPoint = "libraw_COLOR")]
     /// <summary>
@@ -595,4 +598,20 @@ public static class LibRawNative
     /// <returns>Pointer to the image data structure.</returns>
     [DllImport(Dll, EntryPoint = "libraw_get_imgother")]
     public static extern IntPtr GetImageData(IntPtr data);
+
+    /// <summary>
+    /// A PInvoke wrapper for the native "default_data_callback" function in the LibRaw library.
+    /// </summary>
+    /// <param name="data">A pointer to the data buffer.</param>
+    /// <param name="file">The file name associated with the data.</param>
+    /// <param name="offset">The offset of the data within the file.</param>
+    /// <remarks>
+    /// The native "default_data_callback" function is used to process and handle raw image
+    /// data from a specified file in a platform-specific manner.
+    /// </remarks>
+    [DllImport(Dll, EntryPoint = "default_data_callback")]
+    public static extern void DefaultDataCallback(IntPtr data, string file, int offset);
+    #endregion
+
+    
 }

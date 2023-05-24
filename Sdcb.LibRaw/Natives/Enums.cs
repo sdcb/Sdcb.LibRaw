@@ -24,6 +24,7 @@ public enum OpenBayerPattern
 /// <remarks>
 /// Original C API enumeration: LibRaw_dngfields_marks
 /// </remarks>
+[Flags]
 public enum DngFieldMark
 {
     ForwardMatrix = 1,
@@ -52,6 +53,7 @@ public enum DngFieldMark
 /// <remarks>
 /// Original C API enumeration: LibRaw_As_Shot_WB_Applied_codes
 /// </remarks>
+[Flags]
 public enum AsShotWbAppliedCode
 {
     Applied = 1,
@@ -213,6 +215,7 @@ public enum DngProcessing
 /// <remarks>
 /// Original C API enumeration: LibRaw_output_flags
 /// </remarks>
+[Flags]
 public enum OutputFlag
 {
     None = 0,
@@ -225,6 +228,7 @@ public enum OutputFlag
 /// <remarks>
 /// Original C API enumeration: LibRaw_runtime_capabilities
 /// </remarks>
+[Flags]
 public enum RuntimeCapability
 {
     RawSpeed = 1,
@@ -684,6 +688,7 @@ public enum RawSpeedBits
 /// <remarks>
 /// Original C API enum: LibRaw_processing_options
 /// </remarks>
+[Flags]
 public enum ProcessingOption
 {
     PentaxPsAllFrames = 1,
@@ -717,6 +722,7 @@ public enum ProcessingOption
 /// <remarks>
 /// Original C API enum: LibRaw_decoder_flags
 /// </remarks>
+[Flags]
 public enum DecoderFlag
 {
     HasCurve = 1 << 4,
@@ -741,7 +747,8 @@ public enum DecoderFlag
 /// <remarks>
 /// Original C API enum: LibRaw_constructor_flags
 /// </remarks>
-public enum ConstructorFlag
+[Flags]
+public enum ConstructorFlag : uint
 {
     None = 0,
     NoDataErrCallback = 1 << 1,
@@ -754,6 +761,7 @@ public enum ConstructorFlag
 /// <remarks>
 /// Original C API enum: LibRaw_warnings
 /// </remarks>
+[Flags]
 public enum LibRawWarning
 {
     None = 0,
@@ -788,6 +796,7 @@ public enum LibRawWarning
 /// <remarks>
 /// Original C API enum: LibRaw_exceptions
 /// </remarks>
+[Flags]
 public enum LibRawException
 {
     None = 0,
@@ -811,6 +820,7 @@ public enum LibRawException
 /// <remarks>
 /// Original C API enum: LibRaw_progress
 /// </remarks>
+[Flags]
 public enum LibRawProgress
 {
     Start = 0,

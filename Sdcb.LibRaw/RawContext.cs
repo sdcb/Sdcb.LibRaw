@@ -17,9 +17,9 @@ public class RawContext : IDisposable
     /// <summary>
     /// Initializes a new instance of the <see cref="RawContext"/> class.
     /// </summary>
-    public RawContext()
+    public RawContext(IntPtr libRawContext)
     {
-        _librawContext = LibRawNative.Initialize(0);
+        _librawContext = libRawContext;
     }
 
     /// <summary>
@@ -74,10 +74,12 @@ public class RawContext : IDisposable
     /// Corresponds to the C API function: libraw_open_file
     /// </summary>
     /// <param name="filePath">The file path to the raw file.</param>
-    /// <returns>The error code from libraw.</returns>
-    public int OpenFile(string filePath)
+    /// <param name="flags">The flags to use when initialize the libraw context.</param>
+    /// <returns></returns>
+    public static RawContext OpenFile(string filePath, ConstructorFlag flags)
     {
-        return LibRawNative.OpenFile(_librawContext, filePath);
+        IntPtr raw = LibRawNative.Initialize((uint)flags);
+        return LibRawNative.OpenFile(, filePath);
     }
 
     /// <summary>
@@ -99,28 +101,4 @@ public class RawContext : IDisposable
     {
         return LibRawNative.ProcessDcraw(_librawContext);
     }
-
-    /// <summary>
-    /// Retrieves the processed image data from the LibRaw context.
-    /// Corresponds to the C API function: libraw_dcraw_make_mem_image
-    /// </summary>
-    /// <returns>Processed image data.</returns>
-    public IntPtr GetDcrawMemoryImage()
-    {
-        IntPtr memoryImage;
-        LibRawNative.MakeDcrawMemoryImage(_librawContext, out memoryImage);
-        return memoryImage;
-    }
-
-    /// <summary>
-    /// Frees the memory of the processed image data.
-    /// Corresponds to the C API function: libraw_dcraw_clear_mem
-    /// </summary>
-    /// <param name="imageData">Image data to be cleared.</param>
-    public void ClearDcrawMemory(IntPtr imageData)
-    {
-        LibRawNative.ClearDcrawMemory(imageData);
-    }
-
-    // TODO: add all other functions in C API PInvoke list
 }
