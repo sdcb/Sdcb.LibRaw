@@ -1,5 +1,6 @@
 ﻿using Sdcb.LibRaw.Natives;
 using System;
+using System.Runtime.InteropServices;
 
 namespace Sdcb.LibRaw
 {
@@ -41,7 +42,7 @@ namespace Sdcb.LibRaw
         /// <summary>
         /// Gets a string that describes the error set by the <see cref="ErrorCode"/> property.
         /// </summary>
-        public string ErrorExplain => LibRawNative.GetErrorMessage(ErrorCode);
+        public string ErrorExplain => Marshal.PtrToStringAnsi(LibRawNative.GetErrorMessage(ErrorCode))!;
 
         /// <summary>
         /// Gets the error code that describes the error that caused the exception.

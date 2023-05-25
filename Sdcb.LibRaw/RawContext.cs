@@ -1,5 +1,6 @@
 ﻿using Sdcb.LibRaw.Natives;
 using System;
+using System.Runtime.InteropServices;
 
 namespace Sdcb.LibRaw;
 
@@ -33,7 +34,7 @@ public class RawContext : IDisposable
     /// </summary>
     /// <param name="errorcode">The error code.</param>
     /// <returns>The error message.</returns>
-    public static string GetErrorMessage(LibRawError errorcode) => LibRawNative.GetErrorMessage(errorcode);
+    public static string GetErrorMessage(LibRawError errorcode) => Marshal.PtrToStringAnsi(LibRawNative.GetErrorMessage(errorcode));
 
     /// <summary>
     /// Releases all resources used by the current instance of the <see cref="RawContext"/> class.

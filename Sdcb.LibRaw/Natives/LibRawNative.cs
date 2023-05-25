@@ -140,7 +140,7 @@ public static class LibRawNative
     /// <param name="errorcode">The error code.</param>
     /// <returns>The error message.</returns>
     [DllImport(Dll, EntryPoint = "libraw_strerror")]
-    public static extern string GetErrorMessage(LibRawError errorcode);
+    public static extern IntPtr GetErrorMessage(LibRawError errorcode);
 
     /// <summary>
     /// Get the progress message related to the progress status.
@@ -148,7 +148,7 @@ public static class LibRawNative
     /// <param name="progress">The progress status.</param>
     /// <returns>The progress message.</returns>
     [DllImport(Dll, EntryPoint = "libraw_strprogress")]
-    public static extern string GetProgressMessage(LibRawProgress progress);
+    public static extern IntPtr GetProgressMessage(LibRawProgress progress);
 
     /// <summary>
     /// Initialize LibRaw with the specified flags.
@@ -281,7 +281,7 @@ public static class LibRawNative
     /// </summary>
     /// <returns>The LibRaw version string.</returns>
     [DllImport(Dll, EntryPoint = "libraw_version")]
-    public static extern string GetVersion();
+    public static extern IntPtr GetVersion();
 
     /// <summary>
     /// Get the LibRaw version number.
