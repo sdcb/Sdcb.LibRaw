@@ -28,6 +28,14 @@ namespace Sdcb.LibRaw.UnitTests.RawApiTests
             Assert.Equal("Input/output error", msg);
         }
 
-        
+        [Fact]
+        public void GetProgressMessageTest()
+        {
+            IntPtr handle = LibRawNative.GetProgressMessage(LibRawProgress.Highlights);
+            Assert.True(handle != IntPtr.Zero);
+            string? msg = Marshal.PtrToStringAnsi(handle);
+            Assert.NotNull(msg);
+            Assert.Equal("Highlight recovery", msg);
+        }
     }
 }
