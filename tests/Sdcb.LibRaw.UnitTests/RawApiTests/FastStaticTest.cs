@@ -53,7 +53,7 @@ namespace Sdcb.LibRaw.UnitTests.RawApiTests
             try
             {
                 Assert.NotEqual(IntPtr.Zero, handle);
-                LibRawError error = LibRawNative.OpenFile(handle, @"C:\Users\ZhouJie\Pictures\a7r3\DJI_0030.DNG");
+                LibRawError error = LibRawNative.OpenFile(handle, @"./examples/DSC02412.ARW");
                 if (error != LibRawError.Success)
                 {
                     _console.WriteLine(Marshal.PtrToStringAnsi(LibRawNative.GetErrorMessage(error)));
