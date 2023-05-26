@@ -106,7 +106,7 @@ public class RawContext : IDisposable
         LibRawError error;
         fixed (byte* p = buffer)
         {
-            error = LibRawNative.OpenBuffer(raw, (IntPtr)p, (ulong)buffer.Length);
+            error = LibRawNative.OpenBuffer(raw, (IntPtr)p, buffer.Length);
         }
 
         if (error == LibRawError.Success)

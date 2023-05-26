@@ -185,7 +185,7 @@ public static class LibRawNative
     /// <param name="size">The size of the buffer.</param>
     /// <returns>The status of the operation.</returns>
     [DllImport(Dll, EntryPoint = "libraw_open_buffer")]
-    public static extern LibRawError OpenBuffer(IntPtr data, IntPtr buffer, ulong size);
+    public static extern LibRawError OpenBuffer(IntPtr data, IntPtr buffer, long size);
 
     /// <summary>
     /// Open the Bayer data for use with LibRaw.
