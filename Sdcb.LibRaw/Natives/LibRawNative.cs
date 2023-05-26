@@ -156,7 +156,7 @@ public static class LibRawNative
     /// <param name="flags">The flags to initialize LibRaw with.</param>
     /// <returns>An IntPtr to the initialized LibRaw data.</returns>
     [DllImport(Dll, EntryPoint = "libraw_init")]
-    public static extern IntPtr Initialize(uint flags);
+    public static extern IntPtr Initialize(ConstructorFlag flags = ConstructorFlag.None);
 
     /// <summary>
     /// Open the specified file for use with LibRaw.

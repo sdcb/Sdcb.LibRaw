@@ -37,5 +37,33 @@ namespace Sdcb.LibRaw.UnitTests.RawApiTests
             Assert.NotNull(msg);
             Assert.Equal("Highlight recovery", msg);
         }
+
+        [Fact]
+        public void InitRecycleTest()
+        {
+            IntPtr handle = LibRawNative.Initialize();
+            Assert.NotEqual(IntPtr.Zero, handle);
+            LibRawNative.Recycle(handle);
+        }
+
+        [Fact]
+        public void OpenFileTest()
+        {
+            IntPtr handle = LibRawNative.Initialize();
+            try
+            {
+                Assert.NotEqual(IntPtr.Zero, handle);
+                LibRawError error = LibRawNative.OpenFile(handle, @"C:\Users\ZhouJie\Pictures\a7r3\DJI_0030.DNG");
+                if (error != LibRawError.Success)
+                {
+                    _console.WriteLine(Marshal.PtrToStringAnsi(LibRawNative.GetErrorMessage(error)));
+                }
+                Assert.Equal(LibRawError.Success, error);
+            }
+            finally
+            {
+                LibRawNative.Recycle(handle);
+            }
+        }
     }
 }

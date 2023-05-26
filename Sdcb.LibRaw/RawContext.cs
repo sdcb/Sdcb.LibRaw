@@ -72,7 +72,7 @@ public class RawContext : IDisposable
     /// <returns></returns>
     public static RawContext OpenFile(string filePath, ConstructorFlag flags = ConstructorFlag.None)
     {
-        IntPtr raw = LibRawNative.Initialize((uint)flags);
+        IntPtr raw = LibRawNative.Initialize(flags);
         LibRawError error = Environment.OSVersion.Platform switch
         {
 #pragma warning disable CA1416 // Validate platform compatibility
@@ -101,7 +101,7 @@ public class RawContext : IDisposable
     /// <returns>A new instance of the <see cref="RawContext"/> class.</returns>
     public static unsafe RawContext FromBuffer(ReadOnlySpan<byte> buffer, ConstructorFlag flags = ConstructorFlag.None)
     {
-        IntPtr raw = LibRawNative.Initialize((uint)flags);
+        IntPtr raw = LibRawNative.Initialize(flags);
 
         LibRawError error;
         fixed (byte* p = buffer)
