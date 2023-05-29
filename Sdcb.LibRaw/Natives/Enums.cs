@@ -10,7 +10,7 @@ namespace Sdcb.LibRaw.Natives;
 /// <remarks>
 /// Original C API enumeration: LibRaw_openbayer_patterns
 /// </remarks>
-public enum OpenBayerPattern
+public enum OpenBayerPattern : byte
 {
     Rggb = 0x94,
     Bggr = 0x16,

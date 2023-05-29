@@ -34,7 +34,7 @@ public class RawContext : IDisposable
     /// </summary>
     /// <param name="errorcode">The error code.</param>
     /// <returns>The error message.</returns>
-    public static string GetErrorMessage(LibRawError errorcode) => Marshal.PtrToStringAnsi(LibRawNative.GetErrorMessage(errorcode));
+    public static string GetErrorMessage(LibRawError errorcode) => Marshal.PtrToStringAnsi(LibRawNative.GetErrorMessage(errorcode))!;
 
     /// <summary>
     /// Releases all resources used by the current instance of the <see cref="RawContext"/> class.
@@ -124,19 +124,27 @@ public class RawContext : IDisposable
     /// Unpacks the raw data from the opened file into memory.
     /// Corresponds to the C API function: libraw_unpack
     /// </summary>
-    /// <returns>The error code from libraw.</returns>
-    public int Unpack()
+    /// <exception cref="LibRawException" />
+    public void Unpack()
     {
-        return LibRawNative.Unpack(_librawContext);
+        EnsureSuccess(LibRawNative.Unpack(_librawContext));
     }
 
     /// <summary>
     /// Converts the raw data into a processed image.
     /// Corresponds to the C API function: libraw_dcraw_process
     /// </summary>
-    /// <returns>The error code from libraw.</returns>
-    public int ProcessDcraw()
+    /// <exception cref="LibRawException" />
+    public void ProcessDcraw()
     {
-        return LibRawNative.ProcessDcraw(_librawContext);
+        EnsureSuccess(LibRawNative.ProcessDcraw(_librawContext));
+    }
+
+    private static void EnsureSuccess(LibRawError error, string? errorMessage = null)
+    {
+        if (error != LibRawError.Success)
+        {
+            throw new LibRawException(error, errorMessage);
+        }
     }
 }

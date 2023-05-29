@@ -99,18 +99,52 @@ namespace Sdcb.LibRaw.UnitTests.RawApiTests
                 byte[] buffer = File.ReadAllBytes(ExampleFileName);
                 fixed (byte* pbuffer = &buffer[0])
                 {
-                    LibRawError error = LibRawNative.OpenBuffer(handle, (IntPtr)pbuffer, buffer.Length);
-                    if (error != LibRawError.Success)
-                    {
-                        _console.WriteLine(Marshal.PtrToStringAnsi(LibRawNative.GetErrorMessage(error)));
-                    }
-                    Assert.Equal(LibRawError.Success, error);
+                    EnsureSuccess(LibRawNative.OpenBuffer(handle, (IntPtr)pbuffer, buffer.Length));
                 }
             }
             finally
             {
                 LibRawNative.Recycle(handle);
             }
+        }
+
+        [Fact]
+        public unsafe void OpenBayerDataTest()
+        {
+            IntPtr handle = LibRawNative.Initialize();
+            try
+            {
+                Assert.NotEqual(IntPtr.Zero, handle);
+                ushort bayerWidth = 4, bayerHeight = 4;
+                ushort[] bayerData = Enumerable
+                    .Range(0, bayerHeight)
+                    .SelectMany(x => Enumerable.Range(0, bayerWidth).Select((x, i) => (ushort)(x * bayerWidth + i)))
+                    .ToArray();
+                fixed (void* dataPtr = &bayerData[0])
+                {
+                    EnsureSuccess(LibRawNative.OpenBayerData(handle, (IntPtr)dataPtr, (uint)bayerData.Length * sizeof(ushort), 
+                        bayerWidth, bayerHeight,
+                        0, 0, 0, 0, 0, OpenBayerPattern.Bggr, 0, 0, 0));
+                    EnsureSuccess(LibRawNative.Unpack(handle));
+                    EnsureSuccess(LibRawNative.ProcessDcraw(handle));
+                    IntPtr image = LibRawNative.MakeDcrawMemoryImage(handle, out LibRawError errorCode);
+                    EnsureSuccess(errorCode);
+                    LibRawNative.ClearDcrawMemory(image);
+                }
+            }
+            finally
+            {
+                LibRawNative.Recycle(handle);
+            }
+        }
+
+        private unsafe void EnsureSuccess(LibRawError error)
+        {
+            if (error != LibRawError.Success)
+            {
+                _console.WriteLine(Marshal.PtrToStringAnsi(LibRawNative.GetErrorMessage(error)));
+            }
+            Assert.Equal(LibRawError.Success, error);
         }
     }
 }

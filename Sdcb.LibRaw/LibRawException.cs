@@ -14,7 +14,7 @@ namespace Sdcb.LibRaw
         /// </summary>
         /// <param name="error">The error code that describes the error.</param>
         /// <param name="message">The message that describes the error.</param>
-        public LibRawException(LibRawError error, string message)
+        public LibRawException(LibRawError error, string? message)
             : base(message)
         {
             ErrorCode = error;

@@ -206,7 +206,7 @@ public static class LibRawNative
     /// <param name="blackLevel">The black level value of the Bayer data.</param>
     /// <returns>The status of the operation.</returns>
     [DllImport(Dll, EntryPoint = "libraw_open_bayer")]
-    public static extern int OpenBayerData(IntPtr data, IntPtr rawData, uint rawDataLength, ushort rawWidth, ushort rawHeight, ushort leftMargin, ushort topMargin, ushort rightMargin, ushort bottomMargin, byte procFlags, byte bayerPattern, uint unusedBits, uint otherFlags, uint blackLevel);
+    public static extern LibRawError OpenBayerData(IntPtr data, IntPtr rawData, uint rawDataLength, ushort rawWidth, ushort rawHeight, ushort leftMargin, ushort topMargin, ushort rightMargin, ushort bottomMargin, byte procFlags, OpenBayerPattern bayerPattern, uint unusedBits, uint otherFlags, uint blackLevel);
 
     /// <summary>
     /// Unpack the LibRaw data.
@@ -214,7 +214,7 @@ public static class LibRawNative
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <returns>The status of the operation.</returns>
     [DllImport(Dll, EntryPoint = "libraw_unpack")]
-    public static extern int Unpack(IntPtr data);
+    public static extern LibRawError Unpack(IntPtr data);
 
     /// <summary>
     /// Unpack the thumbnail from the LibRaw data.
@@ -397,7 +397,7 @@ public static class LibRawNative
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <returns>The status of the operation.</returns>
     [DllImport(Dll, EntryPoint = "libraw_dcraw_process")]
-    public static extern int ProcessDcraw(IntPtr data);
+    public static extern LibRawError ProcessDcraw(IntPtr data);
 
     /// <summary>
     /// Create a memory-based image from the LibRaw data.
@@ -406,7 +406,7 @@ public static class LibRawNative
     /// <param name="errorCode">Pointer to an integer that will hold the error code (if any).</param>
     /// <returns>An IntPtr to the created memory-based image (null if an error occurred).</returns>
     [DllImport(Dll, EntryPoint = "libraw_dcraw_make_mem_image")]
-    public static extern IntPtr MakeDcrawMemoryImage(IntPtr data, out int errorCode);
+    public static extern IntPtr MakeDcrawMemoryImage(IntPtr data, out LibRawError errorCode);
 
     /// <summary>
     /// Create a memory-based thumbnail from the LibRaw data.
@@ -415,7 +415,7 @@ public static class LibRawNative
     /// <param name="errorCode">Pointer to an integer that will hold the error code (if any).</param>
     /// <returns>An IntPtr to the created memory-based thumbnail (null if an error occurred).</returns>
     [DllImport(Dll, EntryPoint = "libraw_dcraw_make_mem_thumb")]
-    public static extern IntPtr MakeDcrawMemoryThumbnail(IntPtr data, out int errorCode);
+    public static extern IntPtr MakeDcrawMemoryThumbnail(IntPtr data, out LibRawError errorCode);
 
     /// <summary>
     /// Clear and free the memory allocated by libraw_dcraw_make_mem_image or libraw_dcraw_make_mem_thumb functions.
