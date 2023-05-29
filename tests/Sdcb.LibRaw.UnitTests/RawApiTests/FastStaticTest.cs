@@ -115,22 +115,53 @@ namespace Sdcb.LibRaw.UnitTests.RawApiTests
             try
             {
                 Assert.NotEqual(IntPtr.Zero, handle);
-                ushort bayerWidth = 4, bayerHeight = 4;
-                ushort[] bayerData = Enumerable
-                    .Range(0, bayerHeight)
-                    .SelectMany(x => Enumerable.Range(0, bayerWidth).Select((x, i) => (ushort)(x * bayerWidth + i)))
-                    .ToArray();
+                const ushort bayerWidth = 4, bayerHeight = 4;
+                ushort[] bayerData = new ushort[bayerWidth * bayerHeight]
+                {
+                    127, 0, 0, 127,
+                    0, 0, 0, 0,
+                    0, 0, 0, 0,
+                    255, 0, 0, 255,
+                };
                 fixed (void* dataPtr = &bayerData[0])
                 {
-                    EnsureSuccess(LibRawNative.OpenBayerData(handle, (IntPtr)dataPtr, (uint)bayerData.Length * sizeof(ushort), 
+                    EnsureSuccess(LibRawNative.OpenBayerData(handle, (IntPtr)dataPtr, (uint)bayerData.Length * sizeof(ushort),
                         bayerWidth, bayerHeight,
                         0, 0, 0, 0, 0, OpenBayerPattern.Bggr, 0, 0, 0));
-                    EnsureSuccess(LibRawNative.Unpack(handle));
-                    EnsureSuccess(LibRawNative.ProcessDcraw(handle));
-                    IntPtr image = LibRawNative.MakeDcrawMemoryImage(handle, out LibRawError errorCode);
-                    EnsureSuccess(errorCode);
-                    LibRawNative.ClearDcrawMemory(image);
                 }
+
+                EnsureSuccess(LibRawNative.Unpack(handle));
+                EnsureSuccess(LibRawNative.ProcessDcraw(handle));
+                LibRawProcessedImage* image = (LibRawProcessedImage*)LibRawNative.MakeDcrawMemoryImage(handle, out LibRawError errorCode);
+                EnsureSuccess(errorCode);
+                Assert.NotEqual(IntPtr.Zero, (IntPtr)image);
+
+                try
+                {
+                    StringBuilder sb = new StringBuilder();
+                    Span<RGB24> d = image->GetData<RGB24>();
+                    Assert.Equal(bayerWidth * bayerHeight, d.Length);
+
+                    for (int y = 0; y < bayerHeight; ++y)
+                    {
+                        for (int x = 0; x < bayerWidth; ++x)
+                        {
+                            RGB24 rgb = d[y * bayerWidth + x];
+                            sb.Append($"{rgb} ");
+                        }
+                        sb.AppendLine();
+                    }
+                    _console.WriteLine(sb.ToString());
+                    Assert.Equal(179, d[0].R);
+                    Assert.Equal(83, d[5].R);
+                    Assert.Equal(255, d[15].B);
+                    Assert.Equal(255, d[12].G);
+                }
+                finally
+                {
+                    LibRawNative.ClearDcrawMemory((IntPtr)image);
+                }
+
             }
             finally
             {
@@ -146,5 +177,10 @@ namespace Sdcb.LibRaw.UnitTests.RawApiTests
             }
             Assert.Equal(LibRawError.Success, error);
         }
+    }
+
+    record struct RGB24(byte B, byte G, byte R)
+    {
+        public override string ToString() => $"({R},{G},{B})";
     }
 }
