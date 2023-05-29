@@ -222,7 +222,7 @@ public static class LibRawNative
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <returns>The status of the operation.</returns>
     [DllImport(Dll, EntryPoint = "libraw_unpack_thumb")]
-    public static extern int UnpackThumbnail(IntPtr data);
+    public static extern LibRawError UnpackThumbnail(IntPtr data);
 
     /// <summary>
     /// Unpack the thumbnail with the specified format from the LibRaw data.

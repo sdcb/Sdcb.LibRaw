@@ -20,6 +20,15 @@ namespace Sdcb.LibRaw.UnitTests.RawApiTests
             _console = console;
         }
 
+        private unsafe void V(LibRawError error)
+        {
+            if (error != LibRawError.Success)
+            {
+                _console.WriteLine(Marshal.PtrToStringAnsi(LibRawNative.GetErrorMessage(error)));
+            }
+            Assert.Equal(LibRawError.Success, error);
+        }
+
         [Fact]
         public void GetErrorMessageTest()
         {
@@ -55,7 +64,7 @@ namespace Sdcb.LibRaw.UnitTests.RawApiTests
             try
             {
                 Assert.NotEqual(IntPtr.Zero, handle);
-                LibRawError error = LibRawNative.OpenFile(handle, @"./examples/DSC02412.ARW");
+                LibRawError error = LibRawNative.OpenFile(handle, ExampleFileName);
                 if (error != LibRawError.Success)
                 {
                     _console.WriteLine(Marshal.PtrToStringAnsi(LibRawNative.GetErrorMessage(error)));
@@ -99,7 +108,7 @@ namespace Sdcb.LibRaw.UnitTests.RawApiTests
                 byte[] buffer = File.ReadAllBytes(ExampleFileName);
                 fixed (byte* pbuffer = &buffer[0])
                 {
-                    EnsureSuccess(LibRawNative.OpenBuffer(handle, (IntPtr)pbuffer, buffer.Length));
+                    V(LibRawNative.OpenBuffer(handle, (IntPtr)pbuffer, buffer.Length));
                 }
             }
             finally
@@ -125,15 +134,15 @@ namespace Sdcb.LibRaw.UnitTests.RawApiTests
                 };
                 fixed (void* dataPtr = &bayerData[0])
                 {
-                    EnsureSuccess(LibRawNative.OpenBayerData(handle, (IntPtr)dataPtr, (uint)bayerData.Length * sizeof(ushort),
+                    V(LibRawNative.OpenBayerData(handle, (IntPtr)dataPtr, (uint)bayerData.Length * sizeof(ushort),
                         bayerWidth, bayerHeight,
                         0, 0, 0, 0, 0, OpenBayerPattern.Bggr, 0, 0, 0));
                 }
 
-                EnsureSuccess(LibRawNative.Unpack(handle));
-                EnsureSuccess(LibRawNative.ProcessDcraw(handle));
+                V(LibRawNative.Unpack(handle));
+                V(LibRawNative.ProcessDcraw(handle));
                 LibRawProcessedImage* image = (LibRawProcessedImage*)LibRawNative.MakeDcrawMemoryImage(handle, out LibRawError errorCode);
-                EnsureSuccess(errorCode);
+                V(errorCode);
                 Assert.NotEqual(IntPtr.Zero, (IntPtr)image);
 
                 try
@@ -169,18 +178,47 @@ namespace Sdcb.LibRaw.UnitTests.RawApiTests
             }
         }
 
-        private unsafe void EnsureSuccess(LibRawError error)
+        [Fact]
+        public unsafe void ThumbnailTest()
         {
-            if (error != LibRawError.Success)
+            IntPtr handle = LibRawNative.Initialize();
+            try
             {
-                _console.WriteLine(Marshal.PtrToStringAnsi(LibRawNative.GetErrorMessage(error)));
+                Assert.NotEqual(IntPtr.Zero, handle);
+                V(LibRawNative.OpenFile(handle, ExampleFileName));
+                V(LibRawNative.UnpackThumbnail(handle));
+                LibRawProcessedImage* image = (LibRawProcessedImage*)LibRawNative.MakeDcrawMemoryThumbnail(handle, out LibRawError errorCode);
+                V(errorCode);
+                Assert.NotEqual(IntPtr.Zero, (IntPtr)image);
+                try
+                {
+                    Assert.Equal(image->DataSize, image->GetData<byte>().ToArray().Length);
+                    Assert.Equal(ImageFormat.Jpeg, image->Type);
+                    Assert.Equal(386458, image->DataSize);
+                }
+                finally
+                {
+                    LibRawNative.ClearDcrawMemory((IntPtr)image);
+                }
             }
-            Assert.Equal(LibRawError.Success, error);
+            finally
+            {
+                LibRawNative.Recycle(handle);
+            }
         }
-    }
 
-    record struct RGB24(byte B, byte G, byte R)
-    {
-        public override string ToString() => $"({R},{G},{B})";
+        [Fact]
+        public unsafe void GetIparamsTest()
+        {
+            IntPtr handle = LibRawNative.Initialize();
+            try
+            {
+                LibRawNative.GetImageParameters(handle);
+            }
+            finally
+            {
+                LibRawNative.Recycle(handle);
+            }
+        }
     }
 }
