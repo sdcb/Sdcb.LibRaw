@@ -213,7 +213,35 @@ namespace Sdcb.LibRaw.UnitTests.RawApiTests
             IntPtr handle = LibRawNative.Initialize();
             try
             {
-                LibRawNative.GetImageParameters(handle);
+                V(LibRawNative.OpenFile(handle, ExampleFileName));
+                IntPtr ptr = LibRawNative.GetImageParameters(handle);
+                LibRawImageParams iparams = Marshal.PtrToStructure<LibRawImageParams>(ptr);
+                Assert.Equal("", iparams.Guard);
+                Assert.Equal("Sony", iparams.Make);
+                Assert.Equal("ILCE-7RM3", iparams.Model);
+                Assert.Equal("ILCE-7RM3 v3.10", iparams.Software);
+                Assert.Equal("Sony", iparams.NormalizedMake);
+                Assert.Equal("ILCE-7RM3", iparams.NormalizedModel);
+                Assert.Equal(63u, iparams.MakerIndex);
+                Assert.Equal(1u, iparams.RawCount);
+                Assert.Equal(0u, iparams.DngVersion);
+                Assert.Equal(0u, iparams.IsFoveon);
+                Assert.Equal(3, iparams.Colors);
+                Assert.Equal(3031741620u, iparams.Filters);
+                byte[] expectedXtrans = new byte[6 * 6]
+                {
+                    0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0
+                };
+                Assert.Equal(expectedXtrans, iparams.XTrans);
+                Assert.Equal(expectedXtrans, iparams.XTransAbs);
+                Assert.Equal("RGBG", iparams.Cdesc);
+                Assert.Equal(4097, iparams.XmpLength);
+                Assert.StartsWith("<?xpacket", Encoding.UTF8.GetString(iparams.XmpData));
             }
             finally
             {
