@@ -222,7 +222,7 @@ public struct LibRawNikonLens
     public byte LensType;
 };
 
-[StructLayout(LayoutKind.Sequential, Pack = 1)]
+[StructLayout(LayoutKind.Sequential)]
 public struct LibRawDngLens
 {
     public float MinFocal;
