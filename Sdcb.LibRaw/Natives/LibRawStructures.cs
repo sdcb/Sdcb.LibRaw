@@ -165,3 +165,90 @@ public struct LibRawImageParams
     /// </summary>
     public unsafe Span<byte> XmpData => XmpDataPtr != IntPtr.Zero ? new Span<byte>(XmpDataPtr.ToPointer(), XmpLength) : null;
 }
+
+[StructLayout(LayoutKind.Sequential)]
+public struct LibRawMakerNotesLens
+{
+    public ulong LensID;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+    public string Lens;
+    public ushort LensFormat;
+    public ushort LensMount;
+    public ulong CameraId;
+    public ushort CameraFormat;
+    public ushort CameraMount;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+    public string Body;
+    public short FocalType;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+    public string LensFeaturesPre;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+    public string LensFeaturesSuffix;
+    public float MinFocal;
+    public float MaxFocal;
+    public float MaxAperture4MinFocal;
+    public float MaxAperture4MaxFocal;
+    public float MinAperture4MinFocal;
+    public float MinAperture4MaxFocal;
+    public float MaxAperture;
+    public float MinAperture;
+    public float CurrentFocal;
+    public float CurrentAperture;
+    public float MaxAperture4CurrentFocal;
+    public float MinAperture4CurrentFocal;
+    public float MinFocusDistance;
+    public float FocusRangeIndex;
+    public float LensFStops;
+    public ulong TeleconverterID;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+    public string Teleconverter;
+    public ulong AdapterID;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+    public string Adapter;
+    public ulong AttachmentID;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+    public string Attachment;
+    public ushort FocalUnits;
+    public float FocalLengthIn35mmFormat;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+public struct LibRawNikonLens
+{
+    public float EffectiveMaxAp;
+    public byte LensIDNumber;
+    public byte LensFStops;
+    public byte MCUVersion;
+    public byte LensType;
+};
+
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
+public struct LibRawDngLens
+{
+    public float MinFocal;
+    public float MaxFocal;
+    public float MaxAp4MinFocal;
+    public float MaxAp4MaxFocal;
+};
+
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LibRawLensInfo
+{
+    public float MinFocal;
+    public float MaxFocal;
+    public float MaxAperture4MinFocal;
+    public float MaxAperture4MaxFocal;
+    public float ExifMaxAperture;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+    public string LensMake;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+    public string Lens;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+    public string LensSerial;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+    public string InternalLensSerial;
+    public ushort FocalLengthIn35mmFormat;
+    public LibRawNikonLens Nikon;
+    public LibRawDngLens Dng;
+    public LibRawMakerNotesLens MakerNotes;
+};
