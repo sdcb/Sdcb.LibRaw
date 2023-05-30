@@ -431,4 +431,24 @@ public class FastStaticTest
             LibRawNative.Recycle(handle);
         }
     }
+
+    [Fact]
+    public unsafe void SonyArwSetOutputTiffTest()
+    {
+        OpenMpLib.omp_set_num_threads(OpenMpLib.omp_get_max_threads());
+        IntPtr handle = LibRawFromExampleFile();
+        try
+        {
+            LibRawNative.SetOutputTiff(handle, 1);
+            LibRawNative.SetGamma(handle, 0, 0.55f);
+            V(LibRawNative.Unpack(handle));
+            V(LibRawNative.ProcessDcraw(handle));
+            V(LibRawNative.WriteDcrawPpmTiff(handle, "test.tif"));
+            Assert.True(File.Exists("test.tif"));
+        }
+        finally
+        {
+            LibRawNative.Recycle(handle);
+        }
+    }
 }

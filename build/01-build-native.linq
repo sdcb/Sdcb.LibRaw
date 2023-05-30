@@ -15,8 +15,6 @@ async Task Main()
 	await SetupAsync(QueryCancelToken);
 	await new WindowsNugetSource("win-x64", "win64", "libraw.dll", @"https://io.starworks.cc:88/cv-public/2023/LibRaw-0.21.1-Win64.zip", "Sdcb.LibRaw", deps: new string[0])
 		.Process(QueryCancelToken);
-	//await new WindowsNugetSource("win-x86", "win32", "gmp-10.dll", @"C:\_\3rd\vcpkg\packages\gmp_x86-windows\bin", "Sdcb.Arithmetic.Gmp", deps: new string[0])
-	//	.Process(QueryCancelToken);
 }
 
 static string BuildNuspec(string[] libs, string rid, string titleRid, string folder, string pkgName, string[] deps)
@@ -126,7 +124,7 @@ public record WindowsNugetSource(string rid, string titleRid, string libName, st
 		using ZipArchive zip = new ZipArchive(compressed);
 
 		Directory.CreateDirectory(CLibFolder);
-		foreach (ZipArchiveEntry entry in zip.Entries.Where(x => x.Name == "libraw.dll"))
+		foreach (ZipArchiveEntry entry in zip.Entries.Where(x => x.Name == libName))
 		{
 			string localEntryDest = Path.Combine(CLibFolder, entry.Name);
 			Console.Write($"Expand {entry} -> {localEntryDest}... ");
