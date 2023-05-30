@@ -4,4 +4,9 @@
     {
         public override string ToString() => $"({R},{G},{B})";
     }
+
+    record struct RGB48(ushort B, ushort G, ushort R)
+    {
+        public override string ToString() => $"({R},{G},{B})";
+    }
 }
