@@ -419,7 +419,7 @@ public struct LibRawLensInfo
 };
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-public struct LibRawGpsInfo
+public struct LibRawGPS
 {
     public float LatitudeDegrees;
     public float LatitudeMinutes;
@@ -431,15 +431,15 @@ public struct LibRawGpsInfo
     public float GPSTimeStampMinutes;
     public float GPSTimeStampSeconds;
     public float Altitude;
-    public char AltitudeReference;
-    public char LatitudeReference;
-    public char LongitudeReference;
+    public byte AltitudeReference;
+    public byte LatitudeReference;
+    public byte LongitudeReference;
     public char GPSStatus;
-    public char GPSParsed;
+    public byte GPSParsed;
 };
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-public struct LibRawImageInfo
+public struct LibRawImageOtherParams
 {
     public float IsoSpeed;
     public float Shutter;
@@ -449,7 +449,7 @@ public struct LibRawImageInfo
     public uint ShotOrder;
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
     public uint[] GpsData;
-    public LibRawGpsInfo ParsedGPS;
+    public LibRawGPS ParsedGPS;
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 512)]
     public string Description;
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]

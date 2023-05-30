@@ -28,4 +28,16 @@ public class StructureSizeTest
     {
         Assert.Equal(1296, Marshal.SizeOf<LibRawLensInfo>());
     }
+
+    [Fact]
+    public void LibRawGpsInfoSizeTest()
+    {
+        Assert.Equal(48, Marshal.SizeOf<LibRawGPS>());
+    }
+
+    [Fact]
+    public void LibRawImageInfoSizeTest()
+    {
+        Assert.Equal(800, Marshal.SizeOf<LibRawImageOtherParams>());
+    }
 }

@@ -322,5 +322,53 @@ namespace Sdcb.LibRaw.UnitTests.RawApiTests
                 LibRawNative.Recycle(handle);
             }
         }
+
+        [Fact]
+        public unsafe void GetImageDataTest()
+        {
+            IntPtr handle = LibRawNative.Initialize();
+            try
+            {
+                V(LibRawNative.OpenFile(handle, ExampleFileName));
+                IntPtr ptr = LibRawNative.GetImageData(handle);
+                LibRawImageOtherParams oparams = Marshal.PtrToStructure<LibRawImageOtherParams>(ptr);
+                const float epsilon = 0.000001f;
+
+                Assert.Equal(100.0, oparams.IsoSpeed, epsilon);
+                Assert.Equal(100.0, oparams.IsoSpeed, epsilon);
+                Assert.Equal(0.005000, oparams.Shutter, epsilon);
+                Assert.Equal(1.200000, oparams.Aperture, epsilon);
+                Assert.Equal(50.000000, oparams.FocalLength, epsilon);
+                Assert.Equal(1674456985, oparams.Timestamp);
+                Assert.Equal(0u, oparams.ShotOrder);
+                Assert.Equal(new string(' ', 31), oparams.Description);
+                Assert.Equal("Zhou Jie/sdcb", oparams.Artist);
+                Assert.Equal(0.000000, oparams.AnalogBalance[0]);
+                Assert.Equal(0.000000, oparams.AnalogBalance[1]);
+                Assert.Equal(0.000000, oparams.AnalogBalance[2]);
+                Assert.Equal(0.000000, oparams.AnalogBalance[3]);
+
+                LibRawGPS gps = oparams.ParsedGPS;
+                Assert.Equal(0.0f, gps.LatitudeDegrees);
+                Assert.Equal(0.0f, gps.LatitudeMinutes);
+                Assert.Equal(0.0f, gps.LatitudeSeconds);
+                Assert.Equal(0.0f, gps.LongitudeDegrees);
+                Assert.Equal(0.0f, gps.LongitudeMinutes);
+                Assert.Equal(0.0f, gps.LongitudeSeconds);
+                Assert.Equal(0.0f, gps.GPSTimeStampDegrees);
+                Assert.Equal(0.0f, gps.GPSTimeStampMinutes);
+                Assert.Equal(0.0f, gps.GPSTimeStampSeconds);
+                Assert.Equal(0.0f, gps.Altitude);
+                Assert.Equal(0, gps.AltitudeReference);
+                Assert.Equal(0, gps.LatitudeReference);
+                Assert.Equal(0, gps.LongitudeReference);
+                Assert.Equal('V', gps.GPSStatus);
+                Assert.Equal(1, gps.GPSParsed);
+            }
+            finally
+            {
+                LibRawNative.Recycle(handle);
+            }
+        }
     }
 }
