@@ -380,7 +380,7 @@ public static class LibRawNative
     /// <param name="fileName">The output file name.</param>
     /// <returns>The status of the operation.</returns>
     [DllImport(Dll, EntryPoint = "libraw_dcraw_ppm_tiff_writer")]
-    public static extern int WriteDcrawPpmTiff(IntPtr data, string fileName);
+    public static extern LibRawError WriteDcrawPpmTiff(IntPtr data, string fileName);
 
     /// <summary>
     /// Write the LibRaw thumbnail data to an output file.
@@ -438,7 +438,7 @@ public static class LibRawNative
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="value">The output color space value.</param>
     [DllImport(Dll, EntryPoint = "libraw_set_output_color")]
-    public static extern void SetOutputColorSpace(IntPtr data, int value);
+    public static extern void SetOutputColorSpace(IntPtr data, ColorSpace value);
 
     /// <summary>
     /// Set the adjust maximum threshold for the LibRaw data.

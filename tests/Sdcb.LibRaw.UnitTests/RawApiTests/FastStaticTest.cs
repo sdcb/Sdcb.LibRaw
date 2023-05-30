@@ -413,4 +413,22 @@ public class FastStaticTest
             LibRawNative.Recycle(handle);
         }
     }
+
+    [Fact]
+    public unsafe void SetOutputTiffTest()
+    {
+        IntPtr handle = LibRawFromExampleBayer();
+        try
+        {
+            LibRawNative.SetOutputTiff(handle, 1);
+            V(LibRawNative.Unpack(handle));
+            V(LibRawNative.ProcessDcraw(handle));
+            V(LibRawNative.WriteDcrawPpmTiff(handle, "test.tif"));
+            Assert.True(File.Exists("test.tif"));
+        }
+        finally
+        {
+            LibRawNative.Recycle(handle);
+        }
+    }
 }
