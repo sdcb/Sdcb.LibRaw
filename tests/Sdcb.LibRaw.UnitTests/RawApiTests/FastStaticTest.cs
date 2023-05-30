@@ -330,7 +330,7 @@ namespace Sdcb.LibRaw.UnitTests.RawApiTests
             try
             {
                 V(LibRawNative.OpenFile(handle, ExampleFileName));
-                IntPtr ptr = LibRawNative.GetImageData(handle);
+                IntPtr ptr = LibRawNative.GetImageOtherParameters(handle);
                 LibRawImageOtherParams oparams = Marshal.PtrToStructure<LibRawImageOtherParams>(ptr);
                 const float epsilon = 0.000001f;
 

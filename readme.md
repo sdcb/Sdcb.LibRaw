@@ -60,7 +60,7 @@ Mapped to class: `LibRawNative`:
 | libraw_set_output_tif         | SetOutputTiff               |
 | libraw_get_iparams            | GetImageParameters          |
 | libraw_get_lensinfo           | GetLensInformation          |
-| libraw_get_imgother           | GetImageData                |
+| libraw_get_imgother           | GetImageOtherParameters     |
 
 ## LibRaw enum mappings:
 | C API Enum                        | C# Enum                 |

@@ -54,7 +54,7 @@
 * libraw_set_output_tif: SetOutputTiff
 * libraw_get_iparams: GetImageParameters
 * libraw_get_lensinfo: GetLensInformation
-* libraw_get_imgother: GetImageData
+* libraw_get_imgother: GetImageOtherParameters
 
 # Enums mappings:
 * LibRaw_openbayer_patterns: OpenBayerPattern

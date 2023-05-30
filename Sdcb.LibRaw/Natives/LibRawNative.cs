@@ -604,7 +604,7 @@ public static class LibRawNative
     /// <param name="data">Pointer to the LibRaw data structure.</param>
     /// <returns>Pointer to the image data structure.</returns>
     [DllImport(Dll, EntryPoint = "libraw_get_imgother")]
-    public static extern IntPtr GetImageData(IntPtr data);
+    public static extern IntPtr GetImageOtherParameters(IntPtr data);
 
     /// <summary>
     /// A PInvoke wrapper for the native "default_data_callback" function in the LibRaw library.
