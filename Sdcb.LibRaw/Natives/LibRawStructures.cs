@@ -167,7 +167,7 @@ public struct LibRawImageParams
 }
 
 [StructLayout(LayoutKind.Sequential)]
-public struct LibRawMakerNotesLens
+public struct LibRawLensMakerNotes
 {
     public ulong LensID;
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
@@ -250,5 +250,5 @@ public struct LibRawLensInfo
     public ushort FocalLengthIn35mmFormat;
     public LibRawNikonLens Nikon;
     public LibRawDngLens Dng;
-    public LibRawMakerNotesLens MakerNotes;
+    public LibRawLensMakerNotes MakerNotes;
 };

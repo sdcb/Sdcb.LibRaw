@@ -248,5 +248,79 @@ namespace Sdcb.LibRaw.UnitTests.RawApiTests
                 LibRawNative.Recycle(handle);
             }
         }
+
+        [Fact]
+        public unsafe void GetLensInfoTest()
+        {
+            IntPtr handle = LibRawNative.Initialize();
+            try
+            {
+                V(LibRawNative.OpenFile(handle, ExampleFileName));
+                IntPtr ptr = LibRawNative.GetLensInformation(handle);
+                const float epsilon = 0.000001f;
+
+                LibRawLensInfo iparams = Marshal.PtrToStructure<LibRawLensInfo>(ptr);
+                // LibRawLensInfo
+                Assert.Equal(50, iparams.MinFocal, epsilon);
+                Assert.Equal(50, iparams.MaxFocal, epsilon);
+                Assert.Equal(1.2, iparams.MaxAperture4MinFocal, epsilon);
+                Assert.Equal(1.2, iparams.MaxAperture4MaxFocal, epsilon);
+                Assert.Equal(1.198906, iparams.ExifMaxAperture, epsilon);
+                Assert.Equal("", iparams.LensMake);
+                Assert.Equal("FE 50mm F1.2 GM", iparams.Lens);
+                Assert.Equal("", iparams.LensSerial);
+                Assert.Equal("", iparams.InternalLensSerial);
+                Assert.Equal(50, iparams.FocalLengthIn35mmFormat);
+                // LibRawLensMakerNotes
+                LibRawLensMakerNotes makerNotes = iparams.MakerNotes;
+                Assert.Equal(32862u, makerNotes.LensID);
+                Assert.Equal("", makerNotes.Lens);
+                Assert.Equal(2, makerNotes.LensFormat, epsilon);
+                Assert.Equal(40, makerNotes.LensMount, epsilon);
+                Assert.Equal(362u, makerNotes.CameraId);
+                Assert.Equal(2, makerNotes.CameraFormat, epsilon);
+                Assert.Equal(40, makerNotes.CameraMount, epsilon);
+                Assert.Equal("", makerNotes.Body);
+                Assert.Equal(0.0, makerNotes.FocalType, epsilon);
+                Assert.Equal("", makerNotes.LensFeaturesPre);
+                Assert.Equal("", makerNotes.LensFeaturesSuffix);
+                Assert.Equal(0.0, makerNotes.MaxFocal, epsilon);
+                Assert.Equal(0.0, makerNotes.MaxAperture4MaxFocal, epsilon);
+                Assert.Equal(1.2, makerNotes.MaxAperture4MinFocal, epsilon);
+                Assert.Equal(0.0, makerNotes.MinAperture4MinFocal, epsilon);
+                Assert.Equal(0.0, makerNotes.MaxAperture, epsilon);
+                Assert.Equal(0.0, makerNotes.MinAperture, epsilon);
+                Assert.Equal(0.0, makerNotes.CurrentFocal, epsilon);
+                Assert.Equal(0.0, makerNotes.CurrentAperture, epsilon);
+                Assert.Equal(0.0, makerNotes.MaxAperture4CurrentFocal, epsilon);
+                Assert.Equal(0.0, makerNotes.MinAperture4CurrentFocal, epsilon);
+                Assert.Equal(0.0, makerNotes.MinFocusDistance, epsilon);
+                Assert.Equal(0.0, makerNotes.FocusRangeIndex, epsilon);
+                Assert.Equal(0.0, makerNotes.LensFStops, epsilon);
+                Assert.Equal(0u, makerNotes.TeleconverterID);
+                Assert.Equal("", makerNotes.Teleconverter);
+                Assert.Equal(0u, makerNotes.AdapterID);
+                Assert.Equal("", makerNotes.Adapter);
+                Assert.Equal(0u, makerNotes.AttachmentID);
+                Assert.Equal("", makerNotes.Attachment);
+                Assert.Equal(1.0, makerNotes.FocalUnits, epsilon);
+                Assert.Equal(0.0, makerNotes.FocalLengthIn35mmFormat, epsilon);
+                // Dng
+                Assert.Equal(0, iparams.Dng.MinFocal);
+                Assert.Equal(0, iparams.Dng.MaxFocal);
+                Assert.Equal(0, iparams.Dng.MaxAp4MinFocal);
+                Assert.Equal(0, iparams.Dng.MaxAp4MaxFocal);
+                // Nikon
+                Assert.Equal(0, iparams.Nikon.EffectiveMaxAp);
+                Assert.Equal(0, iparams.Nikon.LensIDNumber);
+                Assert.Equal(0, iparams.Nikon.LensFStops);
+                Assert.Equal(0, iparams.Nikon.MCUVersion);
+                Assert.Equal(0, iparams.Nikon.LensType);
+            }
+            finally
+            {
+                LibRawNative.Recycle(handle);
+            }
+        }
     }
 }

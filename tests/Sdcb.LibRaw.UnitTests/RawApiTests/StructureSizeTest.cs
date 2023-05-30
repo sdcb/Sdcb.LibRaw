@@ -8,7 +8,7 @@ public class StructureSizeTest
     [Fact]
     public void LibRawMakerNotesLensSizeTest()
     {
-        Assert.Equal(736, Marshal.SizeOf<LibRawMakerNotesLens>());
+        Assert.Equal(736, Marshal.SizeOf<LibRawLensMakerNotes>());
     }
 
     [Fact]
