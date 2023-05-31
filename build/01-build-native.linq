@@ -13,7 +13,14 @@
 async Task Main()
 {
 	await SetupAsync(QueryCancelToken);
-	await new WindowsNugetSource("win-x64", "win64", "libraw.dll", @"https://io.starworks.cc:88/cv-public/2023/LibRaw-0.21.1-Win64.zip", "Sdcb.LibRaw", deps: new string[0])
+	// from website
+	//await new WindowsNugetSource("win-x64", "win64", new LibNames("libraw.dll"), @"https://io.starworks.cc:88/cv-public/2023/LibRaw-0.21.1-Win64.zip", "Sdcb.LibRaw", deps: new string[0])
+	//	.Process(QueryCancelToken);
+	// from vcpkg local
+	LibNames libs = new LibNames("raw_r.dll", "lcms2.dll", "zlib1.dll", "jpeg8.dll");
+	await new WindowsNugetSource("win-x64", "win64", libs, @"C:\_\3rd\vcpkg\installed\x64-windows\bin", "Sdcb.LibRaw", deps: new string[0])
+		.Process(QueryCancelToken);
+	await new WindowsNugetSource("win-x86", "win32", libs, @"C:\_\3rd\vcpkg\installed\x86-windows\bin", "Sdcb.LibRaw", deps: new string[0])
 		.Process(QueryCancelToken);
 }
 
@@ -41,7 +48,7 @@ static string BuildNuspec(string[] libs, string rid, string titleRid, string fol
 		itemGroup.Add(
 		libs
 			.Select(x => Path.GetFileName(x))
-			.Select(x => 
+			.Select(x =>
 				new XElement(XName.Get("Content", ns), new XAttribute("Include", $@"$({normalizedName})\{rid}\native\{x}"),
 					new XElement(XName.Get("Link", ns), @$"dll\{platform}\{x}"),
 					new XElement(XName.Get("CopyToOutputDirectory", ns), "PreserveNewest")))
@@ -99,13 +106,13 @@ static string BuildNuspec(string[] libs, string rid, string titleRid, string fol
 			XName.Get("file", ns),
 			new XAttribute("src", $"{titleRid}.props"),
 			new XAttribute("target", @$"build\{x}\{pkgName}.runtime.{titleRid}.props"))));
-		
+
 		if (deps.Any())
 		{
 			XElement? dependencies = nuspec.XPathSelectElement("/p:package/p:metadata/p:dependencies", nsr);
 			if (dependencies == null) throw new Exception($"{nameof(dependencies)} invalid in nuspec file.");
-			dependencies.Add(deps.Select(depId => new XElement(XName.Get("dependency", ns), 
-				new XAttribute("id", $"{depId}.runtime.{titleRid}"), 
+			dependencies.Add(deps.Select(depId => new XElement(XName.Get("dependency", ns),
+				new XAttribute("id", $"{depId}.runtime.{titleRid}"),
 				new XAttribute("version", Projects.First(x => x.name == depId).version))));
 		}
 
@@ -115,25 +122,59 @@ static string BuildNuspec(string[] libs, string rid, string titleRid, string fol
 	}
 }
 
-public record WindowsNugetSource(string rid, string titleRid, string libName, string folder, string pkgName, string[] deps) : NupkgBuildSource(rid, titleRid, libName, folder, pkgName, deps)
+public record WindowsNugetSource(string rid, string titleRid, LibNames libNames, string url, string pkgName, string[] deps) : NupkgBuildSource(rid, titleRid, libNames, url, pkgName, deps)
 {
-	protected override async Task Decompress(string url, CancellationToken cancellationToken)
+	protected override async Task Decompress(CancellationToken cancellationToken)
 	{
-		using HttpClient http = new HttpClient();
-		Stream compressed = await http.GetStreamAsync(url);
-		using ZipArchive zip = new ZipArchive(compressed);
-
 		Directory.CreateDirectory(CLibFolder);
-		foreach (ZipArchiveEntry entry in zip.Entries.Where(x => x.Name == libName))
+		if (url.StartsWith("http", StringComparison.OrdinalIgnoreCase))
 		{
-			string localEntryDest = Path.Combine(CLibFolder, entry.Name);
-			Console.Write($"Expand {entry} -> {localEntryDest}... ");
-			entry.ExtractToFile(localEntryDest, overwrite: true);
-			Console.WriteLine("Done");
-		}
-	}
+			using HttpClient http = new HttpClient();
+			Stream compressed = await http.GetStreamAsync(url);
+			using ZipArchive zip = new ZipArchive(compressed);
 
-	protected override string[] GetDlls()
+			foreach (ZipArchiveEntry entry in zip.Entries.Where(x => libNames.Contains(x.Name)))
+			{
+				if (cancellationToken.IsCancellationRequested) throw new TaskCanceledException();
+				
+				string localEntryDest = Path.Combine(CLibFolder, entry.Name);
+				Console.Write($"Expand {entry} -> {localEntryDest}... ");
+				entry.ExtractToFile(localEntryDest, overwrite: true);
+			}
+		}
+		else if (Directory.Exists(url))
+		{
+			foreach (string libName in libNames.All)
+			{
+				if (cancellationToken.IsCancellationRequested) throw new TaskCanceledException();
+				
+				string srcFile = Path.Combine(url, libName);
+				string destFile = Path.Combine(CLibFolder, libName);
+				if (!File.Exists(srcFile) && libName != libNames.Primary)
+				{
+					Console.WriteLine($"{srcFile} not exists, skip... ");
+				}
+				else
+				{
+					Console.WriteLine($"Copy {srcFile} to {destFile}... ");
+					File.Copy(srcFile, destFile, overwrite: true);
+				}
+			}
+		}
+		Console.WriteLine("Done");
+	}
+}
+
+public abstract record NupkgBuildSource(string rid, string titleRid, LibNames libNames, string url, string pkgName, string[] deps)
+{
+	public string CLibFilePath => Path.Combine(CLibFolder, libNames.Primary);
+	public string CLibFolder => Path.Combine(RidFolder, "bin");
+	public string RidFolder => $@"{titleRid}-{Path.GetFileNameWithoutExtension(libNames.Primary)}";
+	public string Version => Projects.First(x => x.name == pkgName).version;
+	public string NuGetPath => Path.Combine("nupkgs", $"{pkgName}.runtime.{titleRid}.{Version}.nupkg");
+
+	protected abstract Task Decompress(CancellationToken cancellationToken);
+	protected string[] GetDlls()
 	{
 		return Directory.EnumerateFiles(CLibFolder)
 			.Where(x => Path.GetExtension(x) switch
@@ -144,18 +185,6 @@ public record WindowsNugetSource(string rid, string titleRid, string libName, st
 			.Select(f => f.Replace(rid + @"\", ""))
 			.ToArray();
 	}
-}
-
-public abstract record NupkgBuildSource(string rid, string titleRid, string libName, string folder, string pkgName, string[] deps)
-{
-	public string CLibFilePath => Path.Combine(CLibFolder, libName);
-	public string CLibFolder => Path.Combine(RidFolder, "bin");
-	public string RidFolder => $@"{titleRid}-{Path.GetFileNameWithoutExtension(libName)}";
-	public string Version => Projects.First(x => x.name == pkgName).version;
-	public string NuGetPath => Path.Combine("nupkgs", $"{pkgName}.runtime.{titleRid}.{Version}.nupkg");
-
-	protected abstract Task Decompress(string localZipFile, CancellationToken cancellationToken);
-	protected abstract string[] GetDlls();
 
 	public async Task Process(CancellationToken cancellationToken)
 	{
@@ -164,8 +193,8 @@ public abstract record NupkgBuildSource(string rid, string titleRid, string libN
 		{
 			Console.WriteLine($"{CLibFilePath} exists, override!");
 		}
-		await Decompress(folder, cancellationToken);
-		
+		await Decompress(cancellationToken);
+
 		string[] libs = GetDlls();
 
 		string nugetExePath = await EnsureNugetExe(cancellationToken);
@@ -179,4 +208,20 @@ public abstract record NupkgBuildSource(string rid, string titleRid, string libN
 
 		NuGetRun($@"pack {nuspecPath} -Version {Version} -OutputDirectory .\nupkgs".Dump());
 	}
+}
+
+public class LibNames
+{
+	public string Primary { get; }
+	public IReadOnlyCollection<string> All { get; }
+
+	public LibNames(params string[] libNames)
+	{
+		if (libNames.Length == 0) throw new ArgumentException(nameof(libNames));
+
+		Primary = libNames[0];
+		All = libNames.ToHashSet();
+	}
+
+	public bool Contains(string name) => All.Contains(name);
 }

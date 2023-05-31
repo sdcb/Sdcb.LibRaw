@@ -22,7 +22,14 @@ namespace Sdcb.LibRaw.Natives
             {
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
-                    return NativeLibrary.Load("libraw.dll", assembly, searchPath);
+                    if (NativeLibrary.TryLoad("raw_r.dll", assembly, searchPath, out IntPtr handle))
+                    {
+                        return handle;
+                    }
+                    else
+                    {
+                        return NativeLibrary.Load("libraw.dll", assembly, searchPath);
+                    }
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 {

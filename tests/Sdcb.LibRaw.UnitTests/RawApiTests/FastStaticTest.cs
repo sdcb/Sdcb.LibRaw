@@ -436,6 +436,7 @@ public class FastStaticTest
     public unsafe void SonyArwSetOutputTiffTest()
     {
         OpenMpLib.omp_set_num_threads(OpenMpLib.omp_get_max_threads());
+        int thread = OpenMpLib.omp_get_num_threads();
         IntPtr handle = LibRawFromExampleFile();
         try
         {
