@@ -380,7 +380,7 @@ public static class LibRawNative
     /// </summary>
     /// <returns>The capabilities of the LibRaw library.</returns>
     [DllImport(Dll, EntryPoint = "libraw_capabilities")]
-    public static extern uint GetCapabilities();
+    public static extern RuntimeCapability GetCapabilities();
 
     /// <summary>
     /// Adjust the sizes of the LibRaw data for information purposes only.

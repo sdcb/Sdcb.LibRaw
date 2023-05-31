@@ -6,12 +6,12 @@ using Xunit.Abstractions;
 
 namespace Sdcb.LibRaw.UnitTests.RawApiTests;
 
-public class FastStaticTest
+public class FunctionalTests
 {
     private readonly ITestOutputHelper _console;
     private const string ExampleFileName = @"./examples/DSC02412.ARW";
 
-    public FastStaticTest(ITestOutputHelper console)
+    public FunctionalTests(ITestOutputHelper console)
     {
         _console = console;
     }
@@ -52,26 +52,6 @@ public class FastStaticTest
                 0, 0, 0, 0, 0, OpenBayerPattern.Bggr, 0, 0, 0));
         }
         return handle;
-    }
-
-    [Fact]
-    public void GetErrorMessageTest()
-    {
-        IntPtr handle = LibRawNative.GetErrorMessage(LibRawError.IOError);
-        Assert.True(handle != IntPtr.Zero);
-        string? msg = Marshal.PtrToStringAnsi(handle);
-        Assert.NotNull(msg);
-        Assert.Equal("Input/output error", msg);
-    }
-
-    [Fact]
-    public void GetProgressMessageTest()
-    {
-        IntPtr handle = LibRawNative.GetProgressMessage(LibRawProgress.Highlights);
-        Assert.True(handle != IntPtr.Zero);
-        string? msg = Marshal.PtrToStringAnsi(handle);
-        Assert.NotNull(msg);
-        Assert.Equal("Highlight recovery", msg);
     }
 
     [Fact]
