@@ -9,35 +9,25 @@ public static class LibRawNative
     static LibRawNative()
     {
         LibRawNativeLoader.Init();
-        if (Environment.GetEnvironmentVariable("OMP_NUM_THREADS") == null)
+        if (OpenMPThreadCount == null)
         {
-            OpenMPThreadCount = Environment.ProcessorCount;
+            OpenMPThreadCount = Environment.ProcessorCount.ToString();
         }
     }
 
     public const string Dll = "libraw.dll";
 
-    /// <summary>
-    /// Gets or sets the number of OpenMP threads Oniguruma uses. Setting to null uses all available threads. 
-    /// </summary>
-    public static int? OpenMPThreadCount
+    /// <summary> Gets or sets the number of OpenMP threads uses. </summary>
+    /// <remarks>
+    /// <para>This property is implemented by using OMP_NUM_THREADS environment variable.</para>
+    /// OMP_NUM_THREADS environment variable can be set to multiple numbers separated by commas. 
+    /// This setting allows you to specify the number of threads for different nested levels. 
+    /// Each number corresponds to a parallel region from outermost to innermost.
+    /// </remarks>
+    public static string? OpenMPThreadCount
     {
-        /// <summary>
-        /// Get current number of OpenMP threads.
-        /// </summary>
-        get => int.TryParse(Environment.GetEnvironmentVariable("OMP_NUM_THREADS"), out int threadCount) ? threadCount : null;
-        /// <summary>
-        /// Set number of OpenMP threads.
-        /// </summary>
-        /// <param name="value">Positive non-zero integer to limit max number of threads used by OpenMP.</param>
-        set
-        {
-            if (value <= 0 || value > Environment.ProcessorCount)
-            {
-                throw new ArgumentOutOfRangeException($"{nameof(OpenMPThreadCount)} should be in range [1, {Environment.ProcessorCount}].");
-            }
-            Environment.SetEnvironmentVariable("OMP_NUM_THREADS", value?.ToString());
-        }
+        get => Environment.GetEnvironmentVariable("OMP_NUM_THREADS");
+        set => Environment.SetEnvironmentVariable("OMP_NUM_THREADS", value);
     }
 
     #region consts/macros
