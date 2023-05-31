@@ -44,25 +44,6 @@ namespace Sdcb.LibRaw.Natives
                     throw new NotSupportedException("Not support current OS's LibRaw.");
                 }
             }
-            else if (libraryName == OpenMpLib.Dll)
-            {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    return NativeLibrary.Load("vcomp140.dll", assembly, searchPath);
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    return NativeLibrary.Load("libgomp.so.1", assembly, searchPath);
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                {
-                    return NativeLibrary.Load("libomp.dylib", assembly, searchPath);
-                }
-                else
-                {
-                    throw new NotSupportedException("Not support current OS's OpenMP.");
-                }
-            }
 
             return IntPtr.Zero;
         }

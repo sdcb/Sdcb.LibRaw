@@ -9,9 +9,36 @@ public static class LibRawNative
     static LibRawNative()
     {
         LibRawNativeLoader.Init();
+        if (Environment.GetEnvironmentVariable("OMP_NUM_THREADS") == null)
+        {
+            OpenMPThreadCount = Environment.ProcessorCount;
+        }
     }
 
     public const string Dll = "libraw.dll";
+
+    /// <summary>
+    /// Gets or sets the number of OpenMP threads Oniguruma uses. Setting to null uses all available threads. 
+    /// </summary>
+    public static int? OpenMPThreadCount
+    {
+        /// <summary>
+        /// Get current number of OpenMP threads.
+        /// </summary>
+        get => int.TryParse(Environment.GetEnvironmentVariable("OMP_NUM_THREADS"), out int threadCount) ? threadCount : null;
+        /// <summary>
+        /// Set number of OpenMP threads.
+        /// </summary>
+        /// <param name="value">Positive non-zero integer to limit max number of threads used by OpenMP.</param>
+        set
+        {
+            if (value <= 0 || value > Environment.ProcessorCount)
+            {
+                throw new ArgumentOutOfRangeException($"{nameof(OpenMPThreadCount)} should be in range [1, {Environment.ProcessorCount}].");
+            }
+            Environment.SetEnvironmentVariable("OMP_NUM_THREADS", value?.ToString());
+        }
+    }
 
     #region consts/macros
     /// <summary>
