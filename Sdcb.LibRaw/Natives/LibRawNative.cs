@@ -173,7 +173,7 @@ public static class LibRawNative
     /// <param name="flags">The flags to initialize LibRaw with.</param>
     /// <returns>An IntPtr to the initialized LibRaw data.</returns>
     [DllImport(Dll, EntryPoint = "libraw_init")]
-    public static extern IntPtr Initialize(ConstructorFlag flags = ConstructorFlag.None);
+    public static extern IntPtr Initialize(LibRawInitFlags flags = LibRawInitFlags.None);
 
     /// <summary>
     /// Open the specified file for use with LibRaw.
@@ -380,7 +380,7 @@ public static class LibRawNative
     /// </summary>
     /// <returns>The capabilities of the LibRaw library.</returns>
     [DllImport(Dll, EntryPoint = "libraw_capabilities")]
-    public static extern RuntimeCapability GetCapabilities();
+    public static extern LibRawCapability GetCapabilities();
 
     /// <summary>
     /// Adjust the sizes of the LibRaw data for information purposes only.

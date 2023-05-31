@@ -229,7 +229,7 @@ public enum OutputFlag
 /// Original C API enumeration: LibRaw_runtime_capabilities
 /// </remarks>
 [Flags]
-public enum RuntimeCapability
+public enum LibRawCapability
 {
     RawSpeed = 1,
     DngSdk = 1 << 1,
@@ -748,7 +748,7 @@ public enum DecoderFlag
 /// Original C API enum: LibRaw_constructor_flags
 /// </remarks>
 [Flags]
-public enum ConstructorFlag : uint
+public enum LibRawInitFlags : uint
 {
     /// <summary>
     /// No flags set.

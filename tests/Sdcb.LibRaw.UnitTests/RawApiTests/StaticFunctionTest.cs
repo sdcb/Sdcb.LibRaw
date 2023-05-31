@@ -58,7 +58,7 @@ public class StaticFunctionTest
     [Fact]
     public void CapabilitiesTest()
     {
-        RuntimeCapability caps = LibRawNative.GetCapabilities();
+        LibRawCapability caps = LibRawNative.GetCapabilities();
         _console.WriteLine(caps.ToString());
     }
 

@@ -66,7 +66,7 @@
 * LibRaw_MultiExposure_related: MultiExposureRelated
 * LibRaw_dng_processing: DngProcessing
 * LibRaw_output_flags: OutputFlag
-* LibRaw_runtime_capabilities: RuntimeCapability
+* LibRaw_runtime_capabilities: LibRawCapability
 * LibRaw_colorspace: ColorSpace
 * LibRaw_cameramaker_index: CameraMakerIndex
 * LibRaw_camera_mounts: CameraMount
@@ -86,7 +86,7 @@
 * LibRaw_rawspeed_bits_t: RawSpeedBits
 * LibRaw_processing_options: ProcessingOption
 * LibRaw_decoder_flags: DecoderFlag
-* LibRaw_constructor_flags: ConstructorFlag
+* LibRaw_constructor_flags: LibRawInitFlags
 * LibRaw_warnings: LibRawWarning
 * LibRaw_exceptions: LibRawExceptions
 * LibRaw_progress: LibRawProgress

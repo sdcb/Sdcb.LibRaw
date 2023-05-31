@@ -70,7 +70,7 @@ public class RawContext : IDisposable
     /// <param name="filePath">The file path to the raw file.</param>
     /// <param name="flags">The flags to use when initialize the libraw context.</param>
     /// <returns></returns>
-    public static RawContext OpenFile(string filePath, ConstructorFlag flags = ConstructorFlag.None)
+    public static RawContext OpenFile(string filePath, LibRawInitFlags flags = LibRawInitFlags.None)
     {
         IntPtr raw = LibRawNative.Initialize(flags);
         LibRawError error = Environment.OSVersion.Platform switch
@@ -99,7 +99,7 @@ public class RawContext : IDisposable
     /// <param name="buffer">The input buffer of raw image data.</param>
     /// <param name="flags">The flags to use when initialize the libraw context.</param>
     /// <returns>A new instance of the <see cref="RawContext"/> class.</returns>
-    public static unsafe RawContext FromBuffer(ReadOnlySpan<byte> buffer, ConstructorFlag flags = ConstructorFlag.None)
+    public static unsafe RawContext FromBuffer(ReadOnlySpan<byte> buffer, LibRawInitFlags flags = LibRawInitFlags.None)
     {
         IntPtr raw = LibRawNative.Initialize(flags);
 
