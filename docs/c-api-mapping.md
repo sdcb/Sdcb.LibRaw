@@ -93,4 +93,4 @@
 * LibRaw_errors: LibRawError
 * LibRaw_internal_thumbnail_formats: InternalThumbnailFormat
 * LibRaw_thumbnail_formats: ThumbnailFormat
-* LibRaw_image_formats: ImageFormat
+* LibRaw_image_formats: ProcessedImageType

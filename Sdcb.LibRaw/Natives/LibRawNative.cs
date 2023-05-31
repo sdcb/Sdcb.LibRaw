@@ -245,10 +245,10 @@ public static class LibRawNative
     /// Unpack the thumbnail with the specified format from the LibRaw data.
     /// </summary>
     /// <param name="data">The LibRaw data IntPtr.</param>
-    /// <param name="thumbformat">The format of the thumbnail to unpack.</param>
+    /// <param name="index">The index of the thumbnail to unpack (default 0).</param>
     /// <returns>The status of the operation.</returns>
     [DllImport(Dll, EntryPoint = "libraw_unpack_thumb_ex")]
-    public static extern int UnpackThumbnailExtended(IntPtr data, int thumbformat);
+    public static extern LibRawError UnpackThumbnailExtended(IntPtr data, int index = 0);
 
     /// <summary>
     /// Recycle the LibRaw data stream.

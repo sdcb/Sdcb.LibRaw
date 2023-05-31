@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Sdcb.LibRaw.Natives;
+namespace Sdcb.LibRaw;
 
 /// <summary>
 /// Represents the open bayer patterns in LibRaw.
@@ -937,7 +935,7 @@ public enum ThumbnailFormat
 /// <remarks>
 /// Original C API enum: LibRaw_image_formats
 /// </remarks>
-public enum ImageFormat
+public enum ProcessedImageType
 {
     Jpeg = 1,
     Bitmap = 2

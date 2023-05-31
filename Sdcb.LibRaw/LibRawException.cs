@@ -48,5 +48,13 @@ namespace Sdcb.LibRaw
         /// Gets the error code that describes the error that caused the exception.
         /// </summary>
         public LibRawError ErrorCode { get; }
+
+        public static void ThrowIfFailed(LibRawError error, string? errorMessage = null)
+        {
+            if (error != LibRawError.Success)
+            {
+                throw new LibRawException(error, errorMessage);
+            }
+        }
     }
 }

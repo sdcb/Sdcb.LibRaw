@@ -127,7 +127,18 @@ public class RawContext : IDisposable
     /// <exception cref="LibRawException" />
     public void Unpack()
     {
-        EnsureSuccess(LibRawNative.Unpack(_librawContext));
+        LibRawException.ThrowIfFailed(LibRawNative.Unpack(_librawContext));
+    }
+
+    /// <summary>
+    /// Unpacks the thumbnail image from the opened file into memory.
+    /// Corresponds to the C API function: libraw_unpack_thumb.
+    /// </summary>
+    /// <param name="index">The index of the thumbnail to unpack (default 0).</param>
+    /// <exception cref="LibRawException">Thrown if there is an error during the dcraw process.</exception>
+    public void UnpackThunbnail(int index = 0)
+    {
+        LibRawException.ThrowIfFailed(LibRawNative.UnpackThumbnailExtended(_librawContext, index));
     }
 
     /// <summary>
@@ -137,14 +148,15 @@ public class RawContext : IDisposable
     /// <exception cref="LibRawException" />
     public void ProcessDcraw()
     {
-        EnsureSuccess(LibRawNative.ProcessDcraw(_librawContext));
+        LibRawException.ThrowIfFailed(LibRawNative.ProcessDcraw(_librawContext));
     }
 
-    private static void EnsureSuccess(LibRawError error, string? errorMessage = null)
+    public unsafe ProcessedImage MakeDcrawMemoryImage()
     {
-        if (error != LibRawError.Success)
-        {
-            throw new LibRawException(error, errorMessage);
-        }
+        IntPtr rawImage = LibRawNative.MakeDcrawMemoryImage(_librawContext, out LibRawError errorCode);
+        LibRawException.ThrowIfFailed(errorCode);
+
+        LibRawProcessedImage* image = (LibRawProcessedImage*)rawImage;
+        return new ProcessedImage(image);
     }
 }

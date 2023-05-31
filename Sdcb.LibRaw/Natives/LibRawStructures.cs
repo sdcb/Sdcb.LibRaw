@@ -8,12 +8,12 @@ namespace Sdcb.LibRaw.Natives;
 /// </summary>
 /// <remarks></remarks>
 [StructLayout(LayoutKind.Sequential)]
-public ref struct LibRawProcessedImage
+public struct LibRawProcessedImage
 {
     /// <summary>
     /// The format of the image.
     /// </summary>
-    public ImageFormat Type;
+    public ProcessedImageType Type;
 
     /// <summary>
     /// The height of the image in pixels.
@@ -58,7 +58,6 @@ public ref struct LibRawProcessedImage
         }
     }
 }
-
 
 /// <summary>
 /// Represents the parameters for a LibRaw image.

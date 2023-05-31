@@ -170,7 +170,7 @@ public class FunctionalTests
             try
             {
                 Assert.Equal(image->DataSize, image->GetData<byte>().ToArray().Length);
-                Assert.Equal(ImageFormat.Jpeg, image->Type);
+                Assert.Equal(ProcessedImageType.Jpeg, image->Type);
                 Assert.Equal(386458, image->DataSize);
             }
             finally
