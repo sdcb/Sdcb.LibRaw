@@ -57,6 +57,24 @@ public class ProcessTests
         Assert.Equal(5320, ctx.Height);
     }
 
+    [Fact]
+    public void FileThumbnailTest()
+    {
+        using RawContext ctx = ExampleFile();
+        {
+            ctx.UnpackThunbnail(0);
+            using ProcessedImage image0 = ctx.MakeDcrawMemoryThumbnail();
+            Assert.Equal(ProcessedImageType.Jpeg, image0.ImageType);
+            Assert.Equal(386458, image0.GetData<byte>().Length);
+        }
+        {
+            ctx.UnpackThunbnail(1);
+            using ProcessedImage image1 = ctx.MakeDcrawMemoryThumbnail();
+            Assert.Equal(ProcessedImageType.Jpeg, image1.ImageType);
+            Assert.Equal(8817, image1.GetData<byte>().Length);
+        }
+    }
+
     private RawContext ExampleFile() => RawContext.OpenFile("./examples/DSC02412.ARW");
     private RawContext ExampleFileBuffer() => RawContext.FromBuffer(File.ReadAllBytes("./examples/DSC02412.ARW"));
 
