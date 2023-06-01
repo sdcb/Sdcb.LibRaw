@@ -39,4 +39,8 @@
     <ProjectReference Include="..\..\Sdcb.LibRaw\Sdcb.LibRaw.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="RawContextTests\" />
+  </ItemGroup>
+
 </Project>
