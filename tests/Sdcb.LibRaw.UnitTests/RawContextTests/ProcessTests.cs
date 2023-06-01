@@ -17,6 +17,9 @@ public class ProcessTests
     public void OpenBayerAndProcessImage()
     {
         using RawContext ctx = ExampleBayer();
+        Assert.Equal(4, ctx.Width);
+        Assert.Equal(4, ctx.Height);
+
         ctx.Unpack();
         ctx.ProcessDcraw();
         using ProcessedImage image = ctx.MakeDcrawMemoryImage();
@@ -38,6 +41,25 @@ public class ProcessTests
         Assert.Equal(255, d[12].G);
     }
 
+    [Fact]
+    public void OpenFileTest()
+    {
+        using RawContext ctx = ExampleFile();
+        Assert.Equal(8000, ctx.Width);
+        Assert.Equal(5320, ctx.Height);
+    }
+
+    [Fact]
+    public void OpenBufferTest()
+    {
+        using RawContext ctx = ExampleFileBuffer();
+        Assert.Equal(8000, ctx.Width);
+        Assert.Equal(5320, ctx.Height);
+    }
+
+    private RawContext ExampleFile() => RawContext.OpenFile("./examples/DSC02412.ARW");
+    private RawContext ExampleFileBuffer() => RawContext.FromBuffer(File.ReadAllBytes("./examples/DSC02412.ARW"));
+
     private RawContext ExampleBayer()
     {
         const int width = 4;
@@ -49,6 +71,6 @@ public class ProcessTests
             0, 0, 0, 0,
             255, 0, 0, 255,
         };
-        return RawContext.OpenBayerData(bayerData.AsSpan(), width, height);
+        return RawContext.OpenBayerData<ushort>(bayerData, width, height);
     }
 }

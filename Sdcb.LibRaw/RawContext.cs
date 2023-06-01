@@ -147,7 +147,7 @@ public class RawContext : IDisposable
     /// <param name="flags">Initialization flags. Default is LibRawInitFlags.None.</param>
     /// <returns>A new instance of <see cref="RawContext"/>.</returns>
     /// <remarks>Corresponds to the C API function: libraw_open_bayer</remarks>
-    public unsafe static RawContext OpenBayerData<T>(Span<T> bayerData, int width, int height,
+    public unsafe static RawContext OpenBayerData<T>(ReadOnlySpan<T> bayerData, int width, int height,
         int leftMargin = 0, int topMargin = 0, int rightMargin = 0, int bottomMargin = 0,
         byte procFlags = 0, OpenBayerPattern bayerPattern = OpenBayerPattern.BGGR,
         int unusedBits = 0, int otherFlags = 0, int blackLevel = 0,
@@ -188,9 +188,7 @@ public class RawContext : IDisposable
         }
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="RawContext"/> class from an input buffer.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="RawContext"/> class from an input buffer.</summary>
     /// <param name="buffer">The input buffer of raw image data.</param>
     /// <param name="flags">The flags to use when initialize the libraw context.</param>
     /// <returns>A new instance of the <see cref="RawContext"/> class.</returns>
