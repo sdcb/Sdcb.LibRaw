@@ -1,7 +1,5 @@
 ﻿using Sdcb.LibRaw.Natives;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace Sdcb.LibRaw;
@@ -16,11 +14,19 @@ public class RawContext : IDisposable
 
     /// <summary>The width of the raw image.</summary>
     /// <remarks>Corresponds to the C API function: libraw_get_raw_width</remarks>
-    public int Width => LibRawNative.GetRawImageWidth(_r);
+    public int RawWidth => LibRawNative.GetRawImageWidth(_r);
 
     /// <summary>The height of the raw image.</summary>
     /// <remarks>Corresponds to the C API function: libraw_get_raw_height</remarks>
-    public int Height => LibRawNative.GetRawImageHeight(_r);
+    public int RawHeight => LibRawNative.GetRawImageHeight(_r);
+
+    /// <summary>The width of the processed image.</summary>
+    /// <remarks>Corresponds to the C API function: libraw_get_iwidth</remarks>
+    public int Width => LibRawNative.GetProcessedImageWidth(_r);
+
+    /// <summary>The height of the processed image.</summary>
+    /// <remarks>Corresponds to the C API function: libraw_get_iheight</remarks>
+    public int Height => LibRawNative.GetProcessedImageHeight(_r);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RawContext"/> class.

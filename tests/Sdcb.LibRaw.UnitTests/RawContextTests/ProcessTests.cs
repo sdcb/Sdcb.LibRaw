@@ -17,6 +17,8 @@ public class ProcessTests
     public void OpenBayerAndProcessImage()
     {
         using RawContext ctx = ExampleBayer();
+        Assert.Equal(4, ctx.RawWidth);
+        Assert.Equal(4, ctx.RawHeight);
         Assert.Equal(4, ctx.Width);
         Assert.Equal(4, ctx.Height);
 
@@ -25,11 +27,11 @@ public class ProcessTests
         using ProcessedImage image = ctx.MakeDcrawMemoryImage();
         Span<RGB24> d = image.GetData<RGB24>();
         StringBuilder sb = new StringBuilder();
-        for (int y = 0; y < ctx.Height; ++y)
+        for (int y = 0; y < ctx.RawHeight; ++y)
         {
-            for (int x = 0; x < ctx.Width; ++x)
+            for (int x = 0; x < ctx.RawWidth; ++x)
             {
-                RGB24 rgb = d[y * ctx.Width + x];
+                RGB24 rgb = d[y * ctx.RawWidth + x];
                 sb.Append($"{rgb} ");
             }
             sb.AppendLine();
@@ -45,7 +47,9 @@ public class ProcessTests
     public void OpenFileTest()
     {
         using RawContext ctx = ExampleFile();
-        Assert.Equal(8000, ctx.Width);
+        Assert.Equal(8000, ctx.RawWidth);
+        Assert.Equal(5320, ctx.RawHeight);
+        Assert.Equal(7968, ctx.Width);
         Assert.Equal(5320, ctx.Height);
     }
 
@@ -53,7 +57,9 @@ public class ProcessTests
     public void OpenBufferTest()
     {
         using RawContext ctx = ExampleFileBuffer();
-        Assert.Equal(8000, ctx.Width);
+        Assert.Equal(8000, ctx.RawWidth);
+        Assert.Equal(5320, ctx.RawHeight);
+        Assert.Equal(7968, ctx.Width);
         Assert.Equal(5320, ctx.Height);
     }
 
