@@ -456,3 +456,19 @@ public struct LibRawImageOtherParams
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
     public float[] AnalogBalance;
 };
+
+/// <summary>Represents a LibRaw decoder information structure.</summary>
+/// <remarks>Provides details about specific LibRaw decoder, including the decoder's name and associated flags.</remarks>
+[StructLayout(LayoutKind.Sequential)]
+public struct LibRawDecoderInfo
+{
+    /// <summary>
+    /// The name of the LibRaw decoder.
+    /// </summary>
+    public IntPtr DecoderName;
+
+    /// <summary>
+    /// The flags associated with the LibRaw decoder.
+    /// </summary>
+    public DecoderFlag DecoderFlags;
+}

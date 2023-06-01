@@ -21,6 +21,9 @@ public class ProcessTests
         Assert.Equal(4, ctx.RawHeight);
         Assert.Equal(4, ctx.Width);
         Assert.Equal(4, ctx.Height);
+        Assert.Equal(DecoderFlag.FlatData, ctx.DecoderInfo.DecoderFlags);
+        Assert.Equal("unpacked_load_raw()", ctx.DecoderInfo.DecoderName);
+        
 
         ctx.Unpack();
         ctx.ProcessDcraw();
@@ -51,6 +54,8 @@ public class ProcessTests
         Assert.Equal(5320, ctx.RawHeight);
         Assert.Equal(7968, ctx.Width);
         Assert.Equal(5320, ctx.Height);
+        Assert.Equal(DecoderFlag.HasCurve | DecoderFlag.SonyArw2 | DecoderFlag.TryRawSpeed | DecoderFlag.TryRawSpeed3, ctx.DecoderInfo.DecoderFlags);
+        Assert.Equal("sony_arw2_load_raw()", ctx.DecoderInfo.DecoderName);
     }
 
     [Fact]
@@ -61,6 +66,8 @@ public class ProcessTests
         Assert.Equal(5320, ctx.RawHeight);
         Assert.Equal(7968, ctx.Width);
         Assert.Equal(5320, ctx.Height);
+        Assert.Equal(DecoderFlag.HasCurve | DecoderFlag.SonyArw2 | DecoderFlag.TryRawSpeed | DecoderFlag.TryRawSpeed3, ctx.DecoderInfo.DecoderFlags);
+        Assert.Equal("sony_arw2_load_raw()", ctx.DecoderInfo.DecoderName);
     }
 
     [Fact]

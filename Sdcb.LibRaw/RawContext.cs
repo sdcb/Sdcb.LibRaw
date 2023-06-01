@@ -28,6 +28,18 @@ public class RawContext : IDisposable
     /// <remarks>Corresponds to the C API function: libraw_get_iheight</remarks>
     public int Height => LibRawNative.GetProcessedImageHeight(_r);
 
+    /// <summary>Gets the decoder information for the current RawContext object.</summary>
+    /// <remarks>Corresponds to the C API function: libraw_get_decoder_info</remarks>
+    public unsafe DecoderInfo DecoderInfo
+    {
+        get
+        {
+            LibRawDecoderInfo d = new LibRawDecoderInfo();
+            LibRawException.ThrowIfFailed(LibRawNative.GetDecoderInfo(_r, (IntPtr)(&d)));
+            return DecoderInfo.FromNative(d);
+        }
+    }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="RawContext"/> class.
     /// </summary>

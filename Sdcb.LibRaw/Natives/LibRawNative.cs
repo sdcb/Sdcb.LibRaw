@@ -363,7 +363,7 @@ public static class LibRawNative
     /// <param name="decoderInfo">The libraw_decoder_info_t struct to fill with decoder information.</param>
     /// <returns>The status of the operation.</returns>
     [DllImport(Dll, EntryPoint = "libraw_get_decoder_info")]
-    public static extern int GetDecoderInfo(IntPtr data, out LibRawDecoderInfo decoderInfo);
+    public static extern LibRawError GetDecoderInfo(IntPtr data, IntPtr decoderInfo);
 
     /// <summary>
     /// Get the color value for the specified row and column from the LibRaw data.
