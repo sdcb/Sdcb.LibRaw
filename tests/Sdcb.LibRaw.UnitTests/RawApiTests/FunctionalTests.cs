@@ -424,6 +424,7 @@ public class FunctionalTests
             V(LibRawNative.ProcessDcraw(handle));
             V(LibRawNative.WriteDcrawPpmTiff(handle, "test.tif"));
             Assert.True(File.Exists("test.tif"));
+            File.Delete("test.tif");
         }
         finally
         {

@@ -23,7 +23,6 @@ public class ProcessTests
         Assert.Equal(4, ctx.Height);
         Assert.Equal(DecoderFlag.FlatData, ctx.DecoderInfo.DecoderFlags);
         Assert.Equal("unpacked_load_raw()", ctx.DecoderInfo.DecoderName);
-        
 
         ctx.Unpack();
         ctx.ProcessDcraw();
@@ -56,6 +55,12 @@ public class ProcessTests
         Assert.Equal(5320, ctx.Height);
         Assert.Equal(DecoderFlag.HasCurve | DecoderFlag.SonyArw2 | DecoderFlag.TryRawSpeed | DecoderFlag.TryRawSpeed3, ctx.DecoderInfo.DecoderFlags);
         Assert.Equal("sony_arw2_load_raw()", ctx.DecoderInfo.DecoderName);
+
+        ctx.Unpack();
+        ctx.OutputTiff = true;
+        ctx.ProcessDcraw();
+        ctx.WriteDcrawPpmTiff("test2.tif");
+        Assert.True(File.Exists("test2.tif"));
     }
 
     [Fact]
@@ -79,12 +84,18 @@ public class ProcessTests
             using ProcessedImage image0 = ctx.MakeDcrawMemoryThumbnail();
             Assert.Equal(ProcessedImageType.Jpeg, image0.ImageType);
             Assert.Equal(386458, image0.GetData<byte>().Length);
+            ctx.WriteDcrawThumbnail("test.jpg");
+            Assert.True(File.Exists("test.jpg"));
+            File.Delete("test.jpg");
         }
         {
             ctx.UnpackThunbnail(1);
             using ProcessedImage image1 = ctx.MakeDcrawMemoryThumbnail();
             Assert.Equal(ProcessedImageType.Jpeg, image1.ImageType);
             Assert.Equal(8817, image1.GetData<byte>().Length);
+            ctx.WriteDcrawThumbnail("test.jpg");
+            Assert.True(File.Exists("test.jpg"));
+            File.Delete("test.jpg");
         }
     }
 

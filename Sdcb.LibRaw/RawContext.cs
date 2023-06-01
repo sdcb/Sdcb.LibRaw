@@ -28,6 +28,31 @@ public class RawContext : IDisposable
     /// <remarks>Corresponds to the C API function: libraw_get_iheight</remarks>
     public int Height => LibRawNative.GetProcessedImageHeight(_r);
 
+    /// <summary>
+    /// Property representing whether to output tiff.
+    /// </summary>
+    public bool OutputTiff
+    {
+        set => LibRawNative.SetOutputTiff(_r, value ? 1 : 0);
+    }
+
+    /// <summary>
+    /// Property representing output bits per sample.
+    /// </summary>
+    public int OutputBitsPerSample
+    {
+        set => LibRawNative.SetOutputBitsPerSample(_r, value);
+    }
+
+    /// <summary>
+    /// Property representing the output color space.
+    /// </summary>
+    public ColorSpace OutputColorSpace
+    {
+        set => LibRawNative.SetOutputColorSpace(_r, value);
+    }
+
+
     /// <summary>Gets the decoder information for the current RawContext object.</summary>
     /// <remarks>Corresponds to the C API function: libraw_get_decoder_info</remarks>
     public unsafe DecoderInfo DecoderInfo
@@ -282,5 +307,21 @@ public class RawContext : IDisposable
 
         LibRawProcessedImage* image = (LibRawProcessedImage*)rawImage;
         return new ProcessedImage(image); // need to dispose by user
+    }
+
+    /// <summary>Writes the image in PPM or TIFF format using Dcraw.</summary>
+    /// <param name="fileName">The output file path.</param>
+    /// <remarks>Corresponds to the C API function: libraw_dcraw_ppm_tiff_writer</remarks>
+    public void WriteDcrawPpmTiff(string fileName)
+    {
+        LibRawNative.WriteDcrawPpmTiff(_r, fileName);
+    }
+
+    /// <summary>Writes the thumbnail using Dcraw.</summary>
+    /// <param name="fileName">The output file path.</param>
+    /// <remarks>Corresponds to the C API function: libraw_dcraw_thumb_writer</remarks>
+    public void WriteDcrawThumbnail(string fileName)
+    {
+        LibRawNative.WriteDcrawThumbnail(_r, fileName);
     }
 }
