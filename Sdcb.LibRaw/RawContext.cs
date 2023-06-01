@@ -60,6 +60,44 @@ public class RawContext : IDisposable
         }
     }
 
+    #region static methods
+    /// <summary>Returns an array of supported cameras.</summary>
+    /// <returns>An array of strings representing supported cameras.</returns>
+    /// <remarks>Corresponds to the C API function: libraw_cameraCount, libraw_cameraList</remarks>
+    public unsafe static string[] SupportedCameras
+    {
+        get
+        {
+            int count = LibRawNative.GetCameraCount();
+            IntPtr* list = (IntPtr*)LibRawNative.GetCameraList(); // char**
+            string[] cameras = new string[count];
+            for (int i = 0; i < count; i++)
+            {
+                cameras[i] = Marshal.PtrToStringAnsi(list[i])!;
+            }
+            return cameras;
+        }
+    }
+
+    /// <summary>Gets the version of the underlying LibRaw library.</summary>
+    /// <remarks>Corresponds to the C API function: libraw_version</remarks>
+    public static string Version => Marshal.PtrToStringAnsi(LibRawNative.GetVersion())!;
+
+    /// <summary>Gets the version number of the LibRaw native library used by the current instance of RawContext.</summary>
+    /// <remarks>Corresponds to the C API function: libraw_versionNumber</remarks>
+    public static Version VersionNumber
+    {
+        get
+        {
+            int num = LibRawNative.GetVersionNumber();
+            int major = num >> 16;
+            int minor = num >> 8;
+            int patch = num & 0xFF;
+            return new Version(major, minor, patch);
+        }
+    }
+    #endregion
+
     /// <summary>Opens a RAW file for processing.</summary>
     /// <param name="filePath">The path to the file to open.</param>
     /// <param name="flags">Flags to modify library behavior during opening.</param>
@@ -166,21 +204,5 @@ public class RawContext : IDisposable
 
         LibRawProcessedImage* image = (LibRawProcessedImage*)rawImage;
         return new ProcessedImage(image); // need to dispose by user
-    }
-
-
-    /// <summary>Returns an array of supported cameras.</summary>
-    /// <returns>An array of strings representing supported cameras.</returns>
-    /// <remarks>Corresponds to the C API function: libraw_cameraCount, libraw_cameraList</remarks>
-    public unsafe static string[] SupportedCameras()
-    {
-        int count = LibRawNative.GetCameraCount();
-        IntPtr* list = (IntPtr*)LibRawNative.GetCameraList(); // char**
-        string[] cameras = new string[count];
-        for (int i = 0; i < count; i++)
-        {
-            cameras[i] = Marshal.PtrToStringAnsi(list[i])!;
-        }
-        return cameras;
     }
 }
