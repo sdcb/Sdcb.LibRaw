@@ -46,7 +46,7 @@ public unsafe class ProcessedImage : IDisposable
     /// </summary>
     private void FreeImage()
     {
-        LibRawNative.FreeImage((IntPtr)_image);
+        LibRawNative.ClearDcrawMemory((IntPtr)_image);
         _image = null;
     }
 

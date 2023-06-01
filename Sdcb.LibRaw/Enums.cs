@@ -10,10 +10,10 @@ namespace Sdcb.LibRaw;
 /// </remarks>
 public enum OpenBayerPattern : byte
 {
-    Rggb = 0x94,
-    Bggr = 0x16,
-    Grbg = 0x61,
-    Gbrg = 0x49
+    RGGB = 0x94,
+    BGGR = 0x16,
+    GRBG = 0x61,
+    GBRG = 0x49
 }
 
 /// <summary>

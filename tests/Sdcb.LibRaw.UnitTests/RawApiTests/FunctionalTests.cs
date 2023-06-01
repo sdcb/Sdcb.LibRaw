@@ -49,7 +49,7 @@ public class FunctionalTests
         {
             V(LibRawNative.OpenBayerData(handle, (IntPtr)dataPtr, (uint)bayerData.Length * sizeof(ushort),
                 bayerWidth, bayerHeight,
-                0, 0, 0, 0, 0, OpenBayerPattern.Bggr, 0, 0, 0));
+                0, 0, 0, 0, 0, OpenBayerPattern.BGGR, 0, 0, 0));
         }
         return handle;
     }
