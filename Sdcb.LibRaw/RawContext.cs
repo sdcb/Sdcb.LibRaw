@@ -151,12 +151,18 @@ public class RawContext : IDisposable
         LibRawException.ThrowIfFailed(LibRawNative.ProcessDcraw(_librawContext));
     }
 
+    /// <summary>
+    /// Converts the raw data into a processed image.
+    /// Corresponds to the C API function: libraw_dcraw_process
+    /// </summary>
+    /// <returns>A <see cref="ProcessedImage"/> object representing the processed image.</returns>
+    /// <exception cref="LibRawException">Thrown if there is an error during the dcraw process.</exception>
     public unsafe ProcessedImage MakeDcrawMemoryImage()
     {
         IntPtr rawImage = LibRawNative.MakeDcrawMemoryImage(_librawContext, out LibRawError errorCode);
         LibRawException.ThrowIfFailed(errorCode);
 
         LibRawProcessedImage* image = (LibRawProcessedImage*)rawImage;
-        return new ProcessedImage(image);
+        return new ProcessedImage(image); // need to dispose by user
     }
 }

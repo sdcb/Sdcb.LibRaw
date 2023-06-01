@@ -34,12 +34,10 @@ public unsafe class ProcessedImage : IDisposable
     {
         if (!Disposed)
         {
-            if (disposing)
+            if (_image != null)
             {
-                // dispose managed resources here
+                FreeImage();
             }
-
-            FreeImage();
         }
     }
 
@@ -58,59 +56,36 @@ public unsafe class ProcessedImage : IDisposable
     public bool Disposed => _image == null;
 
     /// <summary>
-    /// Gets or Sets the image format.
+    /// Gets the image format.
     /// </summary>
-    public ProcessedImageType ImageType
-    {
-        get => _image->Type;
-        set => _image->Type = value;
-    }
+    public ProcessedImageType ImageType => _image->Type;
 
     /// <summary>
-    /// Gets or Sets the image height.
+    /// Gets the image height.
     /// </summary>
-    public int Height
-    {
-        get => _image->Height;
-        set => _image->Height = (ushort)value;
-    }
+    public int Height => _image->Height;
 
     /// <summary>
-    /// Gets or Sets the image weight.
+    /// Gets the image weight.
     /// </summary>
-    public int Width
-    {
-        get => _image->Width;
-        set => _image->Width = (ushort)value;
-    }
+    public int Width => _image->Width;
 
     /// <summary>
-    /// Gets or Sets the number of colors in the image.
+    /// Gets the number of colors in the image.
     /// </summary>
-    public int Colors
-    {
-        get => _image->Colors;
-        set => _image->Colors = (ushort)value;
-    }
+    public int Colors => _image->Colors;
 
     /// <summary>
-    /// Gets or Sets the bits value of the image.
+    /// Gets the bits value of the image.
     /// </summary>
-    public int Bits
-    {
-        get => _image->Bits;
-        set => _image->Bits = (ushort)value;
-    }
+    public int Bits => _image->Bits;
 
     /// <summary>
     /// Gets the data as an array-like <see cref="Span{T}"/> object.
     /// </summary>
     /// <typeparam name="T">The type of the data.</typeparam>
     /// <returns>The data in a <see cref="Span{T}"/> object.</returns>
-    public unsafe Span<T> GetData<T>()
-    {
-        return _image->GetData<T>();
-    }
+    public Span<T> GetData<T>() => _image->GetData<T>();
 
     /// <summary>
     /// Allows the finalizer to free memory used by this instance.
