@@ -134,4 +134,63 @@ public class MainStructureTest : BaseCApiTest
             LibRawNative.Recycle(ptr);
         }
     }
+
+    [Fact]
+    public void RawUnpackParamsTest()
+    {
+        IntPtr ptr = LibRawNative.Initialize();
+        try
+        {
+            LibRawData data = Marshal.PtrToStructure<LibRawData>(ptr);
+            RawUnpackParams p = data.RawUnpackParams;
+
+            Assert.Equal(1, p.UseRawSpeed);
+            Assert.Equal(39, p.UseDngSdk);
+            Assert.Equal((uint)2, p.Options);
+            Assert.Equal((uint)0, p.ShotSelect);
+            Assert.Equal((uint)0, p.Specials);
+            Assert.Equal((uint)2048, p.MaxRawMemoryMb);
+            Assert.Equal(0, p.SonyArw2PosterizationThr);
+            Assert.Equal((float)1.00000000, p.CoolscanNefGamma);
+            Assert.Equal("\0\0\0\0\0", p.P4ShotOrder);
+            Assert.Equal(IntPtr.Zero, p.CustomCameraStrings);
+
+            Assert.Equal(LibRawProgress.Start, data.ProgressFlags);
+            Assert.Equal(LibRawWarning.None, data.ProcessWarnings);
+        }
+        finally
+        {
+            LibRawNative.Recycle(ptr);
+        }
+    }
+
+    [Fact]
+    public void ProgressWarningsTest()
+    {
+        IntPtr ptr = LibRawNative.Initialize();
+        try
+        {
+            {
+                LibRawData data = Marshal.PtrToStructure<LibRawData>(ptr);
+                Assert.Equal(LibRawProgress.Start, data.ProgressFlags);
+                Assert.Equal(LibRawWarning.None, data.ProcessWarnings);
+            }
+            {
+                LibRawNative.OpenFile(ptr, ExampleFileName);
+                LibRawData data = Marshal.PtrToStructure<LibRawData>(ptr);
+                Assert.Equal(LibRawProgress.Open | LibRawProgress.Identify | LibRawProgress.SizeAdjust, data.ProgressFlags);
+                Assert.Equal(LibRawWarning.None, data.ProcessWarnings);
+            }
+            {
+                LibRawNative.Unpack(ptr);
+                LibRawData data = Marshal.PtrToStructure<LibRawData>(ptr);
+                Assert.Equal(LibRawProgress.Open | LibRawProgress.Identify | LibRawProgress.SizeAdjust | LibRawProgress.LoadRaw, data.ProgressFlags);
+                Assert.Equal(LibRawWarning.None, data.ProcessWarnings);
+            }
+        }
+        finally
+        {
+            LibRawNative.Recycle(ptr);
+        }
+    }
 }

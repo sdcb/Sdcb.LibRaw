@@ -1,4 +1,5 @@
 ﻿using Sdcb.LibRaw.Natives;
+using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace Sdcb.LibRaw.UnitTests.RawApiTests;
@@ -151,9 +152,45 @@ public class StructureSizeTest
         Assert.Equal(256 + 6 * IntPtr.Size, Marshal.SizeOf<LibRawOutputParams>());
     }
 
+    //x64
+    //Size ph1_t: 36
+    //Size libraw_colordata_t: 187032
+    //Size libraw_dng_color_t: 168
+    //Size libraw_dng_levels_t: 32928
+    //Size libraw_P1_color_t: 36
+    //x86
+    //Size ph1_t: 36
+    //Size libraw_colordata_t: 187024
+    //Size libraw_dng_color_t: 168
+    //Size libraw_dng_levels_t: 32928
+    //Size libraw_P1_color_t: 36
     [Fact]
-    public void RawUnpackParamsSizeTest()
+    public void LibRawColorDataSizeTest()
     {
-        Assert.Equal(40 + IntPtr.Size, Marshal.SizeOf<RawUnpackParams>());
+        Assert.Equal(187020 + IntPtr.Size, Marshal.SizeOf<LibRawColorData>());
+    }
+
+    [Fact]
+    public void Ph1SizeTest()
+    {
+        Assert.Equal(36, Marshal.SizeOf<Ph1>());
+    }
+
+    [Fact]
+    public void LibrawDngColorSizeTest()
+    {
+        Assert.Equal(168, Marshal.SizeOf<LibrawDngColor>());
+    }
+
+    [Fact]
+    public void LibrawDngLevelsSizeTest()
+    {
+        Assert.Equal(32928, Marshal.SizeOf<LibrawDngLevels>());
+    }
+
+    [Fact]
+    public void LibrawP1ColorSizeTest()
+    {
+        Assert.Equal(36, Marshal.SizeOf<LibrawP1Color>());
     }
 }

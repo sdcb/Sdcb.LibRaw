@@ -1450,6 +1450,139 @@ public struct RawUnpackParams
     public IntPtr CustomCameraStrings;
 }
 
+/// <remarks>Original C API struct: libraw_P1_color_t</remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LibrawP1Color
+{
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 9)]
+    public float[] RommCam;
+}
+
+/// <remarks>Original C API struct: libraw_dng_levels_t</remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LibrawDngLevels
+{
+    public uint ParsedFields;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = LibRawNative.CBlackSize)]
+    public uint[] DngCBlack;
+    public uint DngBlack;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = LibRawNative.CBlackSize)]
+    public float[] DngFCBlack;
+    public float DngFBlack;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public uint[] DngWhiteLevel;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public ushort[] DefaultCrop; // Origin and size
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public float[] UserCrop; // top-left-bottom-right relative to default_crop
+
+    public uint PreviewColorspace;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public float[] AnalogBalance;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public float[] AsshotNeutral;
+
+    public float BaselineExposure;
+    public float LinearResponseLimit;
+}
+
+/// <remarks>Original C API struct: libraw_dng_color_t</remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LibrawDngColor
+{
+    public uint ParsedFields;
+    public ushort Illuminant;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4 * 4)]
+    public float[] Calibration;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4 * 3)]
+    public float[] ColorMatrix;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3 * 4)]
+    public float[] ForwardMatrix;
+}
+
+/// <remarks>Original C API struct: ph1_t</remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct Ph1
+{
+    public int Format;
+    public int KeyOff;
+    public int Tag21a;
+    public int TBlack;
+    public int SplitCol;
+    public int BlackCol;
+    public int SplitRow;
+    public int BlackRow;
+    public float Tag210;
+}
+
+/// <remarks>Original C API struct: libraw_colordata_t</remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LibRawColorData
+{
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x10000)]
+    public ushort[] Curve;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = LibRawNative.CBlackSize)]
+    public uint[] CBlack;
+
+    public uint Black;
+    public uint DataMaximum;
+    public uint Maximum;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public long[] LinearMax;
+    public float Fmaximum;
+    public float Fnorm;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8 * 8)]
+    public ushort[] White;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public float[] CamMul;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public float[] PreMul;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3 * 4)]
+    public float[] CMatrix;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3 * 4)]
+    public float[] Ccm;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3 * 4)]
+    public float[] RgbCam;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4 * 3)]
+    public float[] CamXyz;
+    public Ph1 PhaseOneData;
+    public float FlashUsed;
+    public float CanonEv;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
+    public char[] Model2;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
+    public char[] UniqueCameraModel;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
+    public char[] LocalizedCameraModel;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
+    public char[] ImageUniqueID;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 17)]
+    public char[] RawDataUniqueID;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
+    public char[] OriginalRawFileName;
+
+    public IntPtr Profile;
+    public uint ProfileLength;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
+    public uint[] BlackStat;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+    public LibrawDngColor[] DngColor;
+    public LibrawDngLevels DngLevels;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 256 * 4)]
+    public int[] WbCoeffs; // R, G1, B, G2 coeffs
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64 * 5)]
+    public float[] WbctCoeffs; // CCT, then R, G1, B, G2 coeffs
+    public int AsShotWbApplied;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+    public LibrawP1Color[] P1Color;
+    public uint RawBps; // for Phase One: raw format; For other cameras: bits per pixel (copy of tiff_bps in most cases)
+    public int ExifColorSpace;
+}
+
 [StructLayout(LayoutKind.Sequential)]
 public struct LibRawData
 {
@@ -1468,13 +1601,13 @@ public struct LibRawData
 
     public LibRawOutputParams OutputParams;
 
-    public RawUnpackParams RawParams;
+    public RawUnpackParams RawUnpackParams;
 
-    //public uint ProgressFlags;
+    public LibRawProgress ProgressFlags;
 
-    //public uint ProcessWarnings;
+    public LibRawWarning ProcessWarnings;
 
-    //public LibRawColorData Color;
+    public LibRawColorData Color;
 
     //public LibRawImgOther Other;
 
