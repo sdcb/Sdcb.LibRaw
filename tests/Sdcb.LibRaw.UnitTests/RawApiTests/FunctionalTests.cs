@@ -6,53 +6,11 @@ using Xunit.Abstractions;
 
 namespace Sdcb.LibRaw.UnitTests.RawApiTests;
 
-public class FunctionalTests
+public class FunctionalTests : BaseCApiTest
 {
-    private readonly ITestOutputHelper _console;
-    private const string ExampleFileName = @"./examples/DSC02412.ARW";
-
-    public FunctionalTests(ITestOutputHelper console)
+    public FunctionalTests(ITestOutputHelper console) : base(console)
     {
-        _console = console;
-    }
-
-    private unsafe void V(LibRawError error)
-    {
-        if (error != LibRawError.Success)
-        {
-            _console.WriteLine(Marshal.PtrToStringAnsi(LibRawNative.GetErrorMessage(error)));
-        }
-        Assert.Equal(LibRawError.Success, error);
-    }
-
-    private IntPtr LibRawFromExampleFile()
-    {
-        IntPtr handle = LibRawNative.Initialize();
-        Assert.NotEqual(IntPtr.Zero, handle);
-        V(LibRawNative.OpenFile(handle, ExampleFileName));
-        return handle;
-    }
-
-    private unsafe IntPtr LibRawFromExampleBayer()
-    {
-        IntPtr handle = LibRawNative.Initialize();
-        Assert.NotEqual(IntPtr.Zero, handle);
-        const ushort bayerWidth = 4, bayerHeight = 4;
-        ushort[] bayerData = new ushort[bayerWidth * bayerHeight]
-        {
-                127, 0, 0, 127,
-                0, 0, 0, 0,
-                0, 0, 0, 0,
-                255, 0, 0, 255,
-        };
-        fixed (void* dataPtr = &bayerData[0])
-        {
-            V(LibRawNative.OpenBayerData(handle, (IntPtr)dataPtr, (uint)bayerData.Length * sizeof(ushort),
-                bayerWidth, bayerHeight,
-                0, 0, 0, 0, 0, OpenBayerPattern.BGGR, 0, 0, 0));
-        }
-        return handle;
-    }
+    }    
 
     [Fact]
     public void InitRecycleTest()
@@ -249,7 +207,7 @@ public class FunctionalTests
             Assert.Equal("", iparams.InternalLensSerial);
             Assert.Equal(50, iparams.FocalLengthIn35mmFormat);
             // LibRawLensMakerNotes
-            LibRawLensMakerNotes makerNotes = iparams.MakerNotes;
+            LibRawMakerNotes makerNotes = iparams.MakerNotes;
             Assert.Equal(32862u, makerNotes.LensID);
             Assert.Equal("", makerNotes.Lens);
             Assert.Equal(2, makerNotes.LensFormat, epsilon);

@@ -6,7 +6,7 @@ namespace Sdcb.LibRaw.Natives;
 /// <summary>
 /// Represents an image that has been processed by LibRaw.
 /// </summary>
-/// <remarks></remarks>
+/// <remarks>Original C API struct: libraw_processed_image_t</remarks>
 [StructLayout(LayoutKind.Sequential)]
 public struct LibRawProcessedImage
 {
@@ -59,9 +59,8 @@ public struct LibRawProcessedImage
     }
 }
 
-/// <summary>
-/// Represents the parameters for a LibRaw image.
-/// </summary>
+/// <summary>Represents the parameters for a LibRaw image.</summary>
+/// <remarks>Original C API struct: libraw_iparams_t</remarks>
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 public struct LibRawImageParams
 {
@@ -169,7 +168,7 @@ public struct LibRawImageParams
 /// Struct containing lens maker notes data.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct LibRawLensMakerNotes
+public struct LibRawMakerNotes
 {
     /// <summary>Lens ID.</summary>
 
@@ -414,7 +413,7 @@ public struct LibRawLensInfo
     /// <summary>
     /// Lens maker notes.
     /// </summary>
-    public LibRawLensMakerNotes MakerNotes;
+    public LibRawMakerNotes MakerNotes;
 };
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
@@ -471,4 +470,76 @@ public struct LibRawDecoderInfo
     /// The flags associated with the LibRaw decoder.
     /// </summary>
     public DecoderFlag DecoderFlags;
+}
+
+/// <remarks>Original C API struct: libraw_raw_inset_crop_t</remarks>
+[StructLayout(LayoutKind.Sequential)]
+public struct LibRawInsetCrop
+{
+    public ushort CLeft;
+    public ushort CTop;
+    public ushort CWidth;
+    public ushort CHeight;
+}
+
+/// <remarks>Original C API struct: libraw_image_sizes_t</remarks>
+[StructLayout(LayoutKind.Sequential)]
+public struct LibRawImageSizes
+{
+    public ushort RawHeight;
+    public ushort RawWidth;
+    public ushort Height;
+    public ushort Width;
+    public ushort TopMargin;
+    public ushort LeftMargin;
+    public ushort IHeight;
+    public ushort IWidth;
+    public uint RawPitch;
+    public double PixelAspect;
+    public int Flip;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8 * 4)]
+    public int[] Mask;
+
+    public ushort RawAspect;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+    public LibRawInsetCrop[] RawInsetCrops;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+public struct LibRawData
+{
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public ushort[] Image;
+
+    public LibRawImageSizes ImageSizes;
+
+    public LibRawImageParams ImageParams;
+
+    public LibRawLensInfo LensInfo;
+
+    public LibRawMakerNotes MakerNotes;
+
+    //public LibRawShootingInfo ShootingInfo;
+
+    //public LibRawOutputParams Params;
+
+    //public LibRawRawUnpackParams RawParams;
+
+    //public uint ProgressFlags;
+
+    //public uint ProcessWarnings;
+
+    //public LibRawColorData Color;
+
+    //public LibRawImgOther Other;
+
+    //public LibRawThumbnail Thumbnail;
+
+    //public LibRawThumbnailList ThumbsList;
+
+    //public LibRawRawData RawData;
+
+    //public IntPtr ParentClass;
 }
