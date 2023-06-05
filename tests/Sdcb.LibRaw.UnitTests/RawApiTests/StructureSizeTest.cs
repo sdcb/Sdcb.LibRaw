@@ -58,4 +58,117 @@ public class StructureSizeTest
     {
         Assert.Equal(142, Marshal.SizeOf<LibRawShootingInfo>());
     }
+
+    #region maker notes
+    [Fact]
+    public void LibRawMakerNotesSizeTest()
+    {
+        if (IntPtr.Size == 64)
+        {
+            Assert.Equal(2952, Marshal.SizeOf<LibRawMakerNotes>());
+        }
+        else
+        {
+            Assert.Equal(2936, Marshal.SizeOf<LibRawMakerNotes>());
+        }
+    }
+
+    [Fact]
+    public void CanonMakerNotesSizeTest()
+    {
+        Assert.Equal(168, Marshal.SizeOf<LibRawCanonMakerNotes>());
+    }
+
+    [Fact]
+    public void NikonMakerNotesSizeTest()
+    {
+        Assert.Equal(224, Marshal.SizeOf<LibRawNikonMakerNotes>());
+    }
+
+    [Fact]
+    public void HasselbladMakerNotesSizeTest()
+    {
+        Assert.Equal(384, Marshal.SizeOf<LibRawHasselbladMakerNotes>());
+    }
+
+    [Fact]
+    public void FujiInfoSizeTest()
+    {
+        Assert.Equal(280, Marshal.SizeOf<LibRawFujiInfo>());
+    }
+
+    [Fact]
+    public void OlympusMakerNotesSizeTest()
+    {
+        Assert.Equal(408, Marshal.SizeOf<LibRawOlympusMakerNotes>());
+    }
+
+    [Fact]
+    public void SonyInfoSizeTest()
+    {
+        Assert.Equal(180, Marshal.SizeOf<LibRawSonyInfo>());
+    }
+
+    [Fact]
+    public void KodakMakerNotesSizeTest()
+    {
+        Assert.Equal(244, Marshal.SizeOf<LibRawKodakMakerNotes>());
+    }
+
+    [Fact]
+    public void PanasonicMakerNotesSizeTest()
+    {
+        Assert.Equal(68, Marshal.SizeOf<LibRawPanasonicMakerNotes>());
+    }
+
+    [Fact]
+    public void PentaxMakerNotesSizeTest()
+    {
+        Assert.Equal(32, Marshal.SizeOf<LibRawPentaxMakerNotes>());
+    }
+
+    [Fact]
+    public void P1MakerNotesSizeTest()
+    {
+        Assert.Equal(448, Marshal.SizeOf<LibRawP1MakerNotes>());
+    }
+
+    [Fact]
+    public void RicohMakerNotesSizeTest()
+    {
+        Assert.Equal(72, Marshal.SizeOf<LibRawRicohMakerNotes>());
+    }
+
+    [Fact]
+    public void SamsungMakerNotesSizeTest()
+    {
+        Assert.Equal(136, Marshal.SizeOf<LibRawSamsungMakerNotes>());
+    }
+
+    [Fact]
+    public void MetadataCommonSizeTest()
+    {
+        if (IntPtr.Size == 64)
+        {
+            Assert.Equal(304, Marshal.SizeOf<LibRawMetadataCommon>());
+        }
+        else
+        {
+            Assert.Equal(284, Marshal.SizeOf<LibRawMetadataCommon>());
+        }
+    }
+    #endregion
+
+    [Fact]
+    public void LibRawOutputParamsSizeTest()
+    {
+        if (IntPtr.Size == 64)
+        {
+            Assert.Equal(304, Marshal.SizeOf<LibRawOutputParams>());
+        }
+        else
+        {
+            Assert.Equal(280, Marshal.SizeOf<LibRawOutputParams>());
+        }
+    }
 }

@@ -753,7 +753,7 @@ public struct LibRawHasselbladMakerNotes
     public double[] MnColorMatrix;
 }
 
-/// <remarks>Original C API struct: libraw_fuji_info_t</remarks> 
+/// <remarks> Original C API struct: libraw_fuji_info_t </remarks>
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 public struct LibRawFujiInfo
 {
@@ -789,10 +789,10 @@ public struct LibRawFujiInfo
 
     /// <summary>
     /// ShutterType:
-    /// 0 - mechanical
-    /// 1 = electronic
-    /// 2 = electronic, long shutter speed
-    /// 3 = electronic, front curtain
+    ///     0 - mechanical
+    ///     1 = electronic
+    ///     2 = electronic, long shutter speed
+    ///     3 = electronic, front curtain
     /// </summary>
     public ushort ShutterType;
     public ushort ExrMode;
@@ -800,10 +800,11 @@ public struct LibRawFujiInfo
     public uint Rating;
 
     /// <summary>
+    /// <list type="bullet
     /// CropMode:
-    /// 1 - FF on GFX,
-    /// 2 - sports finder (mechanical shutter),
-    /// 4 - 1.25x crop (electronic shutter, continuous high)
+    ///     1 - FF on GFX,
+    ///     2 - sports finder (mechanical shutter),
+    ///     4 - 1.25x crop (electronic shutter, continuous high)
     /// </summary>
     public ushort CropMode;
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x0c + 1)]
@@ -818,9 +819,9 @@ public struct LibRawFujiInfo
 
     /// <summary>
     /// DriveMode:
-    /// 0 - single frame
-    /// 1 - continuous low
-    /// 2 - continuous high
+    ///     0 - single frame
+    ///     1 - continuous low
+    ///     2 - continuous high
     /// </summary>
     public short DriveMode;
 
@@ -845,6 +846,439 @@ public struct LibRawFujiInfo
     public int ImageCount;
 }
 
+/// <remarks> Original C API struct: libraw_olympus_makernotes_t </remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LibRawOlympusMakerNotes
+{
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 6)]
+    public string CameraType2;
+
+    public ushort ValidBits;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+    public int[] SensorCalibration;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 5)]
+    public ushort[] DriveMode;
+
+    public ushort ColorSpace;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+    public ushort[] FocusMode;
+
+    public ushort AutoFocus;
+
+    public ushort AFPoint;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
+    public uint[] AFAreas;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 5)]
+    public double[] AFPointSelected;
+
+    public ushort AFResult;
+
+    public byte AFFineTune;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+    public short[] AFFineTuneAdj;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+    public uint[] SpecialMode;
+
+    public ushort ZoomStepCount;
+
+    public ushort FocusStepCount;
+
+    public ushort FocusStepInfinity;
+
+    public ushort FocusStepNear;
+
+    public double FocusDistance;
+
+    /// <summary>
+    /// left, top, width, height
+    /// </summary>
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public ushort[] AspectFrame;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+    public uint[] StackedImage;
+
+    public byte IsLiveND;
+
+    public uint LiveNDfactor;
+
+    public ushort PanoramaMode;
+
+    public ushort PanoramaFrameNum;
+}
+
+/// <remarks>Original C API struct: libraw_sony_info_t</remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LibRawSonyInfo
+{
+    /// <summary>init in 0xffff</summary>
+    public ushort CameraType;
+
+    /// <summary>0 if not found/deciphered, 0xa, 0xb, 0xc following exiftool convention</summary>
+    public byte Sony0x9400Version;
+
+    public byte Sony0x9400ReleaseMode2;
+    public uint Sony0x9400SequenceImageNumber;
+    public byte Sony0x9400SequenceLength1;
+    public uint Sony0x9400SequenceFileNumber;
+    public byte Sony0x9400SequenceLength2;
+
+    /// <summary>init in 0xff; +</summary>
+    public byte AFAreaModeSetting;
+
+    /// <summary>init in 0xffff; +</summary>
+    public ushort AFAreaMode;
+
+    /// <summary>init in (0xffff, 0xffff)</summary>
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+    public ushort[] FlexibleSpotPosition;
+
+    /// <summary>init in 0xff</summary>
+    public byte AFPointSelected;
+
+    /// <summary>init in 0xff</summary>
+    public byte AFPointSelected0x201e;
+
+    public short NAFPointsUsed;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)]
+    public byte[] AFPointsUsed;
+
+    /// <summary>init in 0xff</summary>
+    public byte AFTracking;
+
+    public byte AFType;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public ushort[] FocusLocation;
+
+    /// <summary>init in 0xffff</summary>
+    public ushort FocusPosition;
+
+    /// <summary>init in 0x7f</summary>
+    public sbyte AFMicroAdjValue;
+
+    /// <summary>init in -1</summary>
+    public sbyte AFMicroAdjOn;
+
+    /// <summary>init in 0xff</summary>
+    public byte AFMicroAdjRegisteredLenses;
+
+    public ushort VariableLowPassFilter;
+
+    /// <summary>init in 0xffffffff</summary>
+    public uint LongExposureNoiseReduction;
+
+    /// <summary>init in 0xffff</summary>
+    public ushort HighISONoiseReduction;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+    public ushort[] HDR;
+
+    public ushort Group2010;
+    public ushort Group9050;
+
+    /// <summary>init in 0xffff</summary>
+    public ushort RealIsoOffset;
+
+    public ushort MeteringModeOffset;
+    public ushort ExposureProgramOffset;
+    public ushort ReleaseMode2Offset;
+
+    /// <summary>init in 0xffffffff</summary>
+    public uint MinoltaCamID;
+
+    public float Firmware;
+
+    /// <summary>init in 0xffff</summary>
+    public ushort ImageCount3Offset;
+
+    public uint ImageCount3;
+
+    /// <summary>init in 0xffffffff</summary>
+    public uint ElectronicFrontCurtainShutter;
+
+    public ushort MeteringMode2;
+
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 20)]
+    public string SonyDateTime;
+
+    public uint ShotNumberSincePowerUp;
+    public ushort PixelShiftGroupPrefix;
+    public uint PixelShiftGroupID;
+    public char NShotsInPixelShiftGroup;
+    public char NumInPixelShiftGroup;
+
+    public ushort PrdImageHeight;
+    public ushort PrdImageWidth;
+    public ushort PrdTotalBps;
+    public ushort PrdActiveBps;
+
+    /// <summary>82 -> Padded; 89 -> Linear</summary>
+    public ushort PrdStorageMethod;
+
+    /// <summary>0 -> not valid; 1 -> RGGB; 4 -> GBRG</summary>
+    public ushort PrdBayerPattern;
+
+    /// <summary>init in 0xffff</summary>
+    public ushort SonyRawFileType;
+
+    /// <summary>init in 0xffff</summary>
+    public ushort RAWFileType;
+
+    /// <summary>init in 0xffff</summary>
+    public ushort RawSizeType;
+
+    /// <summary>init in 0xffffffff</summary>
+    public uint Quality;
+
+    public ushort FileFormat;
+
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+    public string MetaVersion;
+}
+
+/// <remarks>Original C API struct: libraw_kodak_makernotes_t</remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LibRawKodakMakerNotes
+{
+    public ushort BlackLevelTop;
+    public ushort BlackLevelBottom;
+
+    /// <summary>KDC files, negative values or zeros</summary>
+    public short OffsetLeft;
+    public short OffsetTop;
+
+    /// <summary>valid for P712, P850, P880</summary>
+    public ushort ClipBlack;
+    public ushort ClipWhite;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 9)]
+    public float[] RommCamDaylight;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 9)]
+    public float[] RommCamTungsten;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 9)]
+    public float[] RommCamFluorescent;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 9)]
+    public float[] RommCamFlash;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 9)]
+    public float[] RommCamCustom;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 9)]
+    public float[] RommCamAuto;
+
+    public ushort Val018Percent;
+    public ushort Val100Percent;
+    public ushort Val170Percent;
+
+    public short MakerNoteKodak8a;
+
+    public float IsoCalibrationGain;
+    public float AnalogIso;
+}
+
+/// <remarks>Original C API struct: libraw_panasonic_makernotes_t</remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LibRawPanasonicMakerNotes
+{
+    /// <summary>
+    /// Compression:
+    /// 34826 (Panasonic RAW 2): LEICA DIGILUX 2;
+    /// 34828 (Panasonic RAW 3): LEICA D-LUX 3; LEICA V-LUX 1; Panasonic DMC-LX1;
+    /// Panasonic DMC-LX2; Panasonic DMC-FZ30; Panasonic DMC-FZ50; 34830 (not in
+    /// exiftool): LEICA DIGILUX 3; Panasonic DMC-L1; 34316 (Panasonic RAW 1):
+    /// others (LEICA, Panasonic, YUNEEC);
+    /// </summary>
+    public ushort Compression;
+
+    public ushort BlackLevelDim;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
+    public float[] BlackLevel;
+
+    public uint Multishot; // 0 is Off, 65536 is Pixel Shift
+
+    public float Gamma;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+    public int[] HighISOMultiplier; // 0->R, 1->G, 2->B
+
+    public short FocusStepNear;
+
+    public short FocusStepCount;
+
+    public uint ZoomPosition;
+
+    public uint LensManufacturer;
+}
+
+/// <remarks>Original C API struct: libraw_pentax_makernotes_t</remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LibRawPentaxMakerNotes
+{
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public byte[] DriveMode;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+    public ushort[] FocusMode;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+    public ushort[] AFPointSelected;
+
+    public ushort AFPointSelected_Area;
+
+    public int AFPointsInFocus_version;
+
+    public uint AFPointsInFocus;
+
+    public ushort FocusPosition;
+
+    public short AFAdjustment;
+
+    public byte AFPointMode;
+
+    /// <summary>Last bit is not "1" if ME is not used</summary>
+    public byte MultiExposure;
+
+    /// <summary>
+    /// 4 is raw, 7 is raw w/ pixel shift, 8 is raw w/ dynamic pixel shift
+    /// </summary>
+    public ushort Quality;
+}
+
+/// <remarks>Original C API struct: libraw_p1_makernotes_t</remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LibRawP1MakerNotes
+{
+    /// <summary>tag 0x0203</summary>
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+    public string Software;
+
+    /// <summary>tag 0x0204</summary>
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+    public string SystemType;
+
+    /// <summary>tag 0x0301</summary>
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
+    public string FirmwareString;
+
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+    public string SystemModel;
+}
+
+/// <remarks>Original C API struct: libraw_ricoh_makernotes_t</remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LibRawRicohMakerNotes
+{
+    public ushort AFStatus;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+    public uint[] AFAreaXPosition;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+    public uint[] AFAreaYPosition;
+
+    public ushort AFAreaMode;
+    public uint SensorWidth;
+    public uint SensorHeight;
+    public uint CroppedImageWidth;
+    public uint CroppedImageHeight;
+    public ushort WideAdapter;
+    public ushort CropMode;
+    public ushort NDFilter;
+    public ushort AutoBracketing;
+    public ushort MacroMode;
+    public ushort FlashMode;
+
+    public double FlashExposureComp;
+    public double ManualFlashOutput;
+}
+
+/// <remarks>Original C API struct: libraw_samsung_makernotes_t</remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LibRawSamsungMakerNotes
+{
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public uint[] ImageSizeFull;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public uint[] ImageSizeCrop;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+    public int[] ColorSpace;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 11)]
+    public uint[] Key;
+
+    /// <summary>PostAEGain, digital stretch</summary>
+    public double DigitalGain;
+
+    public int DeviceType;
+
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+    public string LensFirmware;
+}
+
+/// <remarks>Original C API struct: libraw_afinfo_item_t</remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LibRawAfInfoItem
+{
+    public uint AFInfoDataTag;
+
+    public short AFInfoDataOrder;
+
+    public uint AFInfoDataVersion;
+
+    public uint AFInfoDataLength;
+
+    public IntPtr AFInfoData; // This represents a pointer to an array of unsigned chars (bytes)
+}
+
+/// <remarks>Original C API struct: libraw_metadata_common_t</remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LibRawMetadataCommon
+{
+    public float FlashEC;
+    public float FlashGN;
+    public float CameraTemperature;
+    public float SensorTemperature;
+    public float SensorTemperature2;
+    public float LensTemperature;
+    public float AmbientTemperature;
+    public float BatteryTemperature;
+    public float ExifAmbientTemperature;
+    public float ExifHumidity;
+    public float ExifPressure;
+    public float ExifWaterDepth;
+    public float ExifAcceleration;
+    public float ExifCameraElevationAngle;
+    public float RealIso;
+    public float ExifExposureIndex;
+
+    public ushort ColorSpace;
+
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+    public string Firmware;
+
+    public float ExposureCalibrationShift;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = LibRawNative.AFDataMaxCount)]
+    public LibRawAfInfoItem[] AfData;
+
+    public int AfCount;
+}
+
 /// <remarks>Original C API struct: libraw_makernotes_t</remarks>
 [StructLayout(LayoutKind.Sequential)]
 public struct LibRawMakerNotes
@@ -864,6 +1298,131 @@ public struct LibRawMakerNotes
     public LibRawMetadataCommon Common;
 }
 
+/// <remarks>Original C API struct: libraw_output_params_t</remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LibRawOutputParams
+{
+    /// <summary>-A  x1 y1 x2 y2</summary>
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public uint[] Greybox;
+
+    /// <summary>-B x1 y1 x2 y2</summary>
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public uint[] Cropbox;
+
+    /// <summary>-C</summary>
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public double[] Aber;
+
+    /// <summary>-g</summary>
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
+    public double[] Gamm;
+
+    /// <summary>-r mul0 mul1 mul2 mul3</summary>
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public float[] UserMul;
+
+    /// <summary>-b</summary>
+    public float Bright;
+
+    /// <summary>-n</summary>
+    public float Threshold;
+
+    /// <summary>-h</summary>
+    public int HalfSize;
+
+    /// <summary>-f</summary>
+    public int FourColorRgb;
+
+    /// <summary>-H</summary>
+    public int Highlight;
+
+    /// <summary>-a</summary>
+    public int UseAutoWb;
+
+    /// <summary>-w</summary>
+    public int UseCameraWb;
+
+    /// <summary>+M/-M</summary>
+    public int UseCameraMatrix;
+
+    /// <summary>-o</summary>
+    public int OutputColor;
+
+    /// <summary>-o</summary>
+    [MarshalAs(UnmanagedType.LPStr)]
+    public string OutputProfile;
+
+    /// <summary>-p</summary>
+    [MarshalAs(UnmanagedType.LPStr)]
+    public string CameraProfile;
+
+    /// <summary>-P</summary>
+    [MarshalAs(UnmanagedType.LPStr)]
+    public string BadPixels;
+
+    /// <summary>-K</summary>
+    [MarshalAs(UnmanagedType.LPStr)]
+    public string DarkFrame;
+
+    /// <summary>-4</summary>
+    public int OutputBps;
+
+    /// <summary>-T</summary>
+    public int OutputTiff;
+
+    public int OutputFlags;
+
+    /// <summary>-t</summary>
+    public int UserFlip;
+
+    /// <summary>-q</summary>
+    public int UserQual;
+
+    /// <summary>-k</summary>
+    public int UserBlack;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public int[] UserCblack;
+
+    /// <summary>-S</summary>
+    public int UserSat;
+
+    /// <summary>-m</summary>
+    public int MedPasses;
+
+    public float AutoBrightThr;
+
+    public float AdjustMaximumThr;
+
+    /// <summary>-W</summary>
+    public int NoAutoBright;
+
+    /// <summary>-j</summary>
+    public int UseFujiRotate;
+
+    public int GreenMatching;
+
+    /// <summary>DCB parameters</summary>
+    public int DcbIterations;
+
+    public int DcbEnhanceFl;
+
+    public int FbddNoiserd;
+
+    public int ExpCorrec;
+
+    public float ExpShift;
+
+    public float ExpPreser;
+
+    /// <summary>Disable Auto-scale</summary>
+    public int NoAutoScale;
+
+    /// <summary>Disable intepolation</summary>
+    public int NoInterpolation;
+}
+
 [StructLayout(LayoutKind.Sequential)]
 public struct LibRawData
 {
@@ -878,9 +1437,9 @@ public struct LibRawData
 
     public LibRawMakerNotes MakerNotes;
 
-    //public LibRawShootingInfo ShootingInfo;
+    public LibRawShootingInfo ShootingInfo;
 
-    //public LibRawOutputParams Params;
+    public LibRawOutputParams OutputParams;
 
     //public LibRawRawUnpackParams RawParams;
 

@@ -101,7 +101,7 @@ public static class LibRawNative
     /// The original C API macro: LIBRAW_AFDATA_MAXCOUNT
     /// Represents the maximum number of AF data entries, which is 4.
     /// </summary>
-    public const int AfDataMaxCount = 4;
+    public const int AFDataMaxCount = 4;
 
     /// <summary>
     /// The original C API macro: LIBRAW_AHD_TILE
