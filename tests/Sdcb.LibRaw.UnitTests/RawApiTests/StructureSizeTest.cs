@@ -63,14 +63,7 @@ public class StructureSizeTest
     [Fact]
     public void LibRawMakerNotesSizeTest()
     {
-        if (IntPtr.Size == 64)
-        {
-            Assert.Equal(2952, Marshal.SizeOf<LibRawMakerNotes>());
-        }
-        else
-        {
-            Assert.Equal(2936, Marshal.SizeOf<LibRawMakerNotes>());
-        }
+        Assert.Equal(2920 + 4 * IntPtr.Size, Marshal.SizeOf<LibRawMakerNotes>());
     }
 
     [Fact]
@@ -148,27 +141,19 @@ public class StructureSizeTest
     [Fact]
     public void MetadataCommonSizeTest()
     {
-        if (IntPtr.Size == 64)
-        {
-            Assert.Equal(304, Marshal.SizeOf<LibRawMetadataCommon>());
-        }
-        else
-        {
-            Assert.Equal(284, Marshal.SizeOf<LibRawMetadataCommon>());
-        }
+        Assert.Equal(264 + 5 * IntPtr.Size, Marshal.SizeOf<LibRawMetadataCommon>());
     }
     #endregion
 
     [Fact]
     public void LibRawOutputParamsSizeTest()
     {
-        if (IntPtr.Size == 64)
-        {
-            Assert.Equal(304, Marshal.SizeOf<LibRawOutputParams>());
-        }
-        else
-        {
-            Assert.Equal(280, Marshal.SizeOf<LibRawOutputParams>());
-        }
+        Assert.Equal(256 + 6 * IntPtr.Size, Marshal.SizeOf<LibRawOutputParams>());
+    }
+
+    [Fact]
+    public void RawUnpackParamsSizeTest()
+    {
+        Assert.Equal(40 + IntPtr.Size, Marshal.SizeOf<RawUnpackParams>());
     }
 }

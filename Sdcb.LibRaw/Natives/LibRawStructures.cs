@@ -1423,6 +1423,33 @@ public struct LibRawOutputParams
     public int NoInterpolation;
 }
 
+/// <remarks>Original C API struct: libraw_raw_unpack_params_t</remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct RawUnpackParams
+{
+    /// <summary>Raw speed</summary>
+    public int UseRawSpeed;
+
+    /// <summary>DNG SDK</summary>
+    public int UseDngSdk;
+
+    public uint Options;
+    public uint ShotSelect;  // -s
+
+    public uint Specials;
+    public uint MaxRawMemoryMb;
+    public int SonyArw2PosterizationThr;
+
+    /// <summary>Nikon Coolscan</summary>
+    public float CoolscanNefGamma;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 5)]
+    public char[] P4ShotOrder;
+
+    /// <summary>Custom camera list, char**</summary>
+    public IntPtr CustomCameraStrings;
+}
+
 [StructLayout(LayoutKind.Sequential)]
 public struct LibRawData
 {
@@ -1441,7 +1468,7 @@ public struct LibRawData
 
     public LibRawOutputParams OutputParams;
 
-    //public LibRawRawUnpackParams RawParams;
+    public RawUnpackParams RawParams;
 
     //public uint ProgressFlags;
 
