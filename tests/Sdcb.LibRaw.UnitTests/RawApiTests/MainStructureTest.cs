@@ -53,4 +53,29 @@ public class MainStructureTest : BaseCApiTest
             LibRawNative.Recycle(ptr);
         }
     }
+
+    [Fact]
+    public void LibRawShootingInfoTest()
+    {
+        IntPtr ptr = LibRawFromExampleFile();
+        try
+        {
+            LibRawData data = Marshal.PtrToStructure<LibRawData>(ptr);
+            LibRawShootingInfo info = data.ShootingInfo;
+
+            Assert.Equal(0, info.DriveMode);
+            Assert.Equal(3, info.FocusMode);
+            Assert.Equal(0, info.MeteringMode);
+            Assert.Equal(-1, info.AFPoint);
+            Assert.Equal(7, info.ExposureMode);
+            Assert.Equal(1, info.ExposureProgram);
+            Assert.Equal(1, info.ImageStabilization);
+            Assert.Equal("",info.BodySerial.TakeWhile(c => c != '\0').ToArray());
+            Assert.Equal("4ff0000fc08",info.InternalBodySerial.TakeWhile(c => c != '\0').ToArray());
+        }
+        finally
+        {
+            LibRawNative.Recycle(ptr);
+        }
+    }
 }

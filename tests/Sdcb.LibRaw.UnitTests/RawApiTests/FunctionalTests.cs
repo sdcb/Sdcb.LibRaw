@@ -207,7 +207,7 @@ public class FunctionalTests : BaseCApiTest
             Assert.Equal("", iparams.InternalLensSerial);
             Assert.Equal(50, iparams.FocalLengthIn35mmFormat);
             // LibRawLensMakerNotes
-            LibRawMakerNotes makerNotes = iparams.MakerNotes;
+            LibRawLensMakerNotes makerNotes = iparams.MakerNotes;
             Assert.Equal(32862u, makerNotes.LensID);
             Assert.Equal("", makerNotes.Lens);
             Assert.Equal(2, makerNotes.LensFormat, epsilon);
