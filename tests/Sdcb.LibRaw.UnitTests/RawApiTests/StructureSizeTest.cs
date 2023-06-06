@@ -1,6 +1,7 @@
 ﻿using Sdcb.LibRaw.Natives;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 
 namespace Sdcb.LibRaw.UnitTests.RawApiTests;
 
@@ -152,22 +153,10 @@ public class StructureSizeTest
         Assert.Equal(256 + 6 * IntPtr.Size, Marshal.SizeOf<LibRawOutputParams>());
     }
 
-    //x64
-    //Size ph1_t: 36
-    //Size libraw_colordata_t: 187032
-    //Size libraw_dng_color_t: 168
-    //Size libraw_dng_levels_t: 32928
-    //Size libraw_P1_color_t: 36
-    //x86
-    //Size ph1_t: 36
-    //Size libraw_colordata_t: 187024
-    //Size libraw_dng_color_t: 168
-    //Size libraw_dng_levels_t: 32928
-    //Size libraw_P1_color_t: 36
     [Fact]
     public void LibRawColorDataSizeTest()
     {
-        Assert.Equal(187020 + IntPtr.Size, Marshal.SizeOf<LibRawColorData>());
+        Assert.Equal(187016 + 2 * IntPtr.Size, Marshal.SizeOf<LibRawColorData>());
     }
 
     [Fact]

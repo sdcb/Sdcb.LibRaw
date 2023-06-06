@@ -1531,7 +1531,7 @@ public struct LibRawColorData
     public uint DataMaximum;
     public uint Maximum;
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-    public long[] LinearMax;
+    public int[] LinearMax;
     public float Fmaximum;
     public float Fnorm;
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8 * 8)]
