@@ -256,9 +256,6 @@ public class MainStructureTest : BaseCApiTest
         IntPtr ptr = LibRawFromExampleFile();
         try
         {
-            V(LibRawNative.Unpack(ptr));
-            V(LibRawNative.ProcessDcraw(ptr));
-
             LibRawData data = Marshal.PtrToStructure<LibRawData>(ptr);
             LibRawImageOtherParams oparams = data.OtherParams;
             const float epsilon = 0.000001f;

@@ -206,4 +206,10 @@ public class StructureSizeTest
     {
         Assert.Equal(187648 + 12 * IntPtr.Size, Marshal.SizeOf<LibRawRawData>());
     }
+
+    [Fact]
+    public void LibRawSizeTest()
+    {
+        Assert.Equal(381064 + 24 * IntPtr.Size, Marshal.SizeOf<LibRawData>());
+    }
 }
