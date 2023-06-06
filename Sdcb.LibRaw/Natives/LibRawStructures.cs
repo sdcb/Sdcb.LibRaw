@@ -1532,8 +1532,8 @@ public struct LibRawColorData
     public uint Maximum;
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
     public int[] LinearMax;
-    public float Fmaximum;
-    public float Fnorm;
+    public float FMaximum;
+    public float FNorm;
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8 * 8)]
     public ushort[] White;
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
@@ -1552,18 +1552,18 @@ public struct LibRawColorData
     public float FlashUsed;
     public float CanonEv;
 
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
-    public char[] Model2;
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
-    public char[] UniqueCameraModel;
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
-    public char[] LocalizedCameraModel;
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
-    public char[] ImageUniqueID;
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 17)]
-    public char[] RawDataUniqueID;
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
-    public char[] OriginalRawFileName;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+    public string Model2;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+    public string UniqueCameraModel;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+    public string LocalizedCameraModel;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+    public string ImageUniqueID;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 17)]
+    public string RawDataUniqueID;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+    public string OriginalRawFileName;
 
     public IntPtr Profile;
     public uint ProfileLength;
