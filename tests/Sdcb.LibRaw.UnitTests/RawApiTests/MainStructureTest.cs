@@ -356,4 +356,75 @@ public class MainStructureTest : BaseCApiTest
             LibRawNative.Recycle(ptr);
         }
     }
+
+    [Fact]
+    public void RawTest()
+    {
+        IntPtr ptr = LibRawFromExampleBayer();
+        try
+        {
+            V(LibRawNative.Unpack(ptr));
+            V(LibRawNative.ProcessDcraw(ptr));
+
+            LibRawData data = Marshal.PtrToStructure<LibRawData>(ptr);
+            LibRawColorData color = data.RawData.Color;
+
+            Assert.Equal(Enumerable.Range(0, 0x10000).Select(x => (ushort)x), color.Curve);
+            Assert.Equal(new uint[LibRawNative.CBlackSize], color.CBlack);
+            Assert.Equal(0u, color.Black);
+            Assert.Equal(0u, color.DataMaximum);
+            Assert.Equal(65535u, color.Maximum);
+            Assert.Equal(new int[] { 0, 0, 0, 0 }, color.LinearMax);
+            Assert.Equal(0.0f, color.FMaximum);
+            Assert.Equal(0.0f, color.FNorm);
+            Assert.Equal(new ushort[64], color.White);
+            Assert.Equal(new float[] { 0.0f, 0.0f, 0.0f, 0.0f }, color.CamMul);
+            Assert.Equal(new float[] { 1.0f, 1.0f, 1.0f, 1.0f }, color.PreMul);
+            Assert.Equal(new float[12], color.CMatrix);
+            Assert.Equal(new float[12], color.Ccm);
+            Assert.Equal(new float[12], color.RgbCam);
+            Assert.Equal(new float[12], color.CamXyz);
+            Assert.Equal(0, color.PhaseOneData.Format);
+            Assert.Equal(0, color.PhaseOneData.KeyOff);
+            Assert.Equal(0, color.PhaseOneData.Tag21a);
+            Assert.Equal(0.0f, color.FlashUsed);
+            Assert.Equal(0.0f, color.CanonEv);
+            Assert.Equal("", color.Model2);
+            Assert.Equal("", color.UniqueCameraModel);
+            Assert.Equal("", color.LocalizedCameraModel);
+            Assert.Equal("", color.ImageUniqueID);
+            Assert.Equal("", color.RawDataUniqueID);
+            Assert.Equal("", color.OriginalRawFileName);
+            Assert.Equal(IntPtr.Zero, color.Profile);
+            Assert.Equal(0u, color.ProfileLength);
+            Assert.Equal(new uint[] { 0, 0, 0, 0, 0, 0, 0, 0 }, color.BlackStat);
+            Assert.Equal(2, color.DngColor.Length);
+            Assert.Equal(0u, color.DngLevels.ParsedFields);
+            Assert.Equal(new int[256 * 4], color.WbCoeffs);
+            Assert.Equal(new float[64 * 5], color.WbctCoeffs);
+            Assert.Equal(0, color.AsShotWbApplied);
+            Assert.Equal(2, color.P1Color.Length);
+            Assert.Equal(0u, color.RawBps);
+            Assert.Equal(0, color.ExifColorSpace);
+        }
+        finally
+        {
+            LibRawNative.Recycle(ptr);
+        }
+    }
+
+    [Fact]
+    public void ParentClassTest()
+    {
+        IntPtr ptr = LibRawFromExampleBayer();
+        try
+        {
+            LibRawData data = Marshal.PtrToStructure<LibRawData>(ptr);
+            Assert.NotEqual(IntPtr.Zero, data.ParentClass);
+        }
+        finally
+        {
+            LibRawNative.Recycle(ptr);
+        }
+    }
 }

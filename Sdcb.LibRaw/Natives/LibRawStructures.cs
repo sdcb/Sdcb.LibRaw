@@ -1623,6 +1623,36 @@ public struct LibRawThumbnailList
     public LibRawThumbnailItem[] ThumbList;
 }
 
+/// <remarks>Original C API struct: libraw_internal_output_params_t</remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LibRawInternalOutputParams
+{
+    public uint MixGreen;
+    public uint RawColor;
+    public uint ZeroIsBad;
+    public ushort Shrink;
+    public ushort FujiWidth;
+}
+
+/// <remarks>Original C API struct: libraw_rawdata_t</remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LibRawRawData
+{
+    public IntPtr RawAlloc;
+    public IntPtr RawImage;
+    public IntPtr Color4Image;
+    public IntPtr Color3Image;
+    public IntPtr FloatImage;
+    public IntPtr Float3Image;
+    public IntPtr Float4Image;
+    public IntPtr Ph1Cblack;
+    public IntPtr Ph1Rblack;
+    public LibRawImageParams IParams;
+    public LibRawImageSizes Sizes;
+    public LibRawInternalOutputParams IOParams;
+    public LibRawColorData Color;
+}
+
 [StructLayout(LayoutKind.Sequential)]
 public struct LibRawData
 {
@@ -1655,7 +1685,7 @@ public struct LibRawData
 
     public LibRawThumbnailList ThumbnailList;
 
-    //public LibRawRawData RawData;
+    public LibRawRawData RawData;
 
-    //public IntPtr ParentClass;
+    public IntPtr ParentClass;
 }

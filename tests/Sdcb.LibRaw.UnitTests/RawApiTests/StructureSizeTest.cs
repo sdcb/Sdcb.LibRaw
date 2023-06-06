@@ -194,4 +194,16 @@ public class StructureSizeTest
     {
         Assert.Equal(264, Marshal.SizeOf<LibRawThumbnailList>());
     }
+
+    [Fact]
+    public void LibRawImageParamsSizeTest()
+    {
+        Assert.Equal(432 + IntPtr.Size, Marshal.SizeOf<LibRawImageParams>());
+    }
+
+    [Fact]
+    public void LibRawRawDataSizeTest()
+    {
+        Assert.Equal(187648 + 12 * IntPtr.Size, Marshal.SizeOf<LibRawRawData>());
+    }
 }
