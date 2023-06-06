@@ -205,7 +205,7 @@ public class MainStructureTest : BaseCApiTest
             V(LibRawNative.ProcessDcraw(ptr));
 
             LibRawData data = Marshal.PtrToStructure<LibRawData>(ptr);
-            LibRawColorData color = data.Color;
+            LibRawColorData color = data.ColorData;
             Assert.Equal(Enumerable.Range(0, 0x10000).Select(x => (ushort)x), color.Curve);
             Assert.Equal(new uint[LibRawNative.CBlackSize], color.CBlack);
             Assert.Equal(0u, color.Black);
@@ -243,6 +243,113 @@ public class MainStructureTest : BaseCApiTest
             Assert.Equal(2, color.P1Color.Length);
             Assert.Equal(0u, color.RawBps);
             Assert.Equal(0, color.ExifColorSpace);
+        }
+        finally
+        {
+            LibRawNative.Recycle(ptr);
+        }
+    }
+
+    [Fact]
+    public void OtherParamsTest()
+    {
+        IntPtr ptr = LibRawFromExampleFile();
+        try
+        {
+            V(LibRawNative.Unpack(ptr));
+            V(LibRawNative.ProcessDcraw(ptr));
+
+            LibRawData data = Marshal.PtrToStructure<LibRawData>(ptr);
+            LibRawImageOtherParams oparams = data.OtherParams;
+            const float epsilon = 0.000001f;
+
+            Assert.Equal(100.0, oparams.IsoSpeed, epsilon);
+            Assert.Equal(100.0, oparams.IsoSpeed, epsilon);
+            Assert.Equal(0.005000, oparams.Shutter, epsilon);
+            Assert.Equal(1.200000, oparams.Aperture, epsilon);
+            Assert.Equal(50.000000, oparams.FocalLength, epsilon);
+            Assert.Equal(1674456985, oparams.Timestamp);
+            Assert.Equal(0u, oparams.ShotOrder);
+            Assert.Equal(new string(' ', 31), oparams.Description);
+            Assert.Equal("Zhou Jie/sdcb", oparams.Artist);
+            Assert.Equal(0.000000, oparams.AnalogBalance[0]);
+            Assert.Equal(0.000000, oparams.AnalogBalance[1]);
+            Assert.Equal(0.000000, oparams.AnalogBalance[2]);
+            Assert.Equal(0.000000, oparams.AnalogBalance[3]);
+
+            LibRawGPS gps = oparams.ParsedGPS;
+            Assert.Equal(0.0f, gps.LatitudeDegrees);
+            Assert.Equal(0.0f, gps.LatitudeMinutes);
+            Assert.Equal(0.0f, gps.LatitudeSeconds);
+            Assert.Equal(0.0f, gps.LongitudeDegrees);
+            Assert.Equal(0.0f, gps.LongitudeMinutes);
+            Assert.Equal(0.0f, gps.LongitudeSeconds);
+            Assert.Equal(0.0f, gps.GPSTimeStampDegrees);
+            Assert.Equal(0.0f, gps.GPSTimeStampMinutes);
+            Assert.Equal(0.0f, gps.GPSTimeStampSeconds);
+            Assert.Equal(0.0f, gps.Altitude);
+            Assert.Equal(0, gps.AltitudeReference);
+            Assert.Equal(0, gps.LatitudeReference);
+            Assert.Equal(0, gps.LongitudeReference);
+            Assert.Equal('V', gps.GPSStatus);
+            Assert.Equal(1, gps.GPSParsed);
+        }
+        finally
+        {
+            LibRawNative.Recycle(ptr);
+        }
+    }
+
+    [Fact]
+    public void ThumbnailTest()
+    {
+        IntPtr ptr = LibRawFromExampleFile();
+        try
+        {
+            V(LibRawNative.UnpackThumbnail(ptr));
+            LibRawData data2 = Marshal.PtrToStructure<LibRawData>(ptr);
+            LibRawThumbnail thumbnail2 = data2.Thumbnail;
+            Assert.Equal(ThumbnailFormat.Jpeg, thumbnail2.Format);
+            Assert.Equal(1616, thumbnail2.Width);
+            Assert.Equal(1080, thumbnail2.Height);
+            Assert.Equal(385072u, thumbnail2.Length);
+            Assert.Equal(3, thumbnail2.Colors);
+        }
+        finally
+        {
+            LibRawNative.Recycle(ptr);
+        }
+    }
+
+    [Fact]
+    public void ThumbnailListTest()
+    {
+        IntPtr ptr = LibRawFromExampleFile();
+        try
+        {
+            LibRawData data = Marshal.PtrToStructure<LibRawData>(ptr);
+            LibRawThumbnailList list = data.ThumbnailList;
+
+            var thumbnail1 = list.ThumbList[0];
+            Assert.Equal(InternalThumbnailFormat.Jpeg, thumbnail1.Format);
+            Assert.Equal(1616, thumbnail1.Width);
+            Assert.Equal(1080, thumbnail1.Height);
+            Assert.Equal(0, thumbnail1.Flip);
+            Assert.Equal(385072u, thumbnail1.Length);
+            Assert.Equal(104u, thumbnail1.Misc);
+            Assert.Equal(135330, thumbnail1.Offset);
+
+            var thumbnail2 = list.ThumbList[1];
+            Assert.Equal(InternalThumbnailFormat.Jpeg, thumbnail2.Format);
+            Assert.Equal(160, thumbnail2.Width);
+            Assert.Equal(120, thumbnail2.Height);
+            Assert.Equal(0, thumbnail2.Flip);
+            Assert.Equal(7431u, thumbnail2.Length);
+            Assert.Equal(104u, thumbnail2.Misc);
+            Assert.Equal(43424, thumbnail2.Offset);
+
+            Assert.Equal(2, list.ThumbCount);
+            Assert.Equal(LibRawNative.ThumbnailMaxCount, list.ThumbList.Length);
         }
         finally
         {

@@ -180,6 +180,18 @@ public class StructureSizeTest
     [Fact]
     public void LibrawP1ColorSizeTest()
     {
-        Assert.Equal(36, Marshal.SizeOf<LibrawP1Color>());
+        Assert.Equal(36, Marshal.SizeOf<LibRawP1Color>());
+    }
+
+    [Fact]
+    public void ThumbnailSizeTest()
+    {
+        Assert.Equal(16 + IntPtr.Size, Marshal.SizeOf<LibRawThumbnail>());
+    }
+
+    [Fact]
+    public void ThumbnailListSizeTest()
+    {
+        Assert.Equal(264, Marshal.SizeOf<LibRawThumbnailList>());
     }
 }

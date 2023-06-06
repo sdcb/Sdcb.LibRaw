@@ -1452,7 +1452,7 @@ public struct RawUnpackParams
 
 /// <remarks>Original C API struct: libraw_P1_color_t</remarks>
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-public struct LibrawP1Color
+public struct LibRawP1Color
 {
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 9)]
     public float[] RommCam;
@@ -1578,9 +1578,49 @@ public struct LibRawColorData
     public float[] WbctCoeffs; // CCT, then R, G1, B, G2 coeffs
     public int AsShotWbApplied;
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-    public LibrawP1Color[] P1Color;
+    public LibRawP1Color[] P1Color;
     public uint RawBps; // for Phase One: raw format; For other cameras: bits per pixel (copy of tiff_bps in most cases)
     public int ExifColorSpace;
+}
+
+/// <remarks>Original C API struct: libraw_thumbnail_t</remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LibRawThumbnail
+{
+    public ThumbnailFormat Format;
+
+    public ushort Width;
+
+    public ushort Height;
+
+    public uint Length;
+
+    public int Colors;
+
+    public IntPtr Thumb;
+}
+
+/// <remarks>Original C API struct: libraw_thumbnail_item_t</remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LibRawThumbnailItem
+{
+    public InternalThumbnailFormat Format;
+    public ushort Width;
+    public ushort Height;
+    public ushort Flip;
+    public uint Length;
+    public uint Misc;
+    public long Offset;
+}
+
+/// <remarks>Original C API struct: libraw_thumbnail_list_t</remarks>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LibRawThumbnailList
+{
+    public int ThumbCount;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = LibRawNative.ThumbnailMaxCount)]
+    public LibRawThumbnailItem[] ThumbList;
 }
 
 [StructLayout(LayoutKind.Sequential)]
@@ -1607,13 +1647,13 @@ public struct LibRawData
 
     public LibRawWarning ProcessWarnings;
 
-    public LibRawColorData Color;
+    public LibRawColorData ColorData;
 
-    //public LibRawImgOther Other;
+    public LibRawImageOtherParams OtherParams;
 
-    //public LibRawThumbnail Thumbnail;
+    public LibRawThumbnail Thumbnail;
 
-    //public LibRawThumbnailList ThumbsList;
+    public LibRawThumbnailList ThumbnailList;
 
     //public LibRawRawData RawData;
 
