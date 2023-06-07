@@ -178,6 +178,7 @@ public class RawContext : IDisposable
             if (_r != IntPtr.Zero)
             {
                 LibRawNative.Recycle(_r);
+                LibRawNative.Close(_r);
                 _r = IntPtr.Zero;
             }
 
@@ -247,6 +248,7 @@ public class RawContext : IDisposable
         else
         {
             LibRawNative.Recycle(raw);
+            LibRawNative.Close(raw);
             throw new LibRawException(error, $"Failed opening file: {filePath}");
         }
     }
@@ -304,6 +306,7 @@ public class RawContext : IDisposable
         else
         {
             LibRawNative.Recycle(raw);
+            LibRawNative.Close(raw);
             throw new LibRawException(error, $"Failed opening buffer");
         }
     }
@@ -330,6 +333,7 @@ public class RawContext : IDisposable
         else
         {
             LibRawNative.Recycle(raw);
+            LibRawNative.Close(raw);
             throw new LibRawException(error, $"Failed opening buffer");
         }
     }

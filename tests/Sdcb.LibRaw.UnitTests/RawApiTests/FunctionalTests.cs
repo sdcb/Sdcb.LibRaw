@@ -18,6 +18,7 @@ public class FunctionalTests : BaseCApiTest
         IntPtr handle = LibRawNative.Initialize();
         Assert.NotEqual(IntPtr.Zero, handle);
         LibRawNative.Recycle(handle);
+        LibRawNative.Close(handle);
     }
 
     [Fact]
@@ -25,6 +26,7 @@ public class FunctionalTests : BaseCApiTest
     {
         IntPtr handle = LibRawFromExampleFile();
         LibRawNative.Recycle(handle);
+        LibRawNative.Close(handle);
     }
 
     [Fact]
@@ -45,6 +47,7 @@ public class FunctionalTests : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(handle);
+            LibRawNative.Close(handle);
         }
     }
 
@@ -64,6 +67,7 @@ public class FunctionalTests : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(handle);
+            LibRawNative.Close(handle);
         }
     }
 
@@ -110,6 +114,7 @@ public class FunctionalTests : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(handle);
+            LibRawNative.Close(handle);
         }
     }
 
@@ -139,6 +144,7 @@ public class FunctionalTests : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(handle);
+            LibRawNative.Close(handle);
         }
     }
 
@@ -181,6 +187,7 @@ public class FunctionalTests : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(handle);
+            LibRawNative.Close(handle);
         }
     }
 
@@ -255,6 +262,7 @@ public class FunctionalTests : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(handle);
+            LibRawNative.Close(handle);
         }
     }
 
@@ -303,6 +311,7 @@ public class FunctionalTests : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(handle);
+            LibRawNative.Close(handle);
         }
     }
 
@@ -349,6 +358,7 @@ public class FunctionalTests : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(handle);
+            LibRawNative.Close(handle);
         }
     }
 
@@ -367,6 +377,7 @@ public class FunctionalTests : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(handle);
+            LibRawNative.Close(handle);
         }
     }
 
@@ -387,6 +398,7 @@ public class FunctionalTests : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(handle);
+            LibRawNative.Close(handle);
         }
     }
 
@@ -408,6 +420,7 @@ public class FunctionalTests : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(handle);
+            LibRawNative.Close(handle);
         }
     }
 }

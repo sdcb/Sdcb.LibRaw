@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Schema;
 using Sdcb.LibRaw.Natives;
+using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using Xunit.Abstractions;
 
@@ -52,6 +53,7 @@ public class MainStructureTest : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(ptr);
+            LibRawNative.Close(ptr);
         }
     }
 
@@ -77,6 +79,7 @@ public class MainStructureTest : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(ptr);
+            LibRawNative.Close(ptr);
         }
     }
 
@@ -133,6 +136,7 @@ public class MainStructureTest : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(ptr);
+            LibRawNative.Close(ptr);
         }
     }
 
@@ -162,6 +166,7 @@ public class MainStructureTest : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(ptr);
+            LibRawNative.Close(ptr);
         }
     }
 
@@ -192,6 +197,7 @@ public class MainStructureTest : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(ptr);
+            LibRawNative.Close(ptr);
         }
     }
 
@@ -247,6 +253,7 @@ public class MainStructureTest : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(ptr);
+            LibRawNative.Close(ptr);
         }
     }
 
@@ -294,6 +301,7 @@ public class MainStructureTest : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(ptr);
+            LibRawNative.Close(ptr);
         }
     }
 
@@ -315,6 +323,7 @@ public class MainStructureTest : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(ptr);
+            LibRawNative.Close(ptr);
         }
     }
 
@@ -351,6 +360,7 @@ public class MainStructureTest : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(ptr);
+            LibRawNative.Close(ptr);
         }
     }
 
@@ -407,6 +417,7 @@ public class MainStructureTest : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(ptr);
+            LibRawNative.Close(ptr);
         }
     }
 
@@ -422,6 +433,7 @@ public class MainStructureTest : BaseCApiTest
         finally
         {
             LibRawNative.Recycle(ptr);
+            LibRawNative.Close(ptr);
         }
     }
 }

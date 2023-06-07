@@ -9,10 +9,12 @@ namespace Sdcb.LibRaw;
 internal class WhiteBalanceCoeffIndexer : IReadOnlyList<float>
 {
     private readonly IntPtr _r;
+    private bool _disposed;
 
-    public WhiteBalanceCoeffIndexer(IntPtr r)
+    public WhiteBalanceCoeffIndexer(IntPtr r, bool disposed)
     {
         _r = r;
+        _disposed = disposed;
     }
 
     /// <summary>Gets or sets the white balance coefficients for the camera.</summary>
@@ -57,6 +59,7 @@ internal class WhiteBalanceCoeffIndexer : IReadOnlyList<float>
 
     private void CheckDisposed()
     {
-        // 之前的 CheckDisposed 方法的实现应该放在这里
+        if (_disposed)
+            throw new ObjectDisposedException(nameof(RawContext));
     }
 }
