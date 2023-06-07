@@ -116,9 +116,13 @@ public class RawContext : IDisposable
         }
     }
 
-    /// <summary>Provides access to white balance coefficients.</summary>
+    /// <summary>Camera multiplier indexer</summary>
     /// <remarks>Corresponds to the C API function: libraw_get_cam_mul</remarks>
     public IIndexer<float> CameraMultipler => new CameraMultiplerIndexer(_r, _disposed);
+
+    /// <summary>Pre multiplier indexer</summary>
+    /// <remarks>Corresponds to the C API function: libraw_get_pre_mul</remarks>
+    public IIndexer<float> PreMultipler => new PreMultiplerIndexer(_r, _disposed);
 
 
     #endregion
