@@ -18,6 +18,7 @@ public class RawContext : IDisposable
             throw new ObjectDisposedException(nameof(RawContext));
     }
 
+    #region properties
     /// <summary>The width of the raw image.</summary>
     /// <remarks>Corresponds to the C API function: libraw_get_raw_width</remarks>
     public int RawWidth
@@ -115,6 +116,7 @@ public class RawContext : IDisposable
             LibRawNative.SetOutputColorSpace(_r, value);
         }
     }
+    #endregion
 
     /// <summary>Returns a pointer to the underlying native object.</summary>
     /// <returns>A pointer to the underlying native object.</returns>
