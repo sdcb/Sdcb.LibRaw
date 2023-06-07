@@ -12,29 +12,72 @@ public class RawContext : IDisposable
     private IntPtr _r;
     private bool _disposed;
 
+    private void CheckDisposed()
+    {
+        if (_disposed)
+            throw new ObjectDisposedException(nameof(RawContext));
+    }
+
     /// <summary>The width of the raw image.</summary>
     /// <remarks>Corresponds to the C API function: libraw_get_raw_width</remarks>
-    public int RawWidth => LibRawNative.GetRawImageWidth(_r);
+    public int RawWidth
+    {
+        get
+        {
+            CheckDisposed();
+            return LibRawNative.GetRawImageWidth(_r);
+        }
+    }
 
     /// <summary>The height of the raw image.</summary>
     /// <remarks>Corresponds to the C API function: libraw_get_raw_height</remarks>
-    public int RawHeight => LibRawNative.GetRawImageHeight(_r);
+    public int RawHeight
+    {
+        get
+        {
+            CheckDisposed();
+            return LibRawNative.GetRawImageHeight(_r);
+        }
+    }
 
     /// <summary>The width of the processed image.</summary>
     /// <remarks>Corresponds to the C API function: libraw_get_iwidth</remarks>
-    public int Width => LibRawNative.GetProcessedImageWidth(_r);
+    public int Width
+    {
+        get
+        {
+            CheckDisposed();
+            return LibRawNative.GetProcessedImageWidth(_r);
+        }
+    }
 
     /// <summary>The height of the processed image.</summary>
     /// <remarks>Corresponds to the C API function: libraw_get_iheight</remarks>
-    public int Height => LibRawNative.GetProcessedImageHeight(_r);
+    public int Height
+    {
+        get
+        {
+            CheckDisposed();
+            return LibRawNative.GetProcessedImageHeight(_r);
+        }
+    }
 
     /// <summary>
     /// Property representing whether to output tiff.
     /// </summary>
     public bool OutputTiff
     {
-        get => Marshal.PtrToStructure<LibRawData>(_r).OutputParams.OutputTiff != 0;
-        set => LibRawNative.SetOutputTiff(_r, value ? 1 : 0);
+        get
+        {
+            CheckDisposed();
+            return Marshal.PtrToStructure<LibRawData>(_r).OutputParams.OutputTiff != 0;
+        }
+
+        set
+        {
+            CheckDisposed();
+            LibRawNative.SetOutputTiff(_r, value ? 1 : 0);
+        }
     }
 
     /// <summary>
@@ -42,8 +85,17 @@ public class RawContext : IDisposable
     /// </summary>
     public int OutputBitsPerSample
     {
-        get => Marshal.PtrToStructure<LibRawData>(_r).OutputParams.OutputBps;
-        set => LibRawNative.SetOutputBitsPerSample(_r, value);
+        get
+        {
+            CheckDisposed();
+            return Marshal.PtrToStructure<LibRawData>(_r).OutputParams.OutputBps;
+        }
+
+        set
+        {
+            CheckDisposed();
+            LibRawNative.SetOutputBitsPerSample(_r, value);
+        }
     }
 
     /// <summary>
@@ -51,13 +103,26 @@ public class RawContext : IDisposable
     /// </summary>
     public LibRawColorSpace OutputColorSpace
     {
-        get => (LibRawColorSpace)Marshal.PtrToStructure<LibRawData>(_r).OutputParams.OutputColor;
-        set => LibRawNative.SetOutputColorSpace(_r, value);
+        get
+        {
+            CheckDisposed();
+            return (LibRawColorSpace)Marshal.PtrToStructure<LibRawData>(_r).OutputParams.OutputColor;
+        }
+
+        set
+        {
+            CheckDisposed();
+            LibRawNative.SetOutputColorSpace(_r, value);
+        }
     }
 
     /// <summary>Returns a pointer to the underlying native object.</summary>
     /// <returns>A pointer to the underlying native object.</returns>
-    public IntPtr UnsafeGetHandle() => _r;
+    public IntPtr UnsafeGetHandle()
+    {
+        CheckDisposed();
+        return _r;
+    }
 
 
     /// <summary>Gets the decoder information for the current RawContext object.</summary>
@@ -66,6 +131,7 @@ public class RawContext : IDisposable
     {
         get
         {
+            CheckDisposed();
             LibRawDecoderInfo d = new LibRawDecoderInfo();
             LibRawException.ThrowIfFailed(LibRawNative.GetDecoderInfo(_r, (IntPtr)(&d)));
             return DecoderInfo.FromNative(d);
@@ -154,6 +220,7 @@ public class RawContext : IDisposable
     }
     #endregion
 
+    #region init methods
     /// <summary>Opens a RAW file for processing.</summary>
     /// <param name="filePath">The path to the file to open.</param>
     /// <param name="flags">Flags to modify library behavior during opening.</param>
@@ -263,12 +330,14 @@ public class RawContext : IDisposable
             throw new LibRawException(error, $"Failed opening buffer");
         }
     }
+    #endregion
 
     /// <summary>Unpacks the raw data from the opened file into memory.</summary>
     /// <exception cref="LibRawException" />
     /// <remarks>Corresponds to the C API function: libraw_unpack</remarks>
     public void Unpack()
     {
+        CheckDisposed();
         LibRawException.ThrowIfFailed(LibRawNative.Unpack(_r));
     }
 
@@ -278,6 +347,7 @@ public class RawContext : IDisposable
     /// <remarks>Corresponds to the C API function: libraw_unpack_thumb</remarks>
     public void UnpackThunbnail(int index = 0)
     {
+        CheckDisposed();
         LibRawException.ThrowIfFailed(LibRawNative.UnpackThumbnailExtended(_r, index));
     }
 
@@ -286,6 +356,7 @@ public class RawContext : IDisposable
     /// <remarks>Corresponds to the C API function: libraw_dcraw_process</remarks>
     public void ProcessDcraw()
     {
+        CheckDisposed();
         LibRawException.ThrowIfFailed(LibRawNative.ProcessDcraw(_r));
     }
 
@@ -295,6 +366,7 @@ public class RawContext : IDisposable
     /// <remarks>Corresponds to the C API function: libraw_dcraw_process</remarks>
     public unsafe ProcessedImage MakeDcrawMemoryImage()
     {
+        CheckDisposed();
         IntPtr rawImage = LibRawNative.MakeDcrawMemoryImage(_r, out LibRawError errorCode);
         LibRawException.ThrowIfFailed(errorCode);
 
@@ -309,6 +381,7 @@ public class RawContext : IDisposable
     /// <remarks>Corresponds to the C API function: libraw_dcraw_make_mem_thumb</remarks>
     public unsafe ProcessedImage MakeDcrawMemoryThumbnail()
     {
+        CheckDisposed();
         IntPtr rawImage = LibRawNative.MakeDcrawMemoryThumbnail(_r, out LibRawError errorCode);
         LibRawException.ThrowIfFailed(errorCode);
 
@@ -321,7 +394,8 @@ public class RawContext : IDisposable
     /// <remarks>Corresponds to the C API function: libraw_dcraw_ppm_tiff_writer</remarks>
     public void WriteDcrawPpmTiff(string fileName)
     {
-        LibRawNative.WriteDcrawPpmTiff(_r, fileName);
+        CheckDisposed();
+        LibRawException.ThrowIfFailed(LibRawNative.WriteDcrawPpmTiff(_r, fileName));
     }
 
     /// <summary>Writes the thumbnail using Dcraw.</summary>
@@ -329,6 +403,7 @@ public class RawContext : IDisposable
     /// <remarks>Corresponds to the C API function: libraw_dcraw_thumb_writer</remarks>
     public void WriteDcrawThumbnail(string fileName)
     {
-        LibRawNative.WriteDcrawThumbnail(_r, fileName);
+        CheckDisposed();
+        LibRawException.ThrowIfFailed(LibRawNative.WriteDcrawThumbnail(_r, fileName));
     }
 }

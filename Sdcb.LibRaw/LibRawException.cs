@@ -15,7 +15,7 @@ namespace Sdcb.LibRaw
         /// <param name="error">The error code that describes the error.</param>
         /// <param name="message">The message that describes the error.</param>
         public LibRawException(LibRawError error, string? message)
-            : base(message)
+            : base(message ?? $"ErrorCode: {(int)error}({error}), {Marshal.PtrToStringAnsi(LibRawNative.GetErrorMessage(error))!}")
         {
             ErrorCode = error;
         }
@@ -28,15 +28,6 @@ namespace Sdcb.LibRaw
                        : base(message)
         {
             ErrorCode = LibRawError.UnspecifiedError;
-        }
-
-        /// <summary>
-        /// Returns a string that represents the current <see cref="LibRawException"/> object.
-        /// </summary>
-        /// <returns>A string that includes the error code, error description, and the result of calling ToString() on the base Exception object.</returns>
-        public override string ToString()
-        {
-            return $"ErrorCode: {ErrorCode}, Explain: {ErrorExplain}, {base.ToString()}";
         }
 
         /// <summary>

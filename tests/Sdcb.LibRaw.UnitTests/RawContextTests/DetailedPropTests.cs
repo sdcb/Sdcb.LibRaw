@@ -3,24 +3,19 @@ using System.Runtime.InteropServices;
 
 namespace Sdcb.LibRaw.UnitTests.RawContextTests;
 
-public class DetailedPropTests
+public class DetailedPropTests : BaseTest
 {
-    private static RawContext CreateExampleBayer()
-    {
-        return RawContext.OpenBayerData<ushort>(new ushort[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 }, 4, 4);
-    }
-
     [Fact]
     public void DefaultOutputTiffShouldBeFalse()
     {
-        using RawContext r = CreateExampleBayer();
+        using RawContext r = ExampleBayer();
         Assert.False(r.OutputTiff);
     }
 
     [Fact]
     public void OutputTiffCanSetToTrue()
     {
-        using RawContext r = CreateExampleBayer();
+        using RawContext r = ExampleBayer();
         r.OutputTiff = true;
         Assert.True(r.OutputTiff);
     }
@@ -28,7 +23,7 @@ public class DetailedPropTests
     [Fact]
     public void OutputTiffCanSetToTrueUsingTechnicalWay()
     {
-        using RawContext r = CreateExampleBayer();
+        using RawContext r = ExampleBayer();
         LibRawData data = Marshal.PtrToStructure<LibRawData>(r.UnsafeGetHandle());
         data.OutputParams.OutputTiff = 2;
         Marshal.StructureToPtr(data, r.UnsafeGetHandle(), fDeleteOld: false);
@@ -38,14 +33,14 @@ public class DetailedPropTests
     [Fact]
     public void DefaultOutputBitsPerSampleShouldBeFalse()
     {
-        using RawContext r = CreateExampleBayer();
+        using RawContext r = ExampleBayer();
         Assert.Equal(8, r.OutputBitsPerSample);
     }
 
     [Fact]
     public void OutputBitsPerSampleCanSetToTrue()
     {
-        using RawContext r = CreateExampleBayer();
+        using RawContext r = ExampleBayer();
         r.OutputBitsPerSample = 16;
         Assert.Equal(16, r.OutputBitsPerSample);
     }
@@ -53,7 +48,7 @@ public class DetailedPropTests
     [Fact]
     public void OutputBitsPerSampleCanSetToTrueUsingTechnicalWay()
     {
-        using RawContext r = CreateExampleBayer();
+        using RawContext r = ExampleBayer();
         LibRawData data = Marshal.PtrToStructure<LibRawData>(r.UnsafeGetHandle());
         data.OutputParams.OutputBps = 32;
         Marshal.StructureToPtr(data, r.UnsafeGetHandle(), fDeleteOld: false);
@@ -63,14 +58,14 @@ public class DetailedPropTests
     [Fact]
     public void DefaultOutputColorSpaceShouldBeFalse()
     {
-        using RawContext r = CreateExampleBayer();
+        using RawContext r = ExampleBayer();
         Assert.Equal(LibRawColorSpace.Srgb ,r.OutputColorSpace);
     }
 
     [Fact]
     public void OutputColorSpaceCanSetToTrue()
     {
-        using RawContext r = CreateExampleBayer();
+        using RawContext r = ExampleBayer();
         r.OutputColorSpace = LibRawColorSpace.AdobeRgb;
         Assert.Equal(LibRawColorSpace.AdobeRgb, r.OutputColorSpace);
     }
@@ -78,7 +73,7 @@ public class DetailedPropTests
     [Fact]
     public void OutputColorSpaceCanSetToTrueUsingTechnicalWay()
     {
-        using RawContext r = CreateExampleBayer();
+        using RawContext r = ExampleBayer();
         LibRawData data = Marshal.PtrToStructure<LibRawData>(r.UnsafeGetHandle());
         data.OutputParams.OutputColor = (int)LibRawColorSpace.CameraLinear;
         Marshal.StructureToPtr(data, r.UnsafeGetHandle(), fDeleteOld: false);

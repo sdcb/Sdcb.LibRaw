@@ -4,7 +4,7 @@ using Xunit.Abstractions;
 
 namespace Sdcb.LibRaw.UnitTests.RawContextTests;
 
-public class ProcessTests
+public class ProcessTests : BaseTest
 {
     private readonly ITestOutputHelper _console;
 
@@ -97,22 +97,5 @@ public class ProcessTests
             Assert.True(File.Exists("test.jpg"));
             File.Delete("test.jpg");
         }
-    }
-
-    private RawContext ExampleFile() => RawContext.OpenFile("./examples/DSC02412.ARW");
-    private RawContext ExampleFileBuffer() => RawContext.FromBuffer(File.ReadAllBytes("./examples/DSC02412.ARW"));
-
-    private RawContext ExampleBayer()
-    {
-        const int width = 4;
-        const int height = 4;
-        ushort[] bayerData = new ushort[width * height]
-        {
-            127, 0, 0, 127,
-            0, 0, 0, 0,
-            0, 0, 0, 0,
-            255, 0, 0, 255,
-        };
-        return RawContext.OpenBayerData<ushort>(bayerData, width, height);
     }
 }

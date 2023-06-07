@@ -406,7 +406,7 @@ public static class LibRawNative
     /// <param name="fileName">The output file name.</param>
     /// <returns>The status of the operation.</returns>
     [DllImport(Dll, EntryPoint = "libraw_dcraw_thumb_writer")]
-    public static extern int WriteDcrawThumbnail(IntPtr data, string fileName);
+    public static extern LibRawError WriteDcrawThumbnail(IntPtr data, string fileName);
 
     /// <summary>
     /// Process the LibRaw data.
