@@ -96,4 +96,20 @@ public class DetailedPropTests : BaseTest
         r.CameraMultipler[3] = 15;
         Assert.Equal(new float[] { 5, 0, 0, 15 }, r.CameraMultipler);
     }
+
+    [Fact]
+    public void PreMultiplerTest()
+    {
+        using RawContext r = ExampleBayer();
+        Assert.Equal(new float[] { 1, 1, 1, 1 }, r.PreMultipler);
+    }
+
+    [Fact]
+    public void PreMultipler_CanBeSet()
+    {
+        using RawContext r = ExampleBayer();
+        r.PreMultipler[0] = 5;
+        r.PreMultipler[3] = 15;
+        Assert.Equal(new float[] { 5, 1, 1, 15 }, r.PreMultipler);
+    }
 }
