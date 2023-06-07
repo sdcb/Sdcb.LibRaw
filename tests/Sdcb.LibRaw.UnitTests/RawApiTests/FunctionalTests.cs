@@ -389,4 +389,25 @@ public class FunctionalTests : BaseCApiTest
             LibRawNative.Recycle(handle);
         }
     }
+
+    [Fact]
+    public void WhiteBalaceTest()
+    {
+        IntPtr handle = LibRawFromExampleFile();
+        try
+        {
+            float red = LibRawNative.GetCameraMultiplier(handle, 0);
+            float green = LibRawNative.GetCameraMultiplier(handle, 1);
+            float blue = LibRawNative.GetCameraMultiplier(handle, 2);
+            float green2 = LibRawNative.GetCameraMultiplier(handle, 3);
+            Assert.Equal(2024, red);
+            Assert.Equal(1024, green);
+            Assert.Equal(2164, blue);
+            Assert.Equal(1024, green2);
+        }
+        finally
+        {
+            LibRawNative.Recycle(handle);
+        }
+    }
 }
