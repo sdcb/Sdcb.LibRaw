@@ -4,14 +4,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace Sdcb.LibRaw;
+namespace Sdcb.LibRaw.Indexers;
 
-internal class WhiteBalanceCoeffIndexer : IReadOnlyList<float>
+internal class CameraMultiplerIndexer : IIndexer<float>
 {
     private readonly IntPtr _r;
     private bool _disposed;
 
-    public WhiteBalanceCoeffIndexer(IntPtr r, bool disposed)
+    public CameraMultiplerIndexer(IntPtr r, bool disposed)
     {
         _r = r;
         _disposed = disposed;

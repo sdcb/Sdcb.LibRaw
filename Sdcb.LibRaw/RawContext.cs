@@ -1,4 +1,5 @@
-﻿using Sdcb.LibRaw.Natives;
+﻿using Sdcb.LibRaw.Indexers;
+using Sdcb.LibRaw.Natives;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -116,7 +117,10 @@ public class RawContext : IDisposable
     }
 
     /// <summary>Provides access to white balance coefficients.</summary>
-    public IReadOnlyList<float> WhiteBalanceCoeff => new WhiteBalanceCoeffIndexer(_r);
+    /// <remarks>Corresponds to the C API function: libraw_get_cam_mul</remarks>
+    public IIndexer<float> CameraMultipler => new CameraMultiplerIndexer(_r, _disposed);
+
+
     #endregion
 
     /// <summary>Returns a pointer to the underlying native object.</summary>

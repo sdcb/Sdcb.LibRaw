@@ -84,7 +84,7 @@ public class DetailedPropTests : BaseTest
     public void WhiteBalanceTest()
     {
         using RawContext r = ExampleFile();
-        float[] data = r.WhiteBalanceCoeff.ToArray();
+        float[] data = r.CameraMultipler.ToArray();
         Assert.Equal(new float[] { 2024, 1024, 2164, 1024 }, data);
     }
 
@@ -92,8 +92,8 @@ public class DetailedPropTests : BaseTest
     public void WhiteBalance_Should_CanBeSet()
     {
         using RawContext r = ExampleBayer();
-        r.WhiteBalanceCoeff[0] = 5;
-        r.WhiteBalanceCoeff[3] = 15;
-        Assert.Equal(new float[] { 5, 0, 0, 15 }, r.WhiteBalanceCoeff);
+        r.CameraMultipler[0] = 5;
+        r.CameraMultipler[3] = 15;
+        Assert.Equal(new float[] { 5, 0, 0, 15 }, r.CameraMultipler);
     }
 }

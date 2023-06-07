@@ -43,6 +43,12 @@ public class ProcessTests : BaseTest
         Assert.Equal(83, d[5].R);
         Assert.Equal(255, d[15].B);
         Assert.Equal(255, d[12].G);
+
+        ctx.OutputTiff = true;
+        ctx.ProcessDcraw();
+        ctx.WriteDcrawPpmTiff("test2.tif");
+        Assert.True(File.Exists("test2.tif"));
+        File.Delete("test2.tif");
     }
 
     [Fact]
@@ -57,10 +63,6 @@ public class ProcessTests : BaseTest
         Assert.Equal("sony_arw2_load_raw()", ctx.DecoderInfo.DecoderName);
 
         ctx.Unpack();
-        ctx.OutputTiff = true;
-        ctx.ProcessDcraw();
-        ctx.WriteDcrawPpmTiff("test2.tif");
-        Assert.True(File.Exists("test2.tif"));
     }
 
     [Fact]
