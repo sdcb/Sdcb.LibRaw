@@ -63,9 +63,8 @@ public class RawContext : IDisposable
         }
     }
 
-    /// <summary>
-    /// Property representing whether to output tiff.
-    /// </summary>
+    /// <summary>Property representing whether to output tiff.</summary>
+    /// <remarks>Corresponds to the C API function: libraw_set_output_tif</remarks>
     public bool OutputTiff
     {
         get
@@ -81,9 +80,8 @@ public class RawContext : IDisposable
         }
     }
 
-    /// <summary>
-    /// Property representing output bits per sample.
-    /// </summary>
+    /// <summary>Property representing output bits per sample.</summary>
+    /// <remarks>Corresponds to the C API function: libraw_set_output_bps</remarks>
     public int OutputBitsPerSample
     {
         get
@@ -99,9 +97,8 @@ public class RawContext : IDisposable
         }
     }
 
-    /// <summary>
-    /// Property representing the output color space.
-    /// </summary>
+    /// <summary>Property representing the output color space.</summary>
+    /// <remarks>Corresponds to the C API function: libraw_set_output_color</remarks>
     public LibRawColorSpace OutputColorSpace
     {
         get
@@ -116,6 +113,9 @@ public class RawContext : IDisposable
             LibRawNative.SetOutputColorSpace(_r, value);
         }
     }
+
+    /// <summary>Provides access to white balance coefficients.</summary>
+    public WhiteBalanceCoeffIndexer WhiteBalanceCoeff => new WhiteBalanceCoeffIndexer(_r);
     #endregion
 
     /// <summary>Returns a pointer to the underlying native object.</summary>
