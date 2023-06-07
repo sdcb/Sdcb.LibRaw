@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace Sdcb.LibRaw;
 
-public class WhiteBalanceCoeffIndexer : IReadOnlyList<float>
+internal class WhiteBalanceCoeffIndexer : IReadOnlyList<float>
 {
     private readonly IntPtr _r;
 

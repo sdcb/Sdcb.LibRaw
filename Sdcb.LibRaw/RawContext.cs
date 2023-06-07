@@ -1,5 +1,6 @@
 ﻿using Sdcb.LibRaw.Natives;
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace Sdcb.LibRaw;
@@ -115,7 +116,7 @@ public class RawContext : IDisposable
     }
 
     /// <summary>Provides access to white balance coefficients.</summary>
-    public WhiteBalanceCoeffIndexer WhiteBalanceCoeff => new WhiteBalanceCoeffIndexer(_r);
+    public IReadOnlyList<float> WhiteBalanceCoeff => new WhiteBalanceCoeffIndexer(_r);
     #endregion
 
     /// <summary>Returns a pointer to the underlying native object.</summary>
