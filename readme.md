@@ -75,7 +75,7 @@ Mapped to class: `LibRawNative`:
 | LibRaw_dng_processing             | DngProcessing           |
 | LibRaw_output_flags               | OutputFlag              |
 | LibRaw_runtime_capabilities       | LibRawCapability        |
-| LibRaw_colorspace                 | ColorSpace              |
+| LibRaw_colorspace                 | ColorSpaceColorSpace    |
 | LibRaw_cameramaker_index          | CameraMakerIndex        |
 | LibRaw_camera_mounts              | CameraMount             |
 | LibRaw_camera_formats             | CameraFormat            |
