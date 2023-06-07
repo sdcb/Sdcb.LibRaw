@@ -247,7 +247,7 @@ public enum LibRawCapability
 /// <remarks>
 /// Original C API enumeration: LibRaw_colorspace
 /// </remarks>
-public enum ColorSpace
+public enum LibRawColorSpace
 {
     NotFound = 0,
     Srgb,

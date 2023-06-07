@@ -455,7 +455,7 @@ public static class LibRawNative
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="value">The output color space value.</param>
     [DllImport(Dll, EntryPoint = "libraw_set_output_color")]
-    public static extern void SetOutputColorSpace(IntPtr data, ColorSpace value);
+    public static extern void SetOutputColorSpace(IntPtr data, LibRawColorSpace value);
 
     /// <summary>
     /// Set the adjust maximum threshold for the LibRaw data.

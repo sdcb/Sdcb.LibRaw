@@ -33,6 +33,7 @@ public class RawContext : IDisposable
     /// </summary>
     public bool OutputTiff
     {
+        get => Marshal.PtrToStructure<LibRawData>(_r).OutputParams.OutputTiff != 0;
         set => LibRawNative.SetOutputTiff(_r, value ? 1 : 0);
     }
 
@@ -41,16 +42,22 @@ public class RawContext : IDisposable
     /// </summary>
     public int OutputBitsPerSample
     {
+        get => Marshal.PtrToStructure<LibRawData>(_r).OutputParams.OutputBps;
         set => LibRawNative.SetOutputBitsPerSample(_r, value);
     }
 
     /// <summary>
     /// Property representing the output color space.
     /// </summary>
-    public ColorSpace OutputColorSpace
+    public LibRawColorSpace OutputColorSpace
     {
+        get => (LibRawColorSpace)Marshal.PtrToStructure<LibRawData>(_r).OutputParams.OutputColor;
         set => LibRawNative.SetOutputColorSpace(_r, value);
     }
+
+    /// <summary>Returns a pointer to the underlying native object.</summary>
+    /// <returns>A pointer to the underlying native object.</returns>
+    public IntPtr UnsafeGetHandle() => _r;
 
 
     /// <summary>Gets the decoder information for the current RawContext object.</summary>
