@@ -124,7 +124,9 @@ public class RawContext : IDisposable
     /// <remarks>Corresponds to the C API function: libraw_get_pre_mul</remarks>
     public IIndexer<float> PreMultipler => new PreMultiplerIndexer(_r, _disposed);
 
-
+    /// <summary>Gets the <see cref="I2DIndexer{float}"/> instance for the RGB camera.</summary>
+    /// <remarks>Corresponds to the C API function: libraw_get_rgb_cam</remarks>
+    public I2DIndexer<float> RgbCamera => new RgbCameraIndexer(_r, _disposed);
     #endregion
 
     /// <summary>Returns a pointer to the underlying native object.</summary>

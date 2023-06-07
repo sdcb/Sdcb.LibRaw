@@ -112,4 +112,26 @@ public class DetailedPropTests : BaseTest
         r.PreMultipler[3] = 15;
         Assert.Equal(new float[] { 5, 1, 1, 15 }, r.PreMultipler);
     }
+
+    [Fact]
+    public void RgbCameraTest()
+    {
+        using RawContext r = ExampleFile();
+        Assert.Equal(new float[]
+        {
+            1.73653758f, -0.561196744f, -0.175340846f, 0.00000000f,
+            -0.153087497f, 1.55836308f, -0.405275583f, 0.00000000f,
+            0.0198776610f, -0.404100716f, 1.38422310f, 0.00000000f
+        }, r.RgbCamera);
+    }
+
+    [Fact]
+    public void RgbCamera_CanBeSet()
+    {
+        using RawContext r = ExampleBayer();
+        r.RgbCamera[1, 2] = 3.14f;
+        float[] expected = new float[12];
+        expected[1 * 4 + 2] = 3.14f; ;
+        Assert.Equal(expected, r.RgbCamera);
+    }
 }

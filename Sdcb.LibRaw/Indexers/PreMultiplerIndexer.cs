@@ -17,7 +17,6 @@ internal class PreMultiplerIndexer : IIndexer<float>
         _disposed = disposed;
     }
 
-    /// <summary>Gets or sets the white balance coefficients for the camera.</summary>
     /// <seealso cref="LibRawNative.GetPreMultiplier(IntPtr, int)"/> 
     /// <seealso cref="LibRawData"/>
     public float this[int index]
