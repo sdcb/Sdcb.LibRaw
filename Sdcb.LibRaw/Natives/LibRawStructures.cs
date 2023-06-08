@@ -1316,7 +1316,7 @@ public struct LibRawOutputParams
 
     /// <summary>-g</summary>
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
-    public double[] Gamm;
+    public double[] Gamma;
 
     /// <summary>-r mul0 mul1 mul2 mul3</summary>
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]

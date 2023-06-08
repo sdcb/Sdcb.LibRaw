@@ -95,7 +95,7 @@ public class MainStructureTest : BaseCApiTest
             Assert.Equal(new uint[] { 0, 0, 4294967295, 4294967295 }, p.Greybox);
             Assert.Equal(new uint[] { 0, 0, 4294967295, 4294967295 }, p.Cropbox);
             Assert.Equal(new double[] { 1.00000000000000, 1.000000000000000, 1.00000000000000, 1.00000000000000 }, p.Aber);
-            Assert.Equal(new double[] { 0.450000000000000, 4.5000000000000000, 0.0000000000000000, 0.0000000000000000, 0.0000000000000000, 0.0000000000000000 }, p.Gamm);
+            Assert.Equal(new double[] { 0.450000000000000, 4.5000000000000000, 0.0000000000000000, 0.0000000000000000, 0.0000000000000000, 0.0000000000000000 }, p.Gamma);
             Assert.Equal(new float[] { 0.00000000f, 0.00000000f, 0.00000000f, 0.00000000f }, p.UserMul);
             Assert.Equal(1.0f, p.Bright);
             Assert.Equal(0.0f, p.Threshold);

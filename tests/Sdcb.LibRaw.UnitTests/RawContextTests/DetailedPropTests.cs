@@ -194,4 +194,19 @@ public class DetailedPropTests : BaseTest
         r.AdjustMaximumThreshold = 0;
         Assert.Equal(0, r.AdjustMaximumThreshold);
     }
+
+    [Fact]
+    public void DefaultGamma()
+    {
+        using RawContext r = new(LibRawNative.Initialize());
+        Assert.Equal(new float[6] { 0.45f, 4.5f, 0, 0, 0, 0 }, r.Gamma);
+    }
+
+    [Fact]
+    public void Gamma_CanBeSet()
+    {
+        using RawContext r = new(LibRawNative.Initialize());
+        r.Gamma[5] = 3.14f;
+        Assert.Equal(new float[6] { 0.45f, 4.5f, 0, 0, 0, 3.14f }, r.Gamma);
+    }
 }

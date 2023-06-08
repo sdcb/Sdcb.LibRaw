@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 
 namespace Sdcb.LibRaw.Indexers;
 
-internal class RgbCameraIndexer : I2DIndexer<float>
+internal class RgbCamera2DIndexer : I2DIndexer<float>
 {
     private readonly IntPtr _r;
     private bool _disposed;
 
-    public RgbCameraIndexer(IntPtr r, bool disposed)
+    public RgbCamera2DIndexer(IntPtr r, bool disposed)
     {
         _r = r;
         _disposed = disposed;
