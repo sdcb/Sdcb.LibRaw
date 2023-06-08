@@ -228,6 +228,23 @@ public class RawContext : IDisposable
             LibRawNative.SetBrightness(_r, value);
         }
     }
+
+    /// <summary>Gets or sets the highlight mode.</summary>
+    /// <remarks>Corresponds to the C API function: libraw_set_highlight</remarks>
+    public int HighlightMode
+    {
+        get
+        {
+            CheckDisposed();
+            LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
+            return data.OutputParams.Highlight;
+        }
+        set
+        {
+            CheckDisposed();
+            LibRawNative.SetHighlightMode(_r, value);
+        }
+    }
     #endregion
 
     /// <summary>Returns a pointer to the underlying native object.</summary>

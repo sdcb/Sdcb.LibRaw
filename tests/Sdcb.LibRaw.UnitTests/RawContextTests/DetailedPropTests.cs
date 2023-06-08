@@ -239,4 +239,19 @@ public class DetailedPropTests : BaseTest
         r.Brightness = 1.2f;
         Assert.Equal(1.2f, r.Brightness);
     }
+
+    [Fact]
+    public void DefaultHightlightMode()
+    {
+        using RawContext r = new(LibRawNative.Initialize());
+        Assert.Equal(0, r.HighlightMode);
+    }
+
+    [Fact]
+    public void HightlightMode_CanBeSet()
+    {
+        using RawContext r = new(LibRawNative.Initialize());
+        r.HighlightMode = 2; // blend_highlights
+        Assert.Equal(2, r.HighlightMode);
+    }
 }
