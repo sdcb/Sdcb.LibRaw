@@ -128,4 +128,32 @@ public class ProcessTests : BaseTest
         Assert.Equal(127, d[14].B);
         Assert.Equal(255, d[12].G);
     }
+
+    [Fact]
+    public void NoInterpolationTest()
+    {
+        using RawContext ctx = ExampleBayer();
+
+        ctx.Unpack();
+        ctx.Interpolation = false;
+        ctx.ProcessDcraw();
+        using ProcessedImage image = ctx.MakeDcrawMemoryImage();
+        Span<RGB24> d = image.GetData<RGB24>();
+        StringBuilder sb = new StringBuilder();
+        for (int y = 0; y < ctx.RawHeight; ++y)
+        {
+            for (int x = 0; x < ctx.RawWidth; ++x)
+            {
+                RGB24 rgb = d[y * ctx.RawWidth + x];
+                sb.Append($"{rgb} ");
+            }
+            sb.AppendLine();
+        }
+        _console.WriteLine(sb.ToString());
+        Assert.Equal(179, d[0].R);
+        Assert.Equal(0, d[1].R);
+        Assert.Equal(0, d[5].R);
+        Assert.Equal(0, d[14].B);
+        Assert.Equal(255, d[12].G);
+    }
 }

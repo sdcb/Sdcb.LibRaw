@@ -245,6 +245,24 @@ public class RawContext : IDisposable
             LibRawNative.SetHighlightMode(_r, value);
         }
     }
+
+    /// <summary>Gets or sets the no interpolation flag for LibRawData's output params.</summary>
+    public bool Interpolation
+    {
+        get
+        {
+            CheckDisposed();
+            LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
+            return data.OutputParams.NoInterpolation == 0;
+        }
+        set
+        {
+            CheckDisposed();
+            LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
+            data.OutputParams.NoInterpolation = value ? 0 : 1;
+            Marshal.StructureToPtr(data, _r, fDeleteOld: false);
+        }
+    }
     #endregion
 
     /// <summary>Returns a pointer to the underlying native object.</summary>

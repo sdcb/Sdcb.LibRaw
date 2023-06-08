@@ -254,4 +254,19 @@ public class DetailedPropTests : BaseTest
         r.HighlightMode = 2; // blend_highlights
         Assert.Equal(2, r.HighlightMode);
     }
+
+    [Fact]
+    public void DefaultInterpolation()
+    {
+        using RawContext r = new(LibRawNative.Initialize());
+        Assert.True(r.Interpolation);
+    }
+
+    [Fact]
+    public void Interpolation_CanBeClose()
+    {
+        using RawContext r = new(LibRawNative.Initialize());
+        r.Interpolation = false;
+        Assert.False(r.Interpolation);
+    }
 }
