@@ -146,6 +146,10 @@ public class RawContext : IDisposable
             Marshal.StructureToPtr(data, _r, fDeleteOld: false);
         }
     }
+
+    /// <summary>Gets or set the user multiplier.</summary>
+    /// <remarks>Corresponds to the C API function: libraw_set_user_mul</remarks>
+    public IIndexer<float> UserMultiplier => new UserMultiplierIndexer(_r, _disposed);
     #endregion
 
     /// <summary>Returns a pointer to the underlying native object.</summary>

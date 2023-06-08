@@ -149,4 +149,19 @@ public class DetailedPropTests : BaseTest
         r.ColorMaximum = 123;
         Assert.Equal(123, r.ColorMaximum);
     }
+
+    [Fact]
+    public void UserMultiplierTest()
+    {
+        using RawContext r = ExampleBayer();
+        Assert.Equal(new float[] { 0, 0, 0, 0 }, r.UserMultiplier);
+    }
+
+    [Fact]
+    public void UserMultiplier_CanBeSet()
+    {
+        using RawContext r = ExampleBayer();
+        r.UserMultiplier[3] = 5;
+        Assert.Equal(new float[] { 0, 0, 0, 5 }, r.UserMultiplier);
+    }
 }
