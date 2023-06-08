@@ -150,6 +150,23 @@ public class RawContext : IDisposable
     /// <summary>Gets or set the user multiplier.</summary>
     /// <remarks>Corresponds to the C API function: libraw_set_user_mul</remarks>
     public IIndexer<float> UserMultiplier => new UserMultiplierIndexer(_r, _disposed);
+
+    /// <summary>Gets or sets the demosaic algorithm used to convert the raw data to an image.</summary>
+    /// <remarks>Corresponds to the C API function: libraw_set_demosaic</remarks>
+    public DemosaicAlgorithm DemosaicAlgorithm
+    {
+        get
+        {
+            CheckDisposed();
+            LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
+            return (DemosaicAlgorithm)data.OutputParams.UserQual;
+        }
+        set
+        {
+            CheckDisposed();
+            LibRawNative.SetDemosaicAlgorithm(_r, value);
+        }
+    }
     #endregion
 
     /// <summary>Returns a pointer to the underlying native object.</summary>

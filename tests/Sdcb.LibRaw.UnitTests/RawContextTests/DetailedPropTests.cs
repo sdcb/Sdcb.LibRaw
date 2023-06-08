@@ -164,4 +164,19 @@ public class DetailedPropTests : BaseTest
         r.UserMultiplier[3] = 5;
         Assert.Equal(new float[] { 0, 0, 0, 5 }, r.UserMultiplier);
     }
+
+    [Fact]
+    public void DefaultDemosaicAlgorithm()
+    {
+        using RawContext r = new(LibRawNative.Initialize());
+        Assert.Equal(DemosaicAlgorithm.Default, r.DemosaicAlgorithm);
+    }
+
+    [Fact]
+    public void DemosaicAlgorithm_CanBeSet()
+    {
+        using RawContext r = new(LibRawNative.Initialize());
+        r.DemosaicAlgorithm = DemosaicAlgorithm.AdaptiveAHD;
+        Assert.Equal(DemosaicAlgorithm.AdaptiveAHD, r.DemosaicAlgorithm);
+    }
 }

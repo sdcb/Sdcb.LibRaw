@@ -940,3 +940,31 @@ public enum ProcessedImageType
     Jpeg = 1,
     Bitmap = 2
 }
+
+/// <summary>Enumeration of demosaicing algorithms supported by the LibRaw library.</summary>
+public enum DemosaicAlgorithm
+{
+    /// <summary>Default algorithm, should be AHD(3).</summary>
+    Default = -1,
+
+    /// <summary>Linear interpolation</summary>
+    LinearInterpolation = 0,
+
+    /// <summary>(VNG)Variable Number of Gradients interpolation</summary>
+    VariableNumberOfGradients = 1,
+
+    /// <summary>(PPG)Patterned Pixel Grouping interpolation</summary>
+    PatternedPixelGrouping = 2,
+
+    /// <summary>(AHD)Adaptive Homogeneity-Directed interpolation</summary>
+    AdaptiveHomogeneityDirected = 3,
+
+    /// <summary>(DCB)Directional Correlation-Based interpolation</summary>
+    DirectionalCorrelationBased = 4,
+
+    /// <summary>(DHT)Direct Homogeneous Transformation interpolation</summary>
+    DirectHomogeneousTransformation = 11,
+
+    /// <summary>(AAHD)Adaptive AHD interpolation</summary>
+    AdaptiveAHD = 12
+}

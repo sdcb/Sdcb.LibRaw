@@ -447,7 +447,7 @@ public static class LibRawNative
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="value">The demosaic algorithm value.</param>
     [DllImport(Dll, EntryPoint = "libraw_set_demosaic")]
-    public static extern void SetDemosaicAlgorithm(IntPtr data, int value);
+    public static extern void SetDemosaicAlgorithm(IntPtr data, DemosaicAlgorithm value);
 
     /// <summary>
     /// Set the output color space for the LibRaw data.
