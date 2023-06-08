@@ -211,6 +211,23 @@ public class RawContext : IDisposable
             LibRawNative.SetAutoBrightnessCorrection(_r, value ? 0 : 1);
         }
     }
+
+    /// <summary>Gets or sets the brightness property.</summary>
+    /// <remarks>Corresponds to the C API function: libraw_set_bright</remarks>
+    public float Brightness
+    {
+        get
+        {
+            CheckDisposed();
+            LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
+            return data.OutputParams.Bright;
+        }
+        set
+        {
+            CheckDisposed();
+            LibRawNative.SetBrightness(_r, value);
+        }
+    }
     #endregion
 
     /// <summary>Returns a pointer to the underlying native object.</summary>

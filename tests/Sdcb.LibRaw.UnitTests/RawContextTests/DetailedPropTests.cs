@@ -224,4 +224,19 @@ public class DetailedPropTests : BaseTest
         r.AutoBright = false;
         Assert.False(r.AutoBright);
     }
+
+    [Fact]
+    public void DefaultBrightness()
+    {
+        using RawContext r = new(LibRawNative.Initialize());
+        Assert.Equal(1, r.Brightness);
+    }
+
+    [Fact]
+    public void Brightness_CanBeSet()
+    {
+        using RawContext r = new(LibRawNative.Initialize());
+        r.Brightness = 1.2f;
+        Assert.Equal(1.2f, r.Brightness);
+    }
 }
