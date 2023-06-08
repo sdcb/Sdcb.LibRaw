@@ -134,4 +134,19 @@ public class DetailedPropTests : BaseTest
         expected[1 * 4 + 2] = 3.14f; ;
         Assert.Equal(expected, r.RgbCamera);
     }
+
+    [Fact]
+    public void ColorMax()
+    {
+        using RawContext r = ExampleBayer();
+        Assert.Equal(65535, r.ColorMaximum);
+    }
+
+    [Fact]
+    public void ColorMax_CanBeSet()
+    {
+        using RawContext r = ExampleBayer();
+        r.ColorMaximum = 123;
+        Assert.Equal(123, r.ColorMaximum);
+    }
 }

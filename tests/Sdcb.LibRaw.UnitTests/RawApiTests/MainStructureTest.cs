@@ -211,7 +211,7 @@ public class MainStructureTest : BaseCApiTest
             V(LibRawNative.ProcessDcraw(ptr));
 
             LibRawData data = Marshal.PtrToStructure<LibRawData>(ptr);
-            LibRawColorData color = data.ColorData;
+            LibRawColorData color = data.Color;
             Assert.Equal(Enumerable.Range(0, 0x10000).Select(x => (ushort)x), color.Curve);
             Assert.Equal(new uint[LibRawNative.CBlackSize], color.CBlack);
             Assert.Equal(0u, color.Black);

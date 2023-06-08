@@ -127,6 +127,25 @@ public class RawContext : IDisposable
     /// <summary>Gets the <see cref="I2DIndexer{float}"/> instance for the RGB camera.</summary>
     /// <remarks>Corresponds to the C API function: libraw_get_rgb_cam</remarks>
     public I2DIndexer<float> RgbCamera => new RgbCameraIndexer(_r, _disposed);
+
+    /// <summary>Gets or set the maximum color.</summary>
+    /// <remarks>Corresponds to the C API function: libraw_get_color_maximum</remarks>
+    public int ColorMaximum
+    {
+        get
+        {
+            CheckDisposed();
+            return LibRawNative.GetColorMaximum(_r);
+        }
+        set
+        {
+            CheckDisposed();
+            if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive");
+            LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
+            data.Color.Maximum = (uint)value;
+            Marshal.StructureToPtr(data, _r, fDeleteOld: false);
+        }
+    }
     #endregion
 
     /// <summary>Returns a pointer to the underlying native object.</summary>

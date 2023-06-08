@@ -38,7 +38,7 @@ internal class RgbCameraIndexer : I2DIndexer<float>
                 throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range.");
 
             LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
-            data.ColorData.RgbCam[index] = value;
+            data.Color.RgbCam[index] = value;
             Marshal.StructureToPtr(data, _r, fDeleteOld: false);
         }
     }
@@ -62,7 +62,7 @@ internal class RgbCameraIndexer : I2DIndexer<float>
             if (y < 0 || y >= Width) throw new ArgumentOutOfRangeException(nameof(x), "Index is out of range.");
 
             LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
-            data.ColorData.RgbCam[y * Width + x] = value;
+            data.Color.RgbCam[y * Width + x] = value;
             Marshal.StructureToPtr(data, _r, fDeleteOld: false);
         }
     }

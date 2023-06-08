@@ -37,7 +37,7 @@ internal class CameraMultiplerIndexer : IIndexer<float>
                 throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range.");
 
             LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
-            data.ColorData.CamMul[index] = value;
+            data.Color.CamMul[index] = value;
             Marshal.StructureToPtr(data, _r, fDeleteOld: false);
         }
     }

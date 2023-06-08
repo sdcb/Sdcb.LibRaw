@@ -36,7 +36,7 @@ internal class PreMultiplerIndexer : IIndexer<float>
                 throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range.");
 
             LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
-            data.ColorData.PreMul[index] = value;
+            data.Color.PreMul[index] = value;
             Marshal.StructureToPtr(data, _r, fDeleteOld: false);
         }
     }

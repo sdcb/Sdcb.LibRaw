@@ -1677,7 +1677,7 @@ public struct LibRawData
 
     public LibRawWarning ProcessWarnings;
 
-    public LibRawColorData ColorData;
+    public LibRawColorData Color;
 
     public LibRawImageOtherParams OtherParams;
 
