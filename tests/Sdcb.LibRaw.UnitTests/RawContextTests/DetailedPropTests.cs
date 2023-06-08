@@ -179,4 +179,19 @@ public class DetailedPropTests : BaseTest
         r.DemosaicAlgorithm = DemosaicAlgorithm.AdaptiveAHD;
         Assert.Equal(DemosaicAlgorithm.AdaptiveAHD, r.DemosaicAlgorithm);
     }
+
+    [Fact]
+    public void DefaultAdjustMaxThreshold()
+    {
+        using RawContext r = new(LibRawNative.Initialize());
+        Assert.Equal(0.75f, r.AdjustMaximumThreshold);
+    }
+
+    [Fact]
+    public void AdjustMaxThreshold_CanBeSet()
+    {
+        using RawContext r = new(LibRawNative.Initialize());
+        r.AdjustMaximumThreshold = 0;
+        Assert.Equal(0, r.AdjustMaximumThreshold);
+    }
 }

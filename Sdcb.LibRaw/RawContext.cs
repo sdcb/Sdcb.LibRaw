@@ -167,6 +167,29 @@ public class RawContext : IDisposable
             LibRawNative.SetDemosaicAlgorithm(_r, value);
         }
     }
+
+    /// <summary>Gets or sets the automatic maximum adjustment threshold for the raw image data.</summary>
+    /// <remarks>
+    /// When set to 0, the automatic maximum adjustment is disabled. When set to a non-zero value, 
+    /// it represents the threshold relative to the sensor's maximum value. If the image's maximum value
+    /// exceeds this threshold, LibRaw will automatically reduce the image's brightness to prevent overexposure.
+    /// <para>Corresponds to the C API function: libraw_set_adjust_maximum_thr</para>
+    /// </remarks>
+    /// <value>A float representing the automatic maximum adjustment threshold.</value>
+    public float AdjustMaximumThreshold
+    {
+        get
+        {
+            CheckDisposed();
+            LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
+            return data.OutputParams.AdjustMaximumThr;
+        }
+        set
+        {
+            CheckDisposed();
+            LibRawNative.SetAdjustMaximumThreshold(_r, value);
+        }
+    }
     #endregion
 
     /// <summary>Returns a pointer to the underlying native object.</summary>
