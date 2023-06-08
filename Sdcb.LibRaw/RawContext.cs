@@ -95,6 +95,7 @@ public class RawContext : IDisposable
         set
         {
             CheckDisposed();
+            if (value % 8 != 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be a multiple of 8");
             LibRawNative.SetOutputBitsPerSample(_r, value);
         }
     }
