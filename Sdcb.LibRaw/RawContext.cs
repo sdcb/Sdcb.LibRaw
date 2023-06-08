@@ -194,6 +194,23 @@ public class RawContext : IDisposable
     /// <summary>Output gamma indexer</summary>
     /// <remarks>Corresponds to the C API function: libraw_set_gamma</remarks>
     public IIndexer<float> Gamma => new GammaIndexer(_r, _disposed);
+
+    /// <summary>Gets or sets a value indicating whether automatic brightness correction is enabled.</summary>
+    /// <remarks>Corresponds to the C API function: libraw_set_no_auto_bright</remarks>
+    public bool AutoBright
+    {
+        get
+        {
+            CheckDisposed();
+            LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
+            return data.OutputParams.NoAutoBright == 0;
+        }
+        set
+        {
+            CheckDisposed();
+            LibRawNative.SetAutoBrightnessCorrection(_r, value ? 0 : 1);
+        }
+    }
     #endregion
 
     /// <summary>Returns a pointer to the underlying native object.</summary>

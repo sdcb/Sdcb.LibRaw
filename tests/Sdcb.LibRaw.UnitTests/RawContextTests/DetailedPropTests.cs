@@ -209,4 +209,19 @@ public class DetailedPropTests : BaseTest
         r.Gamma[0] = 0.25f;
         Assert.Equal(new float[] { 0.25f, 4.5f }, r.Gamma);
     }
+
+    [Fact]
+    public void DefaultAutoBright()
+    {
+        using RawContext r = new(LibRawNative.Initialize());
+        Assert.True(r.AutoBright);
+    }
+
+    [Fact]
+    public void AutoBright_CanBeSet()
+    {
+        using RawContext r = new(LibRawNative.Initialize());
+        r.AutoBright = false;
+        Assert.False(r.AutoBright);
+    }
 }
