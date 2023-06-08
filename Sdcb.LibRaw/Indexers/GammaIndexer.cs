@@ -40,7 +40,7 @@ internal class GammaIndexer : IIndexer<float>
         }
     }
 
-    public int Count => 6;
+    public int Count => 2;
 
     public IEnumerator<float> GetEnumerator()
     {

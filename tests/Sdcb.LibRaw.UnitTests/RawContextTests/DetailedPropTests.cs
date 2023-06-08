@@ -199,14 +199,14 @@ public class DetailedPropTests : BaseTest
     public void DefaultGamma()
     {
         using RawContext r = new(LibRawNative.Initialize());
-        Assert.Equal(new float[6] { 0.45f, 4.5f, 0, 0, 0, 0 }, r.Gamma);
+        Assert.Equal(new float[2] { 0.45f, 4.5f }, r.Gamma);
     }
 
     [Fact]
     public void Gamma_CanBeSet()
     {
         using RawContext r = new(LibRawNative.Initialize());
-        r.Gamma[5] = 3.14f;
-        Assert.Equal(new float[6] { 0.45f, 4.5f, 0, 0, 0, 3.14f }, r.Gamma);
+        r.Gamma[0] = 0.25f;
+        Assert.Equal(new float[] { 0.25f, 4.5f }, r.Gamma);
     }
 }
