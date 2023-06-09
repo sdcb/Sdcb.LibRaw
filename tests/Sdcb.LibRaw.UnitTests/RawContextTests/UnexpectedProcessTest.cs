@@ -12,7 +12,7 @@ public class UnexpectedProcessTest : BaseTest
     public void GetThumbInNonThumbImage_Should_Error()
     {
         using RawContext r = ExampleBayer();
-        LibRawException ex = Assert.Throws<LibRawException>(() => r.UnpackThunbnail());
+        LibRawException ex = Assert.Throws<LibRawException>(() => r.UnpackThumbnail());
         Assert.Equal(LibRawError.RequestForNonexistentThumbnail, ex.ErrorCode);
     }
 

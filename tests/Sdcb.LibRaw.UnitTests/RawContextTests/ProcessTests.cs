@@ -82,7 +82,7 @@ public class ProcessTests : BaseTest
     {
         using RawContext ctx = ExampleFile();
         {
-            ctx.UnpackThunbnail(0);
+            ctx.UnpackThumbnail(0);
             using ProcessedImage image0 = ctx.MakeDcrawMemoryThumbnail();
             Assert.Equal(ProcessedImageType.Jpeg, image0.ImageType);
             Assert.Equal(386458, image0.GetData<byte>().Length);
@@ -91,7 +91,7 @@ public class ProcessTests : BaseTest
             File.Delete("test.jpg");
         }
         {
-            ctx.UnpackThunbnail(1);
+            ctx.UnpackThumbnail(1);
             using ProcessedImage image1 = ctx.MakeDcrawMemoryThumbnail();
             Assert.Equal(ProcessedImageType.Jpeg, image1.ImageType);
             Assert.Equal(8817, image1.GetData<byte>().Length);
@@ -160,7 +160,7 @@ public class ProcessTests : BaseTest
     public void ThumbnailShouldHaveWidth()
     {
         using RawContext ctx = ExampleFile();
-        ctx.UnpackThunbnail(1);
+        ctx.UnpackThumbnail(1);
         using ProcessedImage image0 = ctx.MakeDcrawMemoryThumbnail();
         Assert.Equal(ProcessedImageType.Jpeg, image0.ImageType);
         Assert.Equal(160, image0.Width);

@@ -14,7 +14,7 @@ public class RawContext : IDisposable
     private IntPtr _r;
     private bool _disposed;
 
-    private LibRawData RawData
+    internal protected LibRawData RawData
     {
         get => Marshal.PtrToStructure<LibRawData>(_r);
         set => Marshal.StructureToPtr(value, _r, fDeleteOld: false);
@@ -479,13 +479,13 @@ public class RawContext : IDisposable
     }
 
     /// <summary>Unpacks the thumbnail image from the opened file into memory.</summary>
-    /// <param name="index">The index of the thumbnail to unpack (default 0).</param>
+    /// <param name="thumbnailIndex">The index of the thumbnail to unpack (default 0).</param>
     /// <exception cref="LibRawException">Thrown if there is an error during the dcraw process.</exception>
     /// <remarks>Corresponds to the C API function: libraw_unpack_thumb</remarks>
-    public void UnpackThunbnail(int index = 0)
+    public void UnpackThumbnail(int thumbnailIndex = 0)
     {
         CheckDisposed();
-        LibRawException.ThrowIfFailed(LibRawNative.UnpackThumbnailExtended(_r, index));
+        LibRawException.ThrowIfFailed(LibRawNative.UnpackThumbnailExtended(_r, thumbnailIndex));
     }
 
     /// <summary>Converts the raw data into a processed image.</summary>
