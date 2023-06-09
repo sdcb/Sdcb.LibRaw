@@ -14,6 +14,12 @@ public class RawContext : IDisposable
     private IntPtr _r;
     private bool _disposed;
 
+    private LibRawData RawData
+    {
+        get => Marshal.PtrToStructure<LibRawData>(_r);
+        set => Marshal.StructureToPtr(value, _r, fDeleteOld: false);
+    }
+
     private void CheckDisposed()
     {
         if (_disposed)
@@ -72,7 +78,7 @@ public class RawContext : IDisposable
         get
         {
             CheckDisposed();
-            return Marshal.PtrToStructure<LibRawData>(_r).OutputParams.OutputTiff;
+            return RawData.OutputParams.OutputTiff;
         }
 
         set
@@ -89,7 +95,7 @@ public class RawContext : IDisposable
         get
         {
             CheckDisposed();
-            return Marshal.PtrToStructure<LibRawData>(_r).OutputParams.OutputBps;
+            return RawData.OutputParams.OutputBps;
         }
 
         set
@@ -107,7 +113,7 @@ public class RawContext : IDisposable
         get
         {
             CheckDisposed();
-            return (LibRawColorSpace)Marshal.PtrToStructure<LibRawData>(_r).OutputParams.OutputColor;
+            return RawData.OutputParams.OutputColor;
         }
 
         set
@@ -142,9 +148,9 @@ public class RawContext : IDisposable
         {
             CheckDisposed();
             if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive");
-            LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
+            LibRawData data = RawData;
             data.Color.Maximum = (uint)value;
-            Marshal.StructureToPtr(data, _r, fDeleteOld: false);
+            RawData = data;
         }
     }
 
@@ -159,8 +165,7 @@ public class RawContext : IDisposable
         get
         {
             CheckDisposed();
-            LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
-            return (DemosaicAlgorithm)data.OutputParams.UserQual;
+            return (DemosaicAlgorithm)RawData.OutputParams.UserQual;
         }
         set
         {
@@ -182,8 +187,7 @@ public class RawContext : IDisposable
         get
         {
             CheckDisposed();
-            LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
-            return data.OutputParams.AdjustMaximumThr;
+            return RawData.OutputParams.AdjustMaximumThr;
         }
         set
         {
@@ -203,8 +207,7 @@ public class RawContext : IDisposable
         get
         {
             CheckDisposed();
-            LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
-            return !data.OutputParams.NoAutoBright;
+            return !RawData.OutputParams.NoAutoBright;
         }
         set
         {
@@ -220,8 +223,7 @@ public class RawContext : IDisposable
         get
         {
             CheckDisposed();
-            LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
-            return data.OutputParams.Brightness;
+            return RawData.OutputParams.Brightness;
         }
         set
         {
@@ -237,31 +239,12 @@ public class RawContext : IDisposable
         get
         {
             CheckDisposed();
-            LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
-            return data.OutputParams.Highlight;
+            return RawData.OutputParams.Highlight;
         }
         set
         {
             CheckDisposed();
             LibRawNative.SetHighlightMode(_r, value);
-        }
-    }
-
-    /// <summary>Gets or sets the no interpolation flag for LibRawData's output params.</summary>
-    public bool Interpolation
-    {
-        get
-        {
-            CheckDisposed();
-            LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
-            return data.OutputParams.NoInterpolation == 0;
-        }
-        set
-        {
-            CheckDisposed();
-            LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
-            data.OutputParams.NoInterpolation = value ? 0 : 1;
-            Marshal.StructureToPtr(data, _r, fDeleteOld: false);
         }
     }
     #endregion
@@ -508,10 +491,29 @@ public class RawContext : IDisposable
     /// <summary>Converts the raw data into a processed image.</summary>
     /// <exception cref="LibRawException" />
     /// <remarks>Corresponds to the C API function: libraw_dcraw_process</remarks>
-    public void ProcessDcraw()
+    public void ProcessDcraw(Action<OutputParams>? configure = null)
     {
         CheckDisposed();
-        LibRawException.ThrowIfFailed(LibRawNative.ProcessDcraw(_r));
+        if (configure != null)
+        {
+            LibRawData data = RawData;
+            OutputParams p = OutputParams.FromLibRaw(data.OutputParams);
+            configure(p);
+            data.OutputParams = p.ToLibRaw();
+            RawData = data;
+            try
+            {
+                LibRawException.ThrowIfFailed(LibRawNative.ProcessDcraw(_r));
+            }
+            finally
+            {
+                OutputParams.FreeLibRawStrings(data.OutputParams);
+            }
+        }
+        else
+        {
+            LibRawException.ThrowIfFailed(LibRawNative.ProcessDcraw(_r));
+        }
     }
 
     /// <summary>Converts the raw data into a processed image.</summary>
@@ -540,7 +542,7 @@ public class RawContext : IDisposable
         LibRawException.ThrowIfFailed(errorCode);
 
         LibRawProcessedImage* image = (LibRawProcessedImage*)rawImage;
-        LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
+        LibRawData data = RawData;
         if (image->Width == 0)
         {
             image->Width = data.Thumbnail.Width;

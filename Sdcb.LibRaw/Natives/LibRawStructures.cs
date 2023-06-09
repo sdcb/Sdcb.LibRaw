@@ -1352,7 +1352,7 @@ public struct LibRawOutputParams
     public bool UseCameraMatrix;
 
     /// <summary>Output color space.</summary>
-    public int OutputColor;
+    public LibRawColorSpace OutputColor;
 
     /// <summary>Output profile filename.</summary>
     public IntPtr OutputProfile;
@@ -1385,7 +1385,7 @@ public struct LibRawOutputParams
     public int UserBlack;
 
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-    public int[] UserCblack;
+    public int[] UserCBlack;
 
     /// <summary>Custom saturation level.</summary>
     public int UserSaturation;
@@ -1426,7 +1426,8 @@ public struct LibRawOutputParams
     public bool NoAutoScale;
 
     /// <summary>Disable image interpolation.</summary>
-    public int NoInterpolation;
+    [MarshalAs(UnmanagedType.Bool)]
+    public bool NoInterpolation;
 }
 
 /// <remarks>Original C API struct: libraw_raw_unpack_params_t</remarks>

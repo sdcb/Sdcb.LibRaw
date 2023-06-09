@@ -33,8 +33,8 @@ public unsafe class ProcessedImage : IDisposable
     /// <summary>Gets the bits value of the image.</summary>
     public int Bits => _image->Bits;
 
-    /// <summary>Gets the image data ptr.</summary>
-    public IntPtr DataPtr => (IntPtr)(&_image->FirstData);
+    /// <summary>Gets the image data length in byte.</summary>
+    public int DataSize => _image->DataSize;
 
     /// <summary>Gets the data as an array-like <see cref="Span{T}"/> object.</summary>
     /// <typeparam name="T">The type of the data.</typeparam>

@@ -250,7 +250,7 @@ public enum LibRawCapability
 public enum LibRawColorSpace
 {
     NotFound = 0,
-    Srgb,
+    SRGB,
     AdobeRgb,
     WideGamutRgb,
     ProPhotoRgb,

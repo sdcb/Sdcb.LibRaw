@@ -59,7 +59,7 @@ public class DetailedPropTests : BaseTest
     public void DefaultOutputColorSpaceShouldBeFalse()
     {
         using RawContext r = ExampleBayer();
-        Assert.Equal(LibRawColorSpace.Srgb, r.OutputColorSpace);
+        Assert.Equal(LibRawColorSpace.SRGB, r.OutputColorSpace);
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class DetailedPropTests : BaseTest
     {
         using RawContext r = ExampleBayer();
         LibRawData data = Marshal.PtrToStructure<LibRawData>(r.UnsafeGetHandle());
-        data.OutputParams.OutputColor = (int)LibRawColorSpace.CameraLinear;
+        data.OutputParams.OutputColor = LibRawColorSpace.CameraLinear;
         Marshal.StructureToPtr(data, r.UnsafeGetHandle(), fDeleteOld: false);
         Assert.Equal(LibRawColorSpace.CameraLinear, r.OutputColorSpace);
     }
@@ -253,20 +253,5 @@ public class DetailedPropTests : BaseTest
         using RawContext r = new(LibRawNative.Initialize());
         r.HighlightMode = 2; // blend_highlights
         Assert.Equal(2, r.HighlightMode);
-    }
-
-    [Fact]
-    public void DefaultInterpolation()
-    {
-        using RawContext r = new(LibRawNative.Initialize());
-        Assert.True(r.Interpolation);
-    }
-
-    [Fact]
-    public void Interpolation_CanBeClose()
-    {
-        using RawContext r = new(LibRawNative.Initialize());
-        r.Interpolation = false;
-        Assert.False(r.Interpolation);
     }
 }

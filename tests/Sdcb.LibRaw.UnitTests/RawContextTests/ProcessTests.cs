@@ -135,8 +135,7 @@ public class ProcessTests : BaseTest
         using RawContext ctx = ExampleBayer();
 
         ctx.Unpack();
-        ctx.Interpolation = false;
-        ctx.ProcessDcraw();
+        ctx.ProcessDcraw(c => c.Interpolation = false);
         using ProcessedImage image = ctx.MakeDcrawMemoryImage();
         Span<RGB24> d = image.GetData<RGB24>();
         StringBuilder sb = new StringBuilder();
@@ -164,6 +163,7 @@ public class ProcessTests : BaseTest
         ctx.UnpackThunbnail(1);
         using ProcessedImage image0 = ctx.MakeDcrawMemoryThumbnail();
         Assert.Equal(ProcessedImageType.Jpeg, image0.ImageType);
-        Assert.NotEqual(0, image0.Width);
+        Assert.Equal(160, image0.Width);
+        Assert.Equal(120, image0.Height);
     }
 }

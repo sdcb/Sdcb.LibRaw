@@ -105,7 +105,7 @@ public class MainStructureTest : BaseCApiTest
             Assert.False(p.UseAutoWb);
             Assert.False(p.UseCameraWb);
             Assert.True(p.UseCameraMatrix);
-            Assert.Equal(1, p.OutputColor);
+            Assert.Equal(LibRawColorSpace.SRGB, p.OutputColor);
             Assert.Equal(IntPtr.Zero, p.OutputProfile);
             Assert.Equal(IntPtr.Zero, p.CameraProfile);
             Assert.Equal(IntPtr.Zero, p.BadPixels);
@@ -116,7 +116,7 @@ public class MainStructureTest : BaseCApiTest
             Assert.Equal(-1, p.UserFlip);
             Assert.Equal(-1, p.UserQual);
             Assert.Equal(-1, p.UserBlack);
-            Assert.Equal(new int[] { -1000001, -1000001, -1000001, -1000001 }, p.UserCblack);
+            Assert.Equal(new int[] { -1000001, -1000001, -1000001, -1000001 }, p.UserCBlack);
             Assert.Equal(-1, p.UserSaturation);
             Assert.Equal(0, p.MedianPasses);
             Assert.Equal((float)0.00999999978, p.AutoBrightThr);
@@ -131,7 +131,7 @@ public class MainStructureTest : BaseCApiTest
             Assert.Equal(1.0f, p.ExpShift);
             Assert.Equal(0.0f, p.ExpPreser);
             Assert.False(p.NoAutoScale);
-            Assert.Equal(0, p.NoInterpolation);
+            Assert.False(p.NoInterpolation);
         }
         finally
         {
