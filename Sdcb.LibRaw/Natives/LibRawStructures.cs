@@ -1355,20 +1355,16 @@ public struct LibRawOutputParams
     public int OutputColor;
 
     /// <summary>Output profile filename.</summary>
-    [MarshalAs(UnmanagedType.LPStr)]
-    public string OutputProfile;
+    public IntPtr OutputProfile;
 
     /// <summary>Camera profile filename.</summary>
-    [MarshalAs(UnmanagedType.LPStr)]
-    public string CameraProfile;
+    public IntPtr CameraProfile;
 
     /// <summary>Bad pixel filename (dead or hot pixels).</summary>
-    [MarshalAs(UnmanagedType.LPStr)]
-    public string BadPixels;
+    public IntPtr BadPixels;
 
     /// <summary>Dark frame filename for noise reduction.</summary>
-    [MarshalAs(UnmanagedType.LPStr)]
-    public string DarkFrame;
+    public IntPtr DarkFrame;
 
     /// <summary>Output bits per sample. 8 or 16.</summary>
     public int OutputBps;

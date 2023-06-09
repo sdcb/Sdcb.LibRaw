@@ -106,10 +106,10 @@ public class MainStructureTest : BaseCApiTest
             Assert.False(p.UseCameraWb);
             Assert.True(p.UseCameraMatrix);
             Assert.Equal(1, p.OutputColor);
-            Assert.Null(p.OutputProfile);
-            Assert.Null(p.CameraProfile);
-            Assert.Null(p.BadPixels);
-            Assert.Null(p.DarkFrame);
+            Assert.Equal(IntPtr.Zero, p.OutputProfile);
+            Assert.Equal(IntPtr.Zero, p.CameraProfile);
+            Assert.Equal(IntPtr.Zero, p.BadPixels);
+            Assert.Equal(IntPtr.Zero, p.DarkFrame);
             Assert.Equal(8, p.OutputBps);
             Assert.False(p.OutputTiff);
             Assert.Equal(0, p.OutputFlags);
