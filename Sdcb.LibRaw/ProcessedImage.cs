@@ -3,9 +3,7 @@ using System;
 
 namespace Sdcb.LibRaw;
 
-/// <summary>
-/// Represents a processed image.
-/// </summary>
+/// <summary>Represents a processed image.</summary>
 public unsafe class ProcessedImage : IDisposable
 {
     private LibRawProcessedImage* _image;
@@ -15,6 +13,40 @@ public unsafe class ProcessedImage : IDisposable
     public ProcessedImage(LibRawProcessedImage* image)
     {
         _image = image;
+    }
+
+    /// <summary>Gets a value indicating whether this instance has been disposed.</summary>
+    public bool Disposed => _image == null;
+
+    /// <summary>Gets the image format.</summary>
+    public ProcessedImageType ImageType => _image->Type;
+
+    /// <summary>Gets the image height.</summary>
+    public int Height => _image->Height;
+
+    /// <summary>Gets the image weight.</summary>
+    public int Width => _image->Width;
+
+    /// <summary>Gets the number of colors in the image.</summary>
+    public int Colors => _image->Colors;
+
+    /// <summary>Gets the bits value of the image.</summary>
+    public int Bits => _image->Bits;
+
+    /// <summary>Gets the image data ptr.</summary>
+    public IntPtr DataPtr => (IntPtr)(&_image->FirstData);
+
+    /// <summary>Gets the data as an array-like <see cref="Span{T}"/> object.</summary>
+    /// <typeparam name="T">The type of the data.</typeparam>
+    /// <returns>The data in a <see cref="Span{T}"/> object.</returns>
+    public Span<T> GetData<T>() => _image->GetData<T>();
+
+    #region Dispose Pattern
+
+    /// <summary>Allows the finalizer to free memory used by this instance.</summary>
+    ~ProcessedImage()
+    {
+        Dispose(false);
     }
 
     /// <inheritdoc/>
@@ -44,35 +76,5 @@ public unsafe class ProcessedImage : IDisposable
         _image = null;
     }
 
-    /// <summary>Gets a value indicating whether this instance has been disposed.</summary>
-    public bool Disposed => _image == null;
-
-    /// <summary>Gets the image format.</summary>
-    public ProcessedImageType ImageType => _image->Type;
-
-    /// <summary>Gets the image height.</summary>
-    public int Height => _image->Height;
-
-    /// <summary>Gets the image weight.</summary>
-    public int Width => _image->Width;
-
-    /// <summary>Gets the number of colors in the image.</summary>
-    public int Colors => _image->Colors;
-
-    /// <summary>Gets the bits value of the image.</summary>
-    public int Bits => _image->Bits;
-
-    /// <summary>Gets the image data ptr.</summary>
-    public IntPtr DataPtr => (IntPtr)(&_image->FirstData);
-
-    /// <summary>Gets the data as an array-like <see cref="Span{T}"/> object.</summary>
-    /// <typeparam name="T">The type of the data.</typeparam>
-    /// <returns>The data in a <see cref="Span{T}"/> object.</returns>
-    public Span<T> GetData<T>() => _image->GetData<T>();
-
-    /// <summary>Allows the finalizer to free memory used by this instance.</summary>
-    ~ProcessedImage()
-    {
-        Dispose(false);
-    }
+    #endregion
 }
