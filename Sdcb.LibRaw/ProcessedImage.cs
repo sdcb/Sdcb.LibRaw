@@ -27,8 +27,8 @@ public unsafe class ProcessedImage : IDisposable
     /// <summary>Gets the image weight.</summary>
     public int Width => _image->Width;
 
-    /// <summary>Gets the number of colors in the image.</summary>
-    public int Colors => _image->Colors;
+    /// <summary>Gets the number of color channels in the image.</summary>
+    public int Channels => _image->Colors;
 
     /// <summary>Gets the bits value of the image.</summary>
     public int Bits => _image->Bits;

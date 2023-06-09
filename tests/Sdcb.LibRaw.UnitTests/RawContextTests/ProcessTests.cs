@@ -156,4 +156,14 @@ public class ProcessTests : BaseTest
         Assert.Equal(0, d[14].B);
         Assert.Equal(255, d[12].G);
     }
+
+    [Fact]
+    public void ThumbnailShouldHaveWidth()
+    {
+        using RawContext ctx = ExampleFile();
+        ctx.UnpackThunbnail(1);
+        using ProcessedImage image0 = ctx.MakeDcrawMemoryThumbnail();
+        Assert.Equal(ProcessedImageType.Jpeg, image0.ImageType);
+        Assert.NotEqual(0, image0.Width);
+    }
 }
