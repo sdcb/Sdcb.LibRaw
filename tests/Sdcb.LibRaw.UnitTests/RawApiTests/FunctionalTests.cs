@@ -10,7 +10,7 @@ public class FunctionalTests : BaseCApiTest
 {
     public FunctionalTests(ITestOutputHelper console) : base(console)
     {
-    }    
+    }
 
     [Fact]
     public void InitRecycleTest()
@@ -390,6 +390,9 @@ public class FunctionalTests : BaseCApiTest
             LibRawNative.SetOutputTiff(handle, 1);
             LibRawNative.SetGamma(handle, 0, 0.55f);
             V(LibRawNative.Unpack(handle));
+            LibRawData data = Marshal.PtrToStructure<LibRawData>(handle);
+            data.OutputParams.HalfSize = true;
+            Marshal.StructureToPtr(data, handle, fDeleteOld: false);
             V(LibRawNative.ProcessDcraw(handle));
             V(LibRawNative.WriteDcrawPpmTiff(handle, "test.tif"));
             Assert.True(File.Exists("test.tif"));

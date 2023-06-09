@@ -1329,22 +1329,27 @@ public struct LibRawOutputParams
     public float Threshold;
 
     /// <summary>-h</summary>
-    public int HalfSize;
+    [MarshalAs(UnmanagedType.Bool)]
+    public bool HalfSize;
 
     /// <summary>-f</summary>
-    public int FourColorRgb;
+    [MarshalAs(UnmanagedType.Bool)]
+    public bool FourColorRgb;
 
     /// <summary>-H</summary>
     public int Highlight;
 
     /// <summary>-a</summary>
-    public int UseAutoWb;
+    [MarshalAs(UnmanagedType.Bool)]
+    public bool UseAutoWb;
 
     /// <summary>-w</summary>
-    public int UseCameraWb;
+    [MarshalAs(UnmanagedType.Bool)] 
+    public bool UseCameraWb;
 
     /// <summary>+M/-M</summary>
-    public int UseCameraMatrix;
+    [MarshalAs(UnmanagedType.Bool)]
+    public bool UseCameraMatrix;
 
     /// <summary>-o</summary>
     public int OutputColor;
@@ -1369,7 +1374,8 @@ public struct LibRawOutputParams
     public int OutputBps;
 
     /// <summary>-T</summary>
-    public int OutputTiff;
+    [MarshalAs(UnmanagedType.Bool)]
+    public bool OutputTiff;
 
     public int OutputFlags;
 
@@ -1396,10 +1402,12 @@ public struct LibRawOutputParams
     public float AdjustMaximumThr;
 
     /// <summary>-W</summary>
-    public int NoAutoBright;
+    [MarshalAs(UnmanagedType.Bool)]
+    public bool NoAutoBright;
 
     /// <summary>-j</summary>
-    public int UseFujiRotate;
+    [MarshalAs(UnmanagedType.Bool)]
+    public bool UseFujiRotate;
 
     public int GreenMatching;
 
@@ -1410,14 +1418,16 @@ public struct LibRawOutputParams
 
     public int FbddNoiserd;
 
-    public int ExpCorrec;
+    [MarshalAs(UnmanagedType.Bool)]
+    public bool ExpCorrec;
 
     public float ExpShift;
 
     public float ExpPreser;
 
     /// <summary>Disable Auto-scale</summary>
-    public int NoAutoScale;
+    [MarshalAs(UnmanagedType.Bool)]
+    public bool NoAutoScale;
 
     /// <summary>Disable intepolation</summary>
     public int NoInterpolation;
