@@ -27,7 +27,7 @@ public class UnexpectedProcessTest : BaseTest
     public void DcprocessWithoutUnpack_Should_Error()
     {
         using RawContext r = ExampleBayer();
-        LibRawException ex = Assert.Throws<LibRawException>(() => r.ProcessDcraw());
+        LibRawException ex = Assert.Throws<LibRawException>(() => r.DcrawProcess());
         Assert.Equal(LibRawError.OutOfOrderCall, ex.ErrorCode);
     }
 

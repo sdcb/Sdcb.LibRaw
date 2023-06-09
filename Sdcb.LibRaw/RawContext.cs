@@ -491,7 +491,7 @@ public class RawContext : IDisposable
     /// <summary>Converts the raw data into a processed image.</summary>
     /// <exception cref="LibRawException" />
     /// <remarks>Corresponds to the C API function: libraw_dcraw_process</remarks>
-    public void ProcessDcraw(Action<OutputParams>? configure = null)
+    public void DcrawProcess(Action<OutputParams>? configure = null)
     {
         CheckDisposed();
         if (configure != null)

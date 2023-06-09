@@ -25,7 +25,7 @@ public class ProcessTests : BaseTest
         Assert.Equal("unpacked_load_raw()", ctx.DecoderInfo.DecoderName);
 
         ctx.Unpack();
-        ctx.ProcessDcraw();
+        ctx.DcrawProcess();
         using ProcessedImage image = ctx.MakeDcrawMemoryImage();
         Span<RGB24> d = image.GetData<RGB24>();
         StringBuilder sb = new StringBuilder();
@@ -45,7 +45,7 @@ public class ProcessTests : BaseTest
         Assert.Equal(255, d[12].G);
 
         ctx.OutputTiff = true;
-        ctx.ProcessDcraw();
+        ctx.DcrawProcess();
         ctx.WriteDcrawPpmTiff("test2.tif");
         Assert.True(File.Exists("test2.tif"));
         File.Delete("test2.tif");
@@ -108,7 +108,7 @@ public class ProcessTests : BaseTest
 
         ctx.Unpack();
         ctx.Gamma[0] = 1;
-        ctx.ProcessDcraw();
+        ctx.DcrawProcess();
         using ProcessedImage image = ctx.MakeDcrawMemoryImage();
         Span<RGB24> d = image.GetData<RGB24>();
         StringBuilder sb = new StringBuilder();
@@ -135,7 +135,7 @@ public class ProcessTests : BaseTest
         using RawContext ctx = ExampleBayer();
 
         ctx.Unpack();
-        ctx.ProcessDcraw(c => c.Interpolation = false);
+        ctx.DcrawProcess(c => c.Interpolation = false);
         using ProcessedImage image = ctx.MakeDcrawMemoryImage();
         Span<RGB24> d = image.GetData<RGB24>();
         StringBuilder sb = new StringBuilder();
@@ -165,5 +165,16 @@ public class ProcessTests : BaseTest
         Assert.Equal(ProcessedImageType.Jpeg, image0.ImageType);
         Assert.Equal(160, image0.Width);
         Assert.Equal(120, image0.Height);
+    }
+
+    [Fact]
+    public void CropTest()
+    {
+        using RawContext ctx = ExampleBayer();
+        ctx.Unpack();
+        ctx.DcrawProcess(c => c.Cropbox = new System.Drawing.Rectangle(0, 0, 2, 3));
+        using ProcessedImage image = ctx.MakeDcrawMemoryImage();
+        Assert.Equal(2, image.Width);
+        Assert.Equal(3, image.Height);
     }
 }
