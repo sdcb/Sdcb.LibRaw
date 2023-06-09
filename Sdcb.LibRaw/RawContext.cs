@@ -540,6 +540,19 @@ public class RawContext : IDisposable
         LibRawException.ThrowIfFailed(errorCode);
 
         LibRawProcessedImage* image = (LibRawProcessedImage*)rawImage;
+        LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
+        if (image->Width == 0)
+        {
+            image->Width = data.Thumbnail.Width;
+        }
+        if (image->Height == 0)
+        {
+            image->Height = data.Thumbnail.Height;
+        }
+        if (image->Colors == 0)
+        {
+            image->Colors = (ushort)data.Thumbnail.Colors;
+        }
         return new ProcessedImage(image); // need to dispose by user
     }
 
