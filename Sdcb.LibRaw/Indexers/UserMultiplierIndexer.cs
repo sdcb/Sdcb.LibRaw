@@ -28,7 +28,7 @@ internal class UserMultiplierIndexer : IIndexer<float>
                 throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range.");
 
             LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
-            return data.OutputParams.UserMul[index];
+            return data.OutputParams.UserMultipliers[index];
         }
         set
         {

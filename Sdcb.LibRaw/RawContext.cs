@@ -72,7 +72,7 @@ public class RawContext : IDisposable
         get
         {
             CheckDisposed();
-            return Marshal.PtrToStructure<LibRawData>(_r).OutputParams.OutputTiff != 0;
+            return Marshal.PtrToStructure<LibRawData>(_r).OutputParams.OutputTiff;
         }
 
         set
@@ -204,7 +204,7 @@ public class RawContext : IDisposable
         {
             CheckDisposed();
             LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
-            return data.OutputParams.NoAutoBright == 0;
+            return !data.OutputParams.NoAutoBright;
         }
         set
         {
@@ -221,7 +221,7 @@ public class RawContext : IDisposable
         {
             CheckDisposed();
             LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
-            return data.OutputParams.Bright;
+            return data.OutputParams.Brightness;
         }
         set
         {

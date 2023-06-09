@@ -1302,116 +1302,116 @@ public struct LibRawMakerNotes
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 public struct LibRawOutputParams
 {
-    /// <summary>-A  x1 y1 x2 y2</summary>
+    /// <summary>Grey box coordinates (x1, y1, x2, y2) for color balance adjustment.</summary>
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
     public uint[] Greybox;
 
-    /// <summary>-B x1 y1 x2 y2</summary>
+    /// <summary>Crop box coordinates (x1, y1, x2, y2) for cropping the image.</summary>
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
     public uint[] Cropbox;
 
-    /// <summary>-C</summary>
+    /// <summary>Color aberration correction (red, green).</summary>
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
     public double[] Aber;
 
-    /// <summary>-g</summary>
+    /// <summary>Gamma curve parameters (ts, t, r, g, b, a).</summary>
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
     public double[] Gamma;
 
-    /// <summary>-r mul0 mul1 mul2 mul3</summary>
+    /// <summary>Custom white balance multipliers (red, green, blue, green2).</summary>
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-    public float[] UserMul;
+    public float[] UserMultipliers;
 
-    /// <summary>-b</summary>
-    public float Bright;
+    /// <summary>Brightness adjustment.</summary>
+    public float Brightness;
 
-    /// <summary>-n</summary>
+    /// <summary>Threshold for zeroing high noise values.</summary>
     public float Threshold;
 
-    /// <summary>-h</summary>
+    /// <summary>Reduce image size to half during processing.</summary>
     [MarshalAs(UnmanagedType.Bool)]
     public bool HalfSize;
 
-    /// <summary>-f</summary>
+    /// <summary>Enable 4-color RGB interpolation.</summary>
     [MarshalAs(UnmanagedType.Bool)]
     public bool FourColorRgb;
 
-    /// <summary>-H</summary>
+    /// <summary>Highlight recovery. 0 - clip, 1-9 - unclip using blend.</summary>
     public int Highlight;
 
-    /// <summary>-a</summary>
+    /// <summary>Enable automatic white balance based on color temperature.</summary>
     [MarshalAs(UnmanagedType.Bool)]
     public bool UseAutoWb;
 
-    /// <summary>-w</summary>
-    [MarshalAs(UnmanagedType.Bool)] 
+    /// <summary>Use camera's white balance data.</summary>
+    [MarshalAs(UnmanagedType.Bool)]
     public bool UseCameraWb;
 
-    /// <summary>+M/-M</summary>
+    /// <summary>Use camera color matrix (1 - use, 0 - do not use).</summary>
     [MarshalAs(UnmanagedType.Bool)]
     public bool UseCameraMatrix;
 
-    /// <summary>-o</summary>
+    /// <summary>Output color space.</summary>
     public int OutputColor;
 
-    /// <summary>-o</summary>
+    /// <summary>Output profile filename.</summary>
     [MarshalAs(UnmanagedType.LPStr)]
     public string OutputProfile;
 
-    /// <summary>-p</summary>
+    /// <summary>Camera profile filename.</summary>
     [MarshalAs(UnmanagedType.LPStr)]
     public string CameraProfile;
 
-    /// <summary>-P</summary>
+    /// <summary>Bad pixel filename (dead or hot pixels).</summary>
     [MarshalAs(UnmanagedType.LPStr)]
     public string BadPixels;
 
-    /// <summary>-K</summary>
+    /// <summary>Dark frame filename for noise reduction.</summary>
     [MarshalAs(UnmanagedType.LPStr)]
     public string DarkFrame;
 
-    /// <summary>-4</summary>
+    /// <summary>Output bits per sample. 8 or 16.</summary>
     public int OutputBps;
 
-    /// <summary>-T</summary>
+    /// <summary>Enable output in TIFF format.</summary>
     [MarshalAs(UnmanagedType.Bool)]
     public bool OutputTiff;
 
     public int OutputFlags;
 
-    /// <summary>-t</summary>
+    /// <summary>User-defined image rotation (0, 90, 180, 270).</summary>
     public int UserFlip;
 
-    /// <summary>-q</summary>
+    /// <summary>Interpolation quality. (0-2, higher is better).</summary>
     public int UserQual;
 
-    /// <summary>-k</summary>
+    /// <summary>Custom black level.</summary>
     public int UserBlack;
 
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
     public int[] UserCblack;
 
-    /// <summary>-S</summary>
-    public int UserSat;
+    /// <summary>Custom saturation level.</summary>
+    public int UserSaturation;
 
-    /// <summary>-m</summary>
-    public int MedPasses;
+    /// <summary>Number of median passes for noise reduction.</summary>
+    public int MedianPasses;
 
     public float AutoBrightThr;
 
     public float AdjustMaximumThr;
 
-    /// <summary>-W</summary>
+    /// <summary>Disable automatic brightness adjustment.</summary>
     [MarshalAs(UnmanagedType.Bool)]
     public bool NoAutoBright;
 
-    /// <summary>-j</summary>
+    /// <summary>Enable Fuji-style image rotation.</summary>
     [MarshalAs(UnmanagedType.Bool)]
     public bool UseFujiRotate;
 
     public int GreenMatching;
 
-    /// <summary>DCB parameters</summary>
+    /// <summary>Number of DCB interpolation iterations.</summary>
     public int DcbIterations;
 
     public int DcbEnhanceFl;
@@ -1425,11 +1425,11 @@ public struct LibRawOutputParams
 
     public float ExpPreser;
 
-    /// <summary>Disable Auto-scale</summary>
+    /// <summary>Disable auto-scaling of the image.</summary>
     [MarshalAs(UnmanagedType.Bool)]
     public bool NoAutoScale;
 
-    /// <summary>Disable intepolation</summary>
+    /// <summary>Disable image interpolation.</summary>
     public int NoInterpolation;
 }
 

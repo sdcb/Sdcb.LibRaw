@@ -25,7 +25,7 @@ public class DetailedPropTests : BaseTest
     {
         using RawContext r = ExampleBayer();
         LibRawData data = Marshal.PtrToStructure<LibRawData>(r.UnsafeGetHandle());
-        data.OutputParams.OutputTiff = 2;
+        data.OutputParams.OutputTiff = true;
         Marshal.StructureToPtr(data, r.UnsafeGetHandle(), fDeleteOld: false);
         Assert.True(r.OutputTiff);
     }
