@@ -31,100 +31,68 @@ public static class LibRawNative
     }
 
     #region consts/macros
-    /// <summary>
-    /// The original C API macro: LIBRAW_DEFAULT_ADJUST_MAXIMUM_THRESHOLD
-    /// Represents the default adjust maximum threshold, which is 0.75f.
-    /// </summary>
+    /// <summary>Represents the default adjust maximum threshold, which is 0.75f.</summary>
+    /// <remarks>The original C API macro: LIBRAW_DEFAULT_ADJUST_MAXIMUM_THRESHOLD</remarks>
     public const float DefaultAdjustMaximumThreshold = 0.75f;
 
-    /// <summary>
-    /// The original C API macro: LIBRAW_DEFAULT_AUTO_BRIGHTNESS_THRESHOLD
-    /// Represents the default auto brightness threshold, which is 0.01f.
-    /// </summary>
+    /// <summary>Represents the default auto brightness threshold, which is 0.01f.</summary>
+    /// <remarks>The original C API macro: LIBRAW_DEFAULT_AUTO_BRIGHTNESS_THRESHOLD</remarks>
     public const float DefaultAutoBrightnessThreshold = 0.01f;
 
-    /// <summary>
-    /// The original C API macro: LIBRAW_MAX_ALLOC_MB_DEFAULT
-    /// Represents the default maximum memory allocation in megabytes, which is 2048L.
-    /// </summary>
+    /// <summary>Represents the default maximum memory allocation in megabytes, which is 2048L.</summary>
+    /// <remarks>The original C API macro: LIBRAW_MAX_ALLOC_MB_DEFAULT</remarks>
     public const long MaxAllocMbDefault = 2048L;
 
-    /// <summary>
-    /// The original C API macro: LIBRAW_MAX_NONDNG_RAW_FILE_SIZE
-    /// Represents the maximum non-DNG raw file size, which is 2147483647ULL.
-    /// </summary>
+    /// <summary>Represents the maximum non-DNG raw file size, which is 2147483647ULL.</summary>
+    /// <remarks>The original C API macro: LIBRAW_MAX_NONDNG_RAW_FILE_SIZE</remarks>
     public const ulong MaxNonDngRawFileSize = 2147483647UL;
 
-    /// <summary>
-    /// The original C API macro: LIBRAW_MAX_DNG_RAW_FILE_SIZE
-    /// Represents the maximum DNG raw file size, which is 2147483647ULL.
-    /// </summary>
+    /// <summary>Represents the maximum DNG raw file size, which is 2147483647ULL.</summary>
+    /// <remarks>The original C API macro: LIBRAW_MAX_DNG_RAW_FILE_SIZE</remarks>
     public const ulong MaxDngRawFileSize = 2147483647UL;
 
-    /// <summary>
-    /// The original C API macro: LIBRAW_MAX_THUMBNAIL_MB
-    /// Represents the maximum thumbnail size in megabytes, which is 512L.
-    /// </summary>
+    /// <summary>Represents the maximum thumbnail size in megabytes, which is 512L.</summary>
+    /// <remarks>The original C API macro: LIBRAW_MAX_THUMBNAIL_MB</remarks>
     public const long MaxThumbnailMb = 512L;
 
-    /// <summary>
-    /// The original C API macro: LIBRAW_MAX_METADATA_BLOCKS
-    /// Represents the maximum number of metadata blocks, which is 1024.
-    /// </summary>
+    /// <summary>Represents the maximum number of metadata blocks, which is 1024.</summary>
+    /// <remarks>The original C API macro: LIBRAW_MAX_METADATA_BLOCKS</remarks>
     public const int MaxMetadataBlocks = 1024;
 
-    /// <summary>
-    /// The original C API macro: LIBRAW_CBLACK_SIZE
-    /// Represents the size of the cblack array, which is 4104.
-    /// </summary>
+    /// <summary>Represents the size of the cblack array, which is 4104.</summary>
+    /// <remarks>The original C API macro: LIBRAW_CBLACK_SIZE</remarks>
     public const int CBlackSize = 4104;
 
-    /// <summary>
-    /// The original C API macro: LIBRAW_IFD_MAXCOUNT
-    /// Represents the maximum number of IFD (Image File Directory) entries, which is 10.
-    /// </summary>
+    /// <summary>Represents the maximum number of IFD (Image File Directory) entries, which is 10.</summary>
+    /// <remarks>The original C API macro: LIBRAW_IFD_MAXCOUNT</remarks>
     public const int IfdMaxCount = 10;
 
-    /// <summary>
-    /// The original C API macro: LIBRAW_THUMBNAIL_MAXCOUNT
-    /// Represents the maximum number of thumbnails, which is 8.
-    /// </summary>
+    /// <summary>Represents the maximum number of thumbnails, which is 8.</summary>
+    /// <remarks>The original C API macro: LIBRAW_THUMBNAIL_MAXCOUNT</remarks>
     public const int ThumbnailMaxCount = 8;
 
-    /// <summary>
-    /// The original C API macro: LIBRAW_CRXTRACKS_MAXCOUNT
-    /// Represents the maximum number of CRX tracks, which is 16.
-    /// </summary>
+    /// <summary>Represents the maximum number of CRX tracks, which is 16.</summary>
+    /// <remarks>The original C API macro: LIBRAW_CRXTRACKS_MAXCOUNT</remarks>
     public const int CrxTracksMaxCount = 16;
 
-    /// <summary>
-    /// The original C API macro: LIBRAW_AFDATA_MAXCOUNT
-    /// Represents the maximum number of AF data entries, which is 4.
-    /// </summary>
+    /// <summary>Represents the maximum number of AF data entries, which is 4.</summary>
+    /// <remarks>The original C API macro: LIBRAW_AFDATA_MAXCOUNT</remarks>
     public const int AFDataMaxCount = 4;
 
-    /// <summary>
-    /// The original C API macro: LIBRAW_AHD_TILE
-    /// Represents the AHD tile size, which is 512. AHD stands for Average Height Difference.
-    /// </summary>
+    /// <summary>Represents the AHD tile size, which is 512. AHD stands for Average Height Difference.</summary>
+    /// <remarks>The original C API macro: LIBRAW_AHD_TILE</remarks>
     public const int AhdTile = 512;
 
-    /// <summary>
-    /// The original C API macro: LIBRAW_LENS_NOT_SET
-    /// Represents the value indicating that the lens is not set, which is 0xffffffffffffffffULL.
-    /// </summary>
+    /// <summary>Represents the value indicating that the lens is not set, which is 0xffffffffffffffffULL.</summary>
+    /// <remarks>The original C API macro: LIBRAW_LENS_NOT_SET</remarks>
     public const ulong LensNotSet = 0xffffffffffffffffUL;
 
-    /// <summary>
-    /// The original C API macro: LIBRAW_PROGRESS_THUMB_MASK
-    /// Represents the thumbnail processing progress mask, which is 0x0fffffff.
-    /// </summary>
+    /// <summary>Represents the thumbnail processing progress mask, which is 0x0fffffff.</summary>
+    /// <remarks>The original C API macro: LIBRAW_PROGRESS_THUMB_MASK</remarks>
     public const int ProgressThumbMask = 0x0fffffff;
 
-    /// <summary>
-    /// The original C API macro: LIBRAW_FATAL_ERROR(ec)
-    /// Determines whether the error code is a fatal error.
-    /// </summary>
+    /// <summary>Determines whether the error code is a fatal error.</summary>
+    /// <remarks>The original C API macro: LIBRAW_FATAL_ERROR(ec)</remarks>
     /// <param name="errorCode">The error code to evaluate.</param>
     /// <returns>True if the error code is a fatal error, otherwise false.</returns>
     public static bool IsFatalError(int errorCode)
@@ -132,10 +100,8 @@ public static class LibRawNative
         return errorCode < -100000;
     }
 
-    /// <summary>
-    /// The original C API macro: LIBRAW_FATAL_ERROR(ec)
-    /// Determines whether the error code is a fatal error.
-    /// </summary>
+    /// <summary>Determines whether the error code is a fatal error.</summary>
+    /// <remarks>The original C API macro: LIBRAW_FATAL_ERROR(ec)</remarks>
     /// <param name="errorCode">The error code to evaluate.</param>
     /// <returns>True if the error code is a fatal error, otherwise false.</returns>
     public static bool IsFatalError(LibRawError errorCode)
@@ -143,10 +109,8 @@ public static class LibRawNative
         return IsFatalError((int)errorCode);
     }
 
-    /// <summary>
-    /// The original C API macro: LIBRAW_XTRANS
-    /// Represents the X-Trans sensor type, which has a value of 9.
-    /// </summary>
+    /// <summary>Represents the X-Trans sensor type, which has a value of 9.</summary>
+    /// <remarks>The original C API macro: LIBRAW_XTRANS</remarks>
     public const int XTrans = 9;
     #endregion
 
