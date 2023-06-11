@@ -9,10 +9,7 @@ public static class LibRawNative
     static LibRawNative()
     {
         LibRawNativeLoader.Init();
-        if (OpenMPThreadCount == null)
-        {
-            OpenMPThreadCount = Environment.ProcessorCount.ToString();
-        }
+        OpenMPThreadCount ??= Environment.ProcessorCount.ToString();
     }
 
     public const string Dll = "libraw.dll";
