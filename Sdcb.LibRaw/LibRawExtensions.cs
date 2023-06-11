@@ -51,11 +51,6 @@ public static class LibRawExtensions
     {
         if (r is null) throw new ArgumentNullException(nameof(r));
 
-        if (((int)r.RawData.ProgressFlags & LibRawNative.ProgressThumbMask) < (int)LibRawProgress.LoadRaw)
-        {
-            r.Unpack();
-        }
-
         string ext = Path.GetExtension(fileName);
         if (ext.Equals(".tiff", StringComparison.OrdinalIgnoreCase) || ext.Equals(".tif", StringComparison.OrdinalIgnoreCase))
         {
@@ -64,6 +59,11 @@ public static class LibRawExtensions
         else if (!ext.Equals(".ppm", StringComparison.OrdinalIgnoreCase))
         {
             throw new LibRawException($"Unsupported file extension {ext}, supported formats: .ppm|.tif|.tiff");
+        }
+
+        if (((int)r.RawData.ProgressFlags & LibRawNative.ProgressThumbMask) < (int)LibRawProgress.LoadRaw)
+        {
+            r.Unpack();
         }
 
         r.DcrawProcess(configure);

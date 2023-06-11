@@ -92,18 +92,9 @@ public static class LibRawNative
     /// <remarks>The original C API macro: LIBRAW_FATAL_ERROR(ec)</remarks>
     /// <param name="errorCode">The error code to evaluate.</param>
     /// <returns>True if the error code is a fatal error, otherwise false.</returns>
-    public static bool IsFatalError(int errorCode)
-    {
-        return errorCode < -100000;
-    }
-
-    /// <summary>Determines whether the error code is a fatal error.</summary>
-    /// <remarks>The original C API macro: LIBRAW_FATAL_ERROR(ec)</remarks>
-    /// <param name="errorCode">The error code to evaluate.</param>
-    /// <returns>True if the error code is a fatal error, otherwise false.</returns>
     public static bool IsFatalError(LibRawError errorCode)
     {
-        return IsFatalError((int)errorCode);
+        return (int)errorCode < -100000;
     }
 
     /// <summary>Represents the X-Trans sensor type, which has a value of 9.</summary>

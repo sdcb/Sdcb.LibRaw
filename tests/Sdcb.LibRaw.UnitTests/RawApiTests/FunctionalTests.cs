@@ -86,7 +86,7 @@ public class FunctionalTests : BaseCApiTest
 
             try
             {
-                StringBuilder sb = new StringBuilder();
+                StringBuilder sb = new();
                 Span<RGB24> d = image->GetData<RGB24>();
                 Assert.Equal(bayerWidth * bayerHeight, d.Length);
 
@@ -331,7 +331,7 @@ public class FunctionalTests : BaseCApiTest
 
             try
             {
-                StringBuilder sb = new StringBuilder();
+                StringBuilder sb = new();
                 Span<RGB48> d = image->GetData<RGB48>();
                 Assert.Equal(bayerWidth * bayerHeight, d.Length);
 
