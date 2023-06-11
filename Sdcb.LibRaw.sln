@@ -7,6 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sdcb.LibRaw", "Sdcb.LibRaw\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{3B7258DA-C020-466A-AD54-55AFFF90018B}"
 	ProjectSection(SolutionItems) = preProject
+		docs\c-api-mapping-table.md = docs\c-api-mapping-table.md
 		docs\c-api-mapping.md = docs\c-api-mapping.md
 	EndProjectSection
 EndProject
@@ -18,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决�
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{034759FB-3A53-4F6C-970F-5D4418A2537E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sdcb.LibRaw.UnitTests", "tests\Sdcb.LibRaw.UnitTests\Sdcb.LibRaw.UnitTests.csproj", "{3DF6FE9B-E854-456D-9749-6F8957B8361B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sdcb.LibRaw.UnitTests", "tests\Sdcb.LibRaw.UnitTests\Sdcb.LibRaw.UnitTests.csproj", "{3DF6FE9B-E854-456D-9749-6F8957B8361B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{39A9EC01-3823-49BC-B52C-2927BECCB4BC}"
 	ProjectSection(SolutionItems) = preProject
