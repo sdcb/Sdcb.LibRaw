@@ -33,6 +33,8 @@ public class FunctionalTests : BaseCApiTest
     [SupportedOSPlatform("windows")]
     public void OpenFileWTest()
     {
+        if (Environment.OSVersion.Platform != PlatformID.Win32NT) return;
+
         IntPtr handle = LibRawNative.Initialize();
         try
         {

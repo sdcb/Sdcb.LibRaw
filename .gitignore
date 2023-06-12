@@ -366,3 +366,4 @@ FodyWeavers.xsd
 /build/nuget.exe
 /build/nupkgs/libraw.dll
 /build/win64-libraw
+/build/linux64-libraw.so

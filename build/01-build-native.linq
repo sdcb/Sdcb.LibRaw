@@ -17,11 +17,21 @@ async Task Main()
 	//await new WindowsNugetSource("win-x64", "win64", new LibNames("libraw.dll"), @"https://io.starworks.cc:88/cv-public/2023/LibRaw-0.21.1-Win64.zip", "Sdcb.LibRaw", deps: new string[0])
 	//	.Process(QueryCancelToken);
 	// from vcpkg local
-	LibNames libs = new LibNames("raw_r.dll", "lcms2.dll", "zlib1.dll", "jpeg8.dll");
-	await new WindowsNugetSource("win-x64", "win64", libs, @"C:\_\3rd\vcpkg\installed\x64-windows\bin", "Sdcb.LibRaw", deps: new string[0])
-		.Process(QueryCancelToken);
-	await new WindowsNugetSource("win-x86", "win32", libs, @"C:\_\3rd\vcpkg\installed\x86-windows\bin", "Sdcb.LibRaw", deps: new string[0])
-		.Process(QueryCancelToken);
+	if (false)
+	{
+		LibNames libs = new LibNames("raw_r.dll", "lcms2.dll", "zlib1.dll", "jpeg8.dll");
+		await new WindowsNugetSource("win-x64", "win64", libs, @"C:\_\3rd\vcpkg\installed\x64-windows\bin", "Sdcb.LibRaw", deps: new string[0])
+			.Process(QueryCancelToken);
+		await new WindowsNugetSource("win-x86", "win32", libs, @"C:\_\3rd\vcpkg\installed\x86-windows\bin", "Sdcb.LibRaw", deps: new string[0])
+			.Process(QueryCancelToken);
+	}
+
+	if (true)
+	{
+		LibNames libs = new LibNames("libraw.so.23", "liblcms2.so.2", "libjpeg.so.62", "libgomp.so.1");
+		await new WindowsNugetSource("linux-x64", "linux64", libs, @"C:\Users\ZhouJie\Documents\Downloads\libraw-linux-pkgs", "Sdcb.LibRaw", deps: new string[0])
+			.Process(QueryCancelToken);
+	}
 }
 
 static string BuildNuspec(string[] libs, string rid, string titleRid, string folder, string pkgName, string[] deps)
@@ -181,7 +191,7 @@ public abstract record NupkgBuildSource(string rid, string titleRid, LibNames li
 			{
 				".dll" => true,
 				_ => false,
-			})
+			} || x.Contains(".so"))
 			.Select(f => f.Replace(rid + @"\", ""))
 			.ToArray();
 	}
