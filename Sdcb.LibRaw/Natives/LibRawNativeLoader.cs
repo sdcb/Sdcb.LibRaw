@@ -33,6 +33,9 @@ namespace Sdcb.LibRaw.Natives
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 {
+                    NativeLibrary.Load("libjpeg.so.62", assembly, searchPath);
+                    NativeLibrary.Load("liblcms2.so.2", assembly, searchPath);
+                    NativeLibrary.Load("libgomp.so.1", assembly, searchPath);
                     return NativeLibrary.Load("libraw.so.23", assembly, searchPath);
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
