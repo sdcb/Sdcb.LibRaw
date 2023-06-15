@@ -11,13 +11,37 @@ Advanced raw image processing library in C# based on [LibRaw](https://www.libraw
 | Sdcb.LibRaw.runtime.win32   | [![NuGet](https://img.shields.io/nuget/v/Sdcb.LibRaw.runtime.win32.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/Sdcb.LibRaw.runtime.win32/)     | LGPL-2.1-only OR CDDL-1.0 | Windows x86 runtime |
 | Sdcb.LibRaw.runtime.linux64 | [![NuGet](https://img.shields.io/nuget/v/Sdcb.LibRaw.runtime.linux64.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/Sdcb.LibRaw.runtime.linux64/) | LGPL-2.1-only OR CDDL-1.0 | Linux x64 runtime   |
 
-## High level API Usage
-
+## Install
 Please note all examples below need install following NuGet packages:
 * Sdcb.LibRaw
-* Sdcb.LibRaw.runtime.win64 (or Sdcb.LibRaw.runtime.win32)
+* Sdcb.LibRaw.runtime.win64 (or Sdcb.LibRaw.runtime.win32 or Sdcb.LibRaw.runtime.linux-64)
 
-For Linux/MacOS, please install `libraw` package first.
+For Linux/MacOS, please install `libraw` using OS provided package manager, for example, in Debian 11, you can install by running following bash command to install:
+```bash
+echo "deb http://deb.debian.org/debian experimental main" | tee -a /etc/apt/sources.list
+echo "deb-src http://deb.debian.org/debian experimental main" | tee -a /etc/apt/sources.list
+apt-get update
+apt-get -t experimental install libraw-dev
+```
+
+in Ubuntu 22.04, you can install by running following command:
+```bash
+wget http://ftp.cn.debian.org/debian/pool/main/libr/libraw/libraw-dev_0.21.1-3_amd64.deb
+wget http://ftp.cn.debian.org/debian/pool/main/libr/libraw/libraw23_0.21.1-3_amd64.deb
+wget http://ftp.cn.debian.org/debian/pool/main/l/lcms2/liblcms2-dev_2.14-2_amd64.deb
+wget http://ftp.cn.debian.org/debian/pool/main/l/lcms2/liblcms2-2_2.14-2_amd64.deb
+wget http://ftp.cn.debian.org/debian/pool/main/libj/libjpeg-turbo/libjpeg62-turbo_2.1.5-2_amd64.deb
+sudo dpkg -i libjpeg62-turbo_2.1.5-2_amd64.deb
+sudo dpkg -i liblcms2-2_2.14-2_amd64.deb
+sudo dpkg -i liblcms2-dev_2.14-2_amd64.deb
+sudo dpkg -i libraw23_0.21.1-3_amd64.deb
+sudo dpkg -i libraw-dev_0.21.1-3_amd64.deb
+```
+
+I also created NuGet package `Sdcb.LibRaw.runtime.linux64`, it's extracted from Debian apt-get experimental.
+
+## High level API Usage
+For high level API usage, I created `RawContext` class to wrap all `LibRaw` native functions, you can refer to following examples for more details.
 
 ### Convert raw file into bitmap
 
