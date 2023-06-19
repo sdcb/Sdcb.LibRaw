@@ -4,12 +4,12 @@ Advanced raw image processing library in C# based on [LibRaw](https://www.libraw
 
 ## NuGet Packages
 
-| Package                     | NuGet                                                                                                                                                                 | License                   | Comments            |
-| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- | ------------------- |
-| Sdcb.LibRaw                 | [![NuGet](https://img.shields.io/nuget/v/Sdcb.LibRaw.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/Sdcb.LibRaw/)                                 | MIT                       | Primary package     |
-| Sdcb.LibRaw.runtime.win64   | [![NuGet](https://img.shields.io/nuget/v/Sdcb.LibRaw.runtime.win64.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/Sdcb.LibRaw.runtime.win64/)     | LGPL-2.1-only OR CDDL-1.0 | Windows x64 runtime |
-| Sdcb.LibRaw.runtime.win32   | [![NuGet](https://img.shields.io/nuget/v/Sdcb.LibRaw.runtime.win32.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/Sdcb.LibRaw.runtime.win32/)     | LGPL-2.1-only OR CDDL-1.0 | Windows x86 runtime |
-| Sdcb.LibRaw.runtime.linux64 | [![NuGet](https://img.shields.io/nuget/v/Sdcb.LibRaw.runtime.linux64.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/Sdcb.LibRaw.runtime.linux64/) | LGPL-2.1-only OR CDDL-1.0 | Linux x64 runtime   |
+| Package                     | NuGet                                                                                                                                                                 | License                   | Comments                   |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- | -------------------------- |
+| Sdcb.LibRaw                 | [![NuGet](https://img.shields.io/nuget/v/Sdcb.LibRaw.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/Sdcb.LibRaw/)                                 | MIT                       | Primary package            |
+| Sdcb.LibRaw.runtime.win64   | [![NuGet](https://img.shields.io/nuget/v/Sdcb.LibRaw.runtime.win64.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/Sdcb.LibRaw.runtime.win64/)     | LGPL-2.1-only OR CDDL-1.0 | Windows x64 runtime        |
+| Sdcb.LibRaw.runtime.win32   | [![NuGet](https://img.shields.io/nuget/v/Sdcb.LibRaw.runtime.win32.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/Sdcb.LibRaw.runtime.win32/)     | LGPL-2.1-only OR CDDL-1.0 | Windows x86 runtime        |
+| Sdcb.LibRaw.runtime.linux64 | [![NuGet](https://img.shields.io/nuget/v/Sdcb.LibRaw.runtime.linux64.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/Sdcb.LibRaw.runtime.linux64/) | LGPL-2.1-only OR CDDL-1.0 | Ubuntu 22.04 x64 runtime   |
 
 ## Install
 Please note all examples below need install following NuGet packages:
