@@ -125,15 +125,15 @@ public class RawContext : IDisposable
 
     /// <summary>Camera multiplier indexer</summary>
     /// <remarks>Corresponds to the C API function: libraw_get_cam_mul</remarks>
-    public IIndexer<float> CameraMultipler => new CameraMultiplerIndexer(_r, _disposed);
+    public IReadOnlyList<float> CameraMultipler => new CameraMultiplerIndexer(_r, _disposed);
 
     /// <summary>Pre multiplier indexer</summary>
     /// <remarks>Corresponds to the C API function: libraw_get_pre_mul</remarks>
-    public IIndexer<float> PreMultipler => new PreMultiplerIndexer(_r, _disposed);
+    public IReadOnlyList<float> PreMultipler => new PreMultiplerIndexer(_r, _disposed);
 
-    /// <summary>Gets the <see cref="I2DIndexer{float}"/> instance for the RGB camera.</summary>
+    /// <summary>Gets the <see cref="IReadOnly2DIndexer{float}"/> instance for the RGB camera.</summary>
     /// <remarks>Corresponds to the C API function: libraw_get_rgb_cam</remarks>
-    public I2DIndexer<float> RgbCamera => new RgbCamera2DIndexer(_r, _disposed);
+    public IReadOnly2DIndexer<float> RgbCamera => new RgbCamera2DIndexer(_r, _disposed);
 
     /// <summary>Gets or set the maximum color.</summary>
     /// <remarks>Corresponds to the C API function: libraw_get_color_maximum</remarks>
@@ -265,7 +265,7 @@ public class RawContext : IDisposable
         get
         {
             CheckDisposed();
-            LibRawDecoderInfo d = new LibRawDecoderInfo();
+            LibRawDecoderInfo d = new();
             LibRawException.ThrowIfFailed(LibRawNative.GetDecoderInfo(_r, (IntPtr)(&d)));
             return DecoderInfo.FromNative(d);
         }

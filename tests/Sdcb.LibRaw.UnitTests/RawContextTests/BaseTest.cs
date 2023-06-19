@@ -2,10 +2,10 @@
 
 public class BaseTest
 {
-    protected RawContext ExampleFile() => RawContext.OpenFile("./examples/DSC02412.ARW");
-    protected RawContext ExampleFileBuffer() => RawContext.FromBuffer(File.ReadAllBytes("./examples/DSC02412.ARW"));
+    protected static RawContext ExampleFile() => RawContext.OpenFile("./examples/DSC02412.ARW");
+    protected static RawContext ExampleFileBuffer() => RawContext.FromBuffer(File.ReadAllBytes("./examples/DSC02412.ARW"));
 
-    protected RawContext ExampleBayer()
+    protected static RawContext ExampleBayer()
     {
         const int width = 4;
         const int height = 4;

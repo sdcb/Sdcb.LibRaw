@@ -731,7 +731,9 @@ public enum DecoderFlag
     AdobeCopyPixel = 1 << 9,
     LegacyWithMargins = 1 << 10,
     ThreeChannel = 1 << 11,
+#pragma warning disable CA1069 // enum value duplicated, however it's expected for Sinar4Shot & ThreeChannel
     Sinar4Shot = 1 << 11,
+#pragma warning restore CA1069 // enum value duplicated, however it's expected for Sinar4Shot & ThreeChannel 
     FlatData = 1 << 12,
     FlatBg2Swapped = 1 << 13,
     UnsupportedFormat = 1 << 14,

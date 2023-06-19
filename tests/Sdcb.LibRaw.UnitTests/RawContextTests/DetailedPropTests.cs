@@ -89,28 +89,10 @@ public class DetailedPropTests : BaseTest
     }
 
     [Fact]
-    public void WhiteBalance_Should_CanBeSet()
-    {
-        using RawContext r = ExampleBayer();
-        r.CameraMultipler[0] = 5;
-        r.CameraMultipler[3] = 15;
-        Assert.Equal(new float[] { 5, 0, 0, 15 }, r.CameraMultipler);
-    }
-
-    [Fact]
     public void PreMultiplerTest()
     {
         using RawContext r = ExampleBayer();
         Assert.Equal(new float[] { 1, 1, 1, 1 }, r.PreMultipler);
-    }
-
-    [Fact]
-    public void PreMultipler_CanBeSet()
-    {
-        using RawContext r = ExampleBayer();
-        r.PreMultipler[0] = 5;
-        r.PreMultipler[3] = 15;
-        Assert.Equal(new float[] { 5, 1, 1, 15 }, r.PreMultipler);
     }
 
     [Fact]
@@ -123,16 +105,6 @@ public class DetailedPropTests : BaseTest
             -0.153087497f, 1.55836308f, -0.405275583f, 0.00000000f,
             0.0198776610f, -0.404100716f, 1.38422310f, 0.00000000f
         }, r.RgbCamera);
-    }
-
-    [Fact]
-    public void RgbCamera_CanBeSet()
-    {
-        using RawContext r = ExampleBayer();
-        r.RgbCamera[1, 2] = 3.14f;
-        float[] expected = new float[12];
-        expected[1 * 4 + 2] = 3.14f;
-        Assert.Equal(expected, r.RgbCamera);
     }
 
     [Fact]

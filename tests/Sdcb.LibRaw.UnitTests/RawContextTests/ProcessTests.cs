@@ -28,7 +28,7 @@ public class ProcessTests : BaseTest
         ctx.DcrawProcess();
         using ProcessedImage image = ctx.MakeDcrawMemoryImage();
         Span<RGB24> d = image.GetData<RGB24>();
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new();
         for (int y = 0; y < ctx.RawHeight; ++y)
         {
             for (int x = 0; x < ctx.RawWidth; ++x)
@@ -111,7 +111,7 @@ public class ProcessTests : BaseTest
         ctx.DcrawProcess();
         using ProcessedImage image = ctx.MakeDcrawMemoryImage();
         Span<RGB24> d = image.GetData<RGB24>();
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new();
         for (int y = 0; y < ctx.RawHeight; ++y)
         {
             for (int x = 0; x < ctx.RawWidth; ++x)
@@ -138,7 +138,7 @@ public class ProcessTests : BaseTest
         ctx.DcrawProcess(c => c.Interpolation = false);
         using ProcessedImage image = ctx.MakeDcrawMemoryImage();
         Span<RGB24> d = image.GetData<RGB24>();
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new();
         for (int y = 0; y < ctx.RawHeight; ++y)
         {
             for (int x = 0; x < ctx.RawWidth; ++x)

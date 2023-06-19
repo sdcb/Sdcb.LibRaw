@@ -6,10 +6,10 @@ using System.Runtime.InteropServices;
 
 namespace Sdcb.LibRaw.Indexers;
 
-internal class CameraMultiplerIndexer : IIndexer<float>
+internal class CameraMultiplerIndexer : IReadOnlyList<float>
 {
     private readonly IntPtr _r;
-    private bool _disposed;
+    private readonly bool _disposed;
 
     public CameraMultiplerIndexer(IntPtr r, bool disposed)
     {
@@ -17,9 +17,8 @@ internal class CameraMultiplerIndexer : IIndexer<float>
         _disposed = disposed;
     }
 
-    /// <summary>Gets or sets the white balance coefficients for the camera.</summary>
+    /// <summary>Gets the white balance coefficients for the camera.</summary>
     /// <seealso cref="LibRawNative.GetCameraMultiplier(IntPtr, int)"/> 
-    /// <seealso cref="LibRawData"/>
     public float this[int index]
     {
         get
@@ -29,16 +28,6 @@ internal class CameraMultiplerIndexer : IIndexer<float>
                 throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range.");
 
             return LibRawNative.GetCameraMultiplier(_r, index);
-        }
-        set
-        {
-            CheckDisposed();
-            if (index < 0 || index >= Count)
-                throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range.");
-
-            LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
-            data.Color.CamMul[index] = value;
-            Marshal.StructureToPtr(data, _r, fDeleteOld: false);
         }
     }
 

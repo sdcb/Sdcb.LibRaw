@@ -2,14 +2,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace Sdcb.LibRaw.Indexers;
 
-internal class RgbCamera2DIndexer : I2DIndexer<float>
+internal class RgbCamera2DIndexer : IReadOnly2DIndexer<float>
 {
     private readonly IntPtr _r;
-    private bool _disposed;
+    private readonly bool _disposed;
 
     public RgbCamera2DIndexer(IntPtr r, bool disposed)
     {
@@ -17,8 +16,7 @@ internal class RgbCamera2DIndexer : I2DIndexer<float>
         _disposed = disposed;
     }
 
-    /// <seealso cref="LibRawNative.GetRgbCameraMatrix(IntPtr, int, int)"/> 
-    /// <seealso cref="LibRawData"/>
+    /// <seealso cref="LibRawNative.GetRgbCameraMatrix(IntPtr, int, int)"/>
     public float this[int index]
     {
         get
@@ -31,20 +29,9 @@ internal class RgbCamera2DIndexer : I2DIndexer<float>
             int y = index / Width;
             return LibRawNative.GetRgbCameraMatrix(_r, y, x);
         }
-        set
-        {
-            CheckDisposed();
-            if (index < 0 || index >= Count)
-                throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range.");
-
-            LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
-            data.Color.RgbCam[index] = value;
-            Marshal.StructureToPtr(data, _r, fDeleteOld: false);
-        }
     }
 
-    /// <seealso cref="LibRawNative.GetRgbCameraMatrix(IntPtr, int, int)"/> 
-    /// <seealso cref="LibRawData"/>
+    /// <seealso cref="LibRawNative.GetRgbCameraMatrix(IntPtr, int, int)"/>
     public float this[int y, int x]
     {
         get
@@ -54,16 +41,6 @@ internal class RgbCamera2DIndexer : I2DIndexer<float>
             if (y < 0 || y >= Width) throw new ArgumentOutOfRangeException(nameof(x), "Index is out of range.");
 
             return LibRawNative.GetRgbCameraMatrix(_r, y, x);
-        }
-        set
-        {
-            CheckDisposed();
-            if (y < 0 || y >= Height) throw new ArgumentOutOfRangeException(nameof(y), "Index is out of range.");
-            if (y < 0 || y >= Width) throw new ArgumentOutOfRangeException(nameof(x), "Index is out of range.");
-
-            LibRawData data = Marshal.PtrToStructure<LibRawData>(_r);
-            data.Color.RgbCam[y * Width + x] = value;
-            Marshal.StructureToPtr(data, _r, fDeleteOld: false);
         }
     }
 
