@@ -115,14 +115,6 @@ public class DetailedPropTests : BaseTest
     }
 
     [Fact]
-    public void ColorMax_CanBeSet()
-    {
-        using RawContext r = ExampleBayer();
-        r.ColorMaximum = 123;
-        Assert.Equal(123, r.ColorMaximum);
-    }
-
-    [Fact]
     public void UserMultiplierTest()
     {
         using RawContext r = ExampleBayer();

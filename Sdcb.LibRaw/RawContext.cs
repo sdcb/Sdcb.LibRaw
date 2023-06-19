@@ -18,6 +18,7 @@ public class RawContext : IDisposable
     internal protected LibRawData RawData
     {
         get => Marshal.PtrToStructure<LibRawData>(_r);
+        [SupportedOSPlatform("windows")]
         set => Marshal.StructureToPtr(value, _r, fDeleteOld: false);
     }
 
@@ -136,7 +137,7 @@ public class RawContext : IDisposable
     /// <remarks>Corresponds to the C API function: libraw_get_rgb_cam</remarks>
     public IReadOnly2DIndexer<float> RgbCamera => new RgbCamera2DIndexer(_r, _disposed);
 
-    /// <summary>Gets or set the maximum color.</summary>
+    /// <summary>Gets the maximum color.</summary>
     /// <remarks>Corresponds to the C API function: libraw_get_color_maximum</remarks>
     public int ColorMaximum
     {
@@ -144,14 +145,6 @@ public class RawContext : IDisposable
         {
             CheckDisposed();
             return LibRawNative.GetColorMaximum(_r);
-        }
-        set
-        {
-            CheckDisposed();
-            if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "value must be positive");
-            LibRawData data = RawData;
-            data.Color.Maximum = (uint)value;
-            RawData = data;
         }
     }
 
@@ -546,19 +539,23 @@ public class RawContext : IDisposable
         LibRawException.ThrowIfFailed(errorCode);
 
         LibRawProcessedImage* image = (LibRawProcessedImage*)rawImage;
-        LibRawData data = RawData;
-        if (image->Width == 0)
+        if (Environment.OSVersion.Platform == PlatformID.Win32NT)
         {
-            image->Width = data.Thumbnail.Width;
+            LibRawData data = RawData;
+            if (image->Width == 0)
+            {
+                image->Width = data.Thumbnail.Width;
+            }
+            if (image->Height == 0)
+            {
+                image->Height = data.Thumbnail.Height;
+            }
+            if (image->Colors == 0)
+            {
+                image->Colors = (ushort)data.Thumbnail.Colors;
+            }
         }
-        if (image->Height == 0)
-        {
-            image->Height = data.Thumbnail.Height;
-        }
-        if (image->Colors == 0)
-        {
-            image->Colors = (ushort)data.Thumbnail.Colors;
-        }
+        
         return new ProcessedImage(image); // need to dispose by user
     }
 
