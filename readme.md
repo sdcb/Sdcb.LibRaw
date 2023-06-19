@@ -86,14 +86,9 @@ using Sdcb.LibRaw;
 
 using RawContext r = RawContext.OpenFile(@"C:\Users\ZhouJie\Pictures\a7r3\11030126\DSC02653.ARW");
 // r.ExportRawImage is a shortcut for r.Unpack() + r.DcrawProcess() + r.MakeDcrawMemoryImage()
-using ProcessedImage rgbImage = r.ExportRawImage(c =>
-{
-	c.HalfSize = true;   // half width and half height
-	c.UseAutoWb = true;  // use auto white balance
-	c.Gamma[0] = 0.55f;  // gamma for inverse power
-	c.Gamma[1] = 3.5f;   // gamma for slope
-	c.Brightness = 2.2f; // brightness adjustments
-});
+r.Gamma[0] = 0.55f; // gamma for inverse power
+r.Gamma[1] = 3.5f;  // gamma for slope
+using ProcessedImage rgbImage = r.ExportRawImage();
 using Bitmap bmp = ProcessedImageToBitmap(rgbImage);
 
 // ProcessedImageToBitmap is the same as above
@@ -118,10 +113,7 @@ using Sdcb.LibRaw;
 
 using RawContext r = RawContext.OpenFile(@"C:\Users\ZhouJie\Pictures\a7r3\11030126\DSC02653.ARW");
 // r.SaveRawImage() is a shortcut for r.Unpack() + r.DcrawProcess() + r.WriteDcrawPpmTiff(fileName)
-r.SaveRawImage(@"C:\test\test.tiff", c =>
-{
-	c.Brightness = 2.2f;
-});
+r.SaveRawImage(@"C:\test\test.tiff");
 ```
 
 ## Low level API
