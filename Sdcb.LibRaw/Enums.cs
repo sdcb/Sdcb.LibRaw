@@ -2,6 +2,8 @@
 
 namespace Sdcb.LibRaw;
 
+#pragma warning disable CS1591
+
 /// <summary>
 /// Represents the open bayer patterns in LibRaw.
 /// </summary>

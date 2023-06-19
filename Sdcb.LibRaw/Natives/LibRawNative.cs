@@ -4,6 +4,9 @@ using System.Runtime.Versioning;
 
 namespace Sdcb.LibRaw.Natives;
 
+/// <summary>
+/// Provides access to native LibRaw functions.
+/// </summary>
 public static class LibRawNative
 {
     static LibRawNative()
@@ -12,7 +15,10 @@ public static class LibRawNative
         OpenMPThreadCount ??= Environment.ProcessorCount.ToString();
     }
 
-    public const string Dll = "libraw.dll";
+    /// <summary>
+    /// The name of the LibRaw DLL, will be overwritten in <see cref="LibRawNativeLoader"/>
+    /// </summary>
+    internal const string Dll = "libraw.dll";
 
     /// <summary> Gets or sets the number of OpenMP threads uses. </summary>
     /// <remarks>

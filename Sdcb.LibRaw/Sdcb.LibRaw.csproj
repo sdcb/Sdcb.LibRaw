@@ -6,6 +6,28 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
     <Description>Advanced raw image processing library in C# based on LibRaw</Description>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageIcon>Sdcb.LibRaw.png</PackageIcon>
+    <Copyright>Zhou Jie</Copyright>
+    <PackageProjectUrl>https://github.com/sdcb/Sdcb.LibRaw</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/sdcb/Sdcb.LibRaw</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>sdcb;libraw;arw;dng;cr2;cr2</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\build\Sdcb.LibRaw.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\readme.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

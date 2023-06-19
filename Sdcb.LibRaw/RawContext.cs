@@ -15,6 +15,9 @@ public class RawContext : IDisposable
     private IntPtr _r;
     private bool _disposed;
 
+    /// <summary>
+    /// The converted C structure from libraw_data_t pointer, it's unsafe.
+    /// </summary>
     internal protected LibRawData RawData
     {
         get => Marshal.PtrToStructure<LibRawData>(_r);
@@ -22,7 +25,11 @@ public class RawContext : IDisposable
         set => Marshal.StructureToPtr(value, _r, fDeleteOld: false);
     }
 
-    private void CheckDisposed()
+    /// <summary>
+    /// Checks if the object has been disposed and throws an exception if it has.
+    /// </summary>
+    /// <exception cref="ObjectDisposedException">Thrown when the object has been disposed.</exception>
+    protected void CheckDisposed()
     {
         if (_disposed)
             throw new ObjectDisposedException(nameof(RawContext));
@@ -133,7 +140,7 @@ public class RawContext : IDisposable
     /// <remarks>Corresponds to the C API function: libraw_get_pre_mul</remarks>
     public IReadOnlyList<float> PreMultipler => new PreMultiplerIndexer(_r, _disposed);
 
-    /// <summary>Gets the <see cref="IReadOnly2DIndexer{float}"/> instance for the RGB camera.</summary>
+    /// <summary>Gets the <see cref="IReadOnly2DIndexer{T}"/> instance for the RGB camera.</summary>
     /// <remarks>Corresponds to the C API function: libraw_get_rgb_cam</remarks>
     public IReadOnly2DIndexer<float> RgbCamera => new RgbCamera2DIndexer(_r, _disposed);
 
@@ -555,7 +562,7 @@ public class RawContext : IDisposable
                 image->Colors = (ushort)data.Thumbnail.Colors;
             }
         }
-        
+
         return new ProcessedImage(image); // need to dispose by user
     }
 

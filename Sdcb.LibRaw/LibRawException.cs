@@ -40,6 +40,12 @@ namespace Sdcb.LibRaw
         /// </summary>
         public LibRawError ErrorCode { get; }
 
+        /// <summary>
+        /// Throws a <see cref="LibRawException"/> if a <see cref="LibRawError"/> is returned.
+        /// </summary>
+        /// <param name="error">The error code that describes the error.</param>
+        /// <param name="errorMessage">The message that describes the error.</param>
+        /// <exception cref="LibRawException">Thrown when the error code is not <see cref="LibRawError.Success"/>.</exception>
         public static void ThrowIfFailed(LibRawError error, string? errorMessage = null)
         {
             if (error != LibRawError.Success)

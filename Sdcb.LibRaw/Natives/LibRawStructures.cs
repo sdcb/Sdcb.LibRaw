@@ -3,6 +3,8 @@ using System.Runtime.InteropServices;
 
 namespace Sdcb.LibRaw.Natives;
 
+#pragma warning disable CS1591
+
 /// <summary>
 /// Represents an image that has been processed by LibRaw.
 /// </summary>
@@ -161,7 +163,7 @@ public struct LibRawImageParams
     /// <summary>
     /// Span object that contains the XMP metadata for the image, obtained by dereferencing the pointer in XmpDataPtr.
     /// </summary>
-    public unsafe Span<byte> XmpData => XmpDataPtr != IntPtr.Zero ? new Span<byte>(XmpDataPtr.ToPointer(), XmpLength) : null;
+    public readonly unsafe Span<byte> XmpData => XmpDataPtr != IntPtr.Zero ? new Span<byte>(XmpDataPtr.ToPointer(), XmpLength) : null;
 }
 
 /// <summary>Struct containing lens maker notes data.</summary>
@@ -800,7 +802,6 @@ public struct LibRawFujiInfo
     public uint Rating;
 
     /// <summary>
-    /// <list type="bullet
     /// CropMode:
     ///     1 - FF on GFX,
     ///     2 - sports finder (mechanical shutter),
