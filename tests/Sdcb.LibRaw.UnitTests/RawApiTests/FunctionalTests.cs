@@ -284,7 +284,15 @@ public class FunctionalTests : BaseCApiTest
             Assert.Equal(0.005000, oparams.Shutter, epsilon);
             Assert.Equal(1.200000, oparams.Aperture, epsilon);
             Assert.Equal(50.000000, oparams.FocalLength, epsilon);
-            Assert.Equal(1674456985, oparams.Timestamp);
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            {
+                Assert.Equal(1674456985, oparams.Timestamp); // 2023/1/23 6:56:25
+            }
+            else
+            {
+                Assert.Equal(1674485785, oparams.Timestamp); // 2023/1/23 14:56:25
+            }
+            
             Assert.Equal(0u, oparams.ShotOrder);
             Assert.Equal(new string(' ', 31), oparams.Description);
             Assert.Equal("Zhou Jie/sdcb", oparams.Artist);

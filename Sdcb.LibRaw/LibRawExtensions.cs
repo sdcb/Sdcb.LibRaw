@@ -1,6 +1,7 @@
 ﻿using Sdcb.LibRaw.Natives;
 using System;
 using System.IO;
+using System.Runtime.Versioning;
 
 namespace Sdcb.LibRaw;
 
@@ -15,7 +16,8 @@ public static class LibRawExtensions
     /// <param name="r">The RawContext object.</param>
     /// <param name="configure">The OutputParams configuration action.</param>
     /// <returns>The ProcessedImage object.</returns>
-    public static ProcessedImage ExportRawImage(this RawContext r, Action<OutputParams>? configure = null)
+    [SupportedOSPlatform("windows")]
+    public static ProcessedImage ExportRawImage(this RawContext r, Action<OutputParams> configure)
     {
         if (r is null) throw new ArgumentNullException(nameof(r));
 
@@ -25,6 +27,28 @@ public static class LibRawExtensions
         }
         r.DcrawProcess(configure);
         return r.MakeDcrawMemoryImage();
+    }
+
+    /// <summary>
+    /// Exports a Raw image.
+    /// </summary>
+    /// <param name="r">The RawContext object.</param>
+    /// <returns>The ProcessedImage object.</returns>
+    public static ProcessedImage ExportRawImage(this RawContext r)
+    {
+        PreCheckAndUnpack(r);
+        r.DcrawProcess();
+        return r.MakeDcrawMemoryImage();
+    }
+
+    private static void PreCheckAndUnpack(RawContext r)
+    {
+        if (r is null) throw new ArgumentNullException(nameof(r));
+
+        if (((int)r.RawData.ProgressFlags & LibRawNative.ProgressThumbMask) < (int)LibRawProgress.LoadRaw)
+        {
+            r.Unpack();
+        }
     }
 
     /// <summary>
@@ -46,8 +70,30 @@ public static class LibRawExtensions
     /// </summary>
     /// <param name="r">The RawContext object.</param>
     /// <param name="fileName">The output file name.</param>
-    /// <param name="configure">The OutputParams configuration action.</param>
-    public static void SaveRawImage(this RawContext r, string fileName, Action<OutputParams>? configure = null)
+    /// <param name="configure">The OutputParams configuration action, only supported in windows.</param>
+    [SupportedOSPlatform("windows")]
+    public static void SaveRawImage(this RawContext r, string fileName, Action<OutputParams> configure)
+    {
+        PreCheckAndUnpack(r, fileName);
+
+        r.DcrawProcess(configure);
+        r.WriteDcrawPpmTiff(fileName);
+    }
+
+    /// <summary>
+    /// Saves a Raw image.
+    /// </summary>
+    /// <param name="r">The RawContext object.</param>
+    /// <param name="fileName">The output file name.</param>
+    public static void SaveRawImage(this RawContext r, string fileName)
+    {
+        PreCheckAndUnpack(r, fileName);
+
+        r.DcrawProcess();
+        r.WriteDcrawPpmTiff(fileName);
+    }
+
+    private static void PreCheckAndUnpack(RawContext r, string fileName)
     {
         if (r is null) throw new ArgumentNullException(nameof(r));
 
@@ -65,9 +111,6 @@ public static class LibRawExtensions
         {
             r.Unpack();
         }
-
-        r.DcrawProcess(configure);
-        r.WriteDcrawPpmTiff(fileName);
     }
 
     /// <summary>

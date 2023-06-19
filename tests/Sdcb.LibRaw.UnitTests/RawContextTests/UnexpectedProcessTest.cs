@@ -1,13 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Xunit.Abstractions;
 
 namespace Sdcb.LibRaw.UnitTests.RawContextTests;
 
 public class UnexpectedProcessTest : BaseTest
 {
+    private readonly ITestOutputHelper _console;
+
+    public UnexpectedProcessTest(ITestOutputHelper console)
+    {
+        _console = console;
+    }
+
     [Fact]
     public void GetThumbInNonThumbImage_Should_Error()
     {
@@ -20,7 +23,8 @@ public class UnexpectedProcessTest : BaseTest
     public void OpenUnexpectedFile_Should_Error()
     {
         LibRawException ex = Assert.Throws<LibRawException>(() => RawContext.OpenFile("a-file-that-not-exists.cr2"));
-        Assert.True((int)ex.ErrorCode >= (int)LibRawError.IOError);
+        _console.WriteLine(ex.ErrorCode.ToString());
+        Assert.Equal(LibRawError.IOError, ex.ErrorCode);
     }
 
     [Fact]

@@ -3,6 +3,7 @@ using Sdcb.LibRaw.Natives;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 namespace Sdcb.LibRaw;
 
@@ -491,29 +492,32 @@ public class RawContext : IDisposable
     /// <summary>Converts the raw data into a processed image.</summary>
     /// <exception cref="LibRawException" />
     /// <remarks>Corresponds to the C API function: libraw_dcraw_process</remarks>
-    public void DcrawProcess(Action<OutputParams>? configure = null)
+    [SupportedOSPlatform("windows")]
+    public void DcrawProcess(Action<OutputParams> configure)
     {
         CheckDisposed();
-        if (configure != null)
-        {
-            LibRawData data = RawData;
-            OutputParams p = OutputParams.FromLibRaw(data.OutputParams);
-            configure(p);
-            data.OutputParams = p.ToLibRaw();
-            RawData = data;
-            try
-            {
-                LibRawException.ThrowIfFailed(LibRawNative.ProcessDcraw(_r));
-            }
-            finally
-            {
-                OutputParams.FreeLibRawStrings(data.OutputParams);
-            }
-        }
-        else
+        LibRawData data = RawData;
+        OutputParams p = OutputParams.FromLibRaw(data.OutputParams);
+        configure(p);
+        data.OutputParams = p.ToLibRaw();
+        RawData = data;
+        try
         {
             LibRawException.ThrowIfFailed(LibRawNative.ProcessDcraw(_r));
         }
+        finally
+        {
+            OutputParams.FreeLibRawStrings(data.OutputParams);
+        }
+    }
+
+    /// <summary>Converts the raw data into a processed image.</summary>
+    /// <exception cref="LibRawException" />
+    /// <remarks>Corresponds to the C API function: libraw_dcraw_process</remarks>
+    public void DcrawProcess()
+    {
+        CheckDisposed();
+        LibRawException.ThrowIfFailed(LibRawNative.ProcessDcraw(_r));
     }
 
     /// <summary>Converts the raw data into a processed image.</summary>

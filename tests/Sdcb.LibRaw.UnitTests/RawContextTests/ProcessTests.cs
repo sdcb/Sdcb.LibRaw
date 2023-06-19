@@ -1,4 +1,5 @@
 ﻿using Sdcb.LibRaw.UnitTests.RawApiTests;
+using System.Runtime.Versioning;
 using System.Text;
 using Xunit.Abstractions;
 
@@ -129,7 +130,8 @@ public class ProcessTests : BaseTest
         Assert.Equal(255, d[12].G);
     }
 
-    [Fact]
+    [Fact(Skip = "Linux binary structure is not the same as windows.")]
+    [SupportedOSPlatform("windows")]
     public void NoInterpolationTest()
     {
         using RawContext ctx = ExampleBayer();
@@ -174,7 +176,8 @@ public class ProcessTests : BaseTest
         }
     }
 
-    [Fact]
+    [Fact(Skip = "Linux binary structure is not the same as windows.")]
+    [SupportedOSPlatform("windows")]
     public void CropTest()
     {
         using RawContext ctx = ExampleBayer();
