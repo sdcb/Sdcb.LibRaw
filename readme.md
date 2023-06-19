@@ -59,26 +59,26 @@ using Bitmap bmp = ProcessedImageToBitmap(image);
 
 Bitmap ProcessedImageToBitmap(ProcessedImage rgbImage)
 {
-	fixed (void* data = rgbImage.GetData<byte>())
-	{
-		SwapRedAndBlue(rgbImage.GetData<byte>(), rgbImage.Width, rgbImage.Height);
-		using Bitmap bmp = new Bitmap(rgbImage.Width, rgbImage.Height, rgbImage.Width * 3, System.Drawing.Imaging.PixelFormat.Format24bppRgb, (IntPtr)data);
-		return new Bitmap(bmp);
-	}
+    fixed (void* data = rgbImage.GetData<byte>())
+    {
+        SwapRedAndBlue(rgbImage.GetData<byte>(), rgbImage.Width, rgbImage.Height);
+        using Bitmap bmp = new Bitmap(rgbImage.Width, rgbImage.Height, rgbImage.Width * 3, System.Drawing.Imaging.PixelFormat.Format24bppRgb, (IntPtr)data);
+        return new Bitmap(bmp);
+    }
 }
 
 void SwapRedAndBlue(Span<byte> rgbData, int width, int height)
 {
-	int totalPixels = width * height;
-	for (int i = 0; i < totalPixels; i++)
-	{
-		int pixelIndex = i * 3;
-		byte red = rgbData[pixelIndex];
-		byte blue = rgbData[pixelIndex + 2];
+    int totalPixels = width * height;
+    for (int i = 0; i < totalPixels; i++)
+    {
+        int pixelIndex = i * 3;
+        byte red = rgbData[pixelIndex];
+        byte blue = rgbData[pixelIndex + 2];
 
-		rgbData[pixelIndex] = blue;
-		rgbData[pixelIndex + 2] = red;
-	}
+        rgbData[pixelIndex] = blue;
+        rgbData[pixelIndex + 2] = red;
+    }
 }
 ```
 
