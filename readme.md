@@ -14,9 +14,26 @@ Advanced raw image processing library in C# based on [LibRaw](https://www.libraw
 ## Install
 Please note all examples below need install following NuGet packages:
 * Sdcb.LibRaw
-* Sdcb.LibRaw.runtime.win64 (or Sdcb.LibRaw.runtime.win32 or Sdcb.LibRaw.runtime.linux-64)
+* Sdcb.LibRaw.runtime.win64 
+* Sdcb.LibRaw.runtime.win32
+* Sdcb.LibRaw.runtime.linux-64 (for Ubuntu22.04 support)
 
-For Linux/MacOS, please install `libraw` using OS provided package manager, for example, in Debian 11, you can install by running following bash command to install:
+All native packages are pre-compiled using `vcpkg`.
+
+Please note the `Sdcb.LibRaw.runtime.linux-64` package is only support Ubuntu22.04, if you using .NET in Docker, you should append `jammy` when write docker file, for example, you should write:
+
+```
+FROM mcr.microsoft.com/dotnet/sdk:6.0-jammy
+```
+
+Instead of:
+
+```
+FROM mcr.microsoft.com/dotnet/sdk:6.0
+```
+
+if you want to use in other Linux distros without docker, please install `libraw` using OS provided package manager, for example, in `Debian 11`, you can install by running following bash command to install:
+
 ```bash
 echo "deb http://deb.debian.org/debian experimental main" | tee -a /etc/apt/sources.list
 echo "deb-src http://deb.debian.org/debian experimental main" | tee -a /etc/apt/sources.list
@@ -24,21 +41,7 @@ apt-get update
 apt-get -t experimental install libraw-dev
 ```
 
-in Ubuntu 22.04, you can install by running following command:
-```bash
-wget http://ftp.cn.debian.org/debian/pool/main/libr/libraw/libraw-dev_0.21.1-3_amd64.deb
-wget http://ftp.cn.debian.org/debian/pool/main/libr/libraw/libraw23_0.21.1-3_amd64.deb
-wget http://ftp.cn.debian.org/debian/pool/main/l/lcms2/liblcms2-dev_2.14-2_amd64.deb
-wget http://ftp.cn.debian.org/debian/pool/main/l/lcms2/liblcms2-2_2.14-2_amd64.deb
-wget http://ftp.cn.debian.org/debian/pool/main/libj/libjpeg-turbo/libjpeg62-turbo_2.1.5-2_amd64.deb
-sudo dpkg -i libjpeg62-turbo_2.1.5-2_amd64.deb
-sudo dpkg -i liblcms2-2_2.14-2_amd64.deb
-sudo dpkg -i liblcms2-dev_2.14-2_amd64.deb
-sudo dpkg -i libraw23_0.21.1-3_amd64.deb
-sudo dpkg -i libraw-dev_0.21.1-3_amd64.deb
-```
-
-I also created NuGet package `Sdcb.LibRaw.runtime.linux64`, it's extracted from Debian apt-get experimental.
+Likewise in MacOS, you also need to install `libraw` using MacOS provided package manager.
 
 ## High level API Usage
 For high level API usage, I created `RawContext` class to wrap all `LibRaw` native functions, you can refer to following examples for more details.
