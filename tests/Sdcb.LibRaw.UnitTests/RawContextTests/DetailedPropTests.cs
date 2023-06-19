@@ -131,7 +131,7 @@ public class DetailedPropTests : BaseTest
         using RawContext r = ExampleBayer();
         r.RgbCamera[1, 2] = 3.14f;
         float[] expected = new float[12];
-        expected[1 * 4 + 2] = 3.14f; ;
+        expected[1 * 4 + 2] = 3.14f;
         Assert.Equal(expected, r.RgbCamera);
     }
 
