@@ -28,7 +28,7 @@ async Task Main()
 
 	if (true)
 	{
-		LibNames libs = new LibNames("libraw_r.so.23", "liblcms2.so", "libjpeg.so.8");
+		LibNames libs = new LibNames("libraw_r.so.23", "liblcms2.so", "libjpeg.so.8", "libgomp.so.1");
 		await new WindowsNugetSource("linux-x64", "linux64", libs, @"C:\Users\ZhouJie\Downloads\vcpkg-libraw\good", "Sdcb.LibRaw", deps: new string[0])
 			.Process(QueryCancelToken);
 	}

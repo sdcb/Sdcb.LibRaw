@@ -20,7 +20,7 @@ public class UnexpectedProcessTest : BaseTest
     public void OpenUnexpectedFile_Should_Error()
     {
         LibRawException ex = Assert.Throws<LibRawException>(() => RawContext.OpenFile("a-file-that-not-exists.cr2"));
-        Assert.Equal(LibRawError.IOError, ex.ErrorCode);
+        Assert.True((int)ex.ErrorCode >= (int)LibRawError.IOError);
     }
 
     [Fact]

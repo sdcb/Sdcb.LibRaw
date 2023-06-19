@@ -33,10 +33,16 @@ namespace Sdcb.LibRaw.Natives
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 {
-                    NativeLibrary.Load("libjpeg.so.62", assembly, searchPath);
-                    NativeLibrary.Load("liblcms2.so.2", assembly, searchPath);
-                    NativeLibrary.Load("libgomp.so.1", assembly, searchPath);
-                    return NativeLibrary.Load("libraw.so.23", assembly, searchPath);
+                    string[] deps = new[] { "libjpeg.so.8", "liblcms2.so", "libgomp.so.1" };
+                    foreach (string dep in deps)
+                    {
+                        if (!NativeLibrary.TryLoad(dep, assembly, searchPath, out IntPtr _))
+                        {
+                            Console.WriteLine($"[WARN]: Failed to load linux dependency: {dep}");
+                        }
+                    }
+
+                    return NativeLibrary.Load("libraw_r.so.23", assembly, searchPath);
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 {
