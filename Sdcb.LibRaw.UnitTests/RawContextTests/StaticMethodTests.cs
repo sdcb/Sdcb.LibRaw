@@ -1,7 +1,16 @@
-﻿namespace Sdcb.LibRaw.UnitTests.RawContextTests;
+﻿using Xunit.Abstractions;
+
+namespace Sdcb.LibRaw.UnitTests.RawContextTests;
 
 public class StaticMethodTests
 {
+    private readonly ITestOutputHelper _console;
+
+    public StaticMethodTests(ITestOutputHelper console)
+    {
+        _console = console;
+    }
+
     [Fact]
     public void SupportedCamerasTest()
     {
@@ -14,6 +23,7 @@ public class StaticMethodTests
     public void VersionTest()
     {
         Assert.NotNull(RawContext.Version);
+        _console.WriteLine(RawContext.Version);
         Assert.True(string.Compare(RawContext.Version, "0.21.1-Release") >= 0);
     }
 

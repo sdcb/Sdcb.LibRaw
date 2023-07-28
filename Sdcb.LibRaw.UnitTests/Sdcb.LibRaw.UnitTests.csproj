@@ -37,7 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Sdcb.LibRaw\Sdcb.LibRaw.csproj" />
+    <ProjectReference Include="..\Sdcb.LibRaw\Sdcb.LibRaw.csproj" />
   </ItemGroup>
 
 </Project>
