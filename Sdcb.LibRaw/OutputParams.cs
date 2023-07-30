@@ -18,7 +18,7 @@ public record OutputParams
     public double[] Aber { get; set; } = null!;
 
     /// <summary>Gets or sets the gamma curve parameters (ts, t, r, g, b, a).</summary>
-    public float[] Gamma { get; set; } = null!;
+    public double[] Gamma { get; set; } = null!;
 
     /// <summary>Gets or sets the custom white balance multipliers (red, green, blue, green2).</summary>
     public float[] UserMultipliers { get; set; } = null!;
@@ -131,115 +131,293 @@ public record OutputParams
     /// <summary>
     /// Creates and returns a new OutputParams instance based on the provided LibRawOutputParams instance.
     /// </summary>
-    /// <param name="r">The input LibRawOutputParams instance.</param>
+    /// <param name="rawData">The pointer of libraw_data_t.</param>
     /// <returns>A new OutputParams instance.</returns>
-    public static OutputParams FromLibRaw(in LibRawOutputParams r)
+    public static OutputParams FromLibRaw(IntPtr rawData)
     {
-        return new OutputParams
+        if (IntPtr.Size == 8)
         {
-            Greybox = Rectangle.FromLTRB((int)r.Greybox[0], (int)r.Greybox[1], (int)r.Greybox[2], (int)r.Greybox[3]),
-            Cropbox = Rectangle.FromLTRB((int)r.Cropbox[0], (int)r.Cropbox[1], (int)r.Cropbox[2], (int)r.Cropbox[3]),
-            Aber = r.Aber,
-            Gamma = Array.ConvertAll(r.Gamma, x => (float)x),
-            UserMultipliers = r.UserMultipliers,
-            Brightness = r.Brightness,
-            Threshold = r.Threshold,
-            HalfSize = r.HalfSize,
-            FourColorRgb = r.FourColorRgb,
-            HighlightMode = r.Highlight,
-            UseAutoWb = r.UseAutoWb,
-            UseCameraWb = r.UseCameraWb,
-            UseCameraMatrix = r.UseCameraMatrix,
-            OutputColor = r.OutputColor,
-            OutputProfile = Marshal.PtrToStringAnsi(r.OutputProfile),
-            CameraProfile = Marshal.PtrToStringAnsi(r.CameraProfile),
-            BadPixels = Marshal.PtrToStringAnsi(r.BadPixels),
-            DarkFrame = Marshal.PtrToStringAnsi(r.DarkFrame),
-            OutputBps = r.OutputBps,
-            OutputTiff = r.OutputTiff,
-            OutputFlags = r.OutputFlags,
-            UserFlip = r.UserFlip,
-            UserQual = (DemosaicAlgorithm)r.UserQual,
-            UserBlack = r.UserBlack,
-            UserCBlack = r.UserCBlack,
-            UserSaturation = r.UserSaturation,
-            MedianPasses = r.MedianPasses,
-            AutoBrightThr = r.AutoBrightThr,
-            AdjustMaximumThr = r.AdjustMaximumThr,
-            NoAutoBright = r.NoAutoBright,
-            UseFujiRotate = r.UseFujiRotate,
-            GreenMatching = r.GreenMatching,
-            DcbIterations = r.DcbIterations,
-            DcbEnhanceFl = r.DcbEnhanceFl,
-            FbddNoiserd = r.FbddNoiserd,
-            ExpCorrec = r.ExpCorrec,
-            ExpShift = r.ExpShift,
-            ExpPreser = r.ExpPreser,
-            AutoScale = !r.NoAutoScale,
-            Interpolation = !r.NoInterpolation
-        };
+            return FromLibRawX64(rawData);
+        }
+        else
+        {
+
+            return FromLibRawX86(rawData);
+        }
+
+        unsafe static OutputParams FromLibRawX64(IntPtr rawData)
+        {
+            LibRawDataX64* data = (LibRawDataX64*)rawData;
+            OutputParamsX64* r = &data->OutputParams;
+            return new OutputParams
+            {
+                Greybox = Rectangle.FromLTRB((int)r->Greybox, (int)*(&r->Greybox + 1), (int)*(&r->Greybox + 2), (int)*(&r->Greybox + 3)),
+                Cropbox = Rectangle.FromLTRB((int)r->Cropbox, (int)*(&r->Cropbox + 1), (int)*(&r->Cropbox + 2), (int)*(&r->Cropbox + 3)),
+                Aber = new ReadOnlySpan<double>(&r->Aber, 4).ToArray(),
+                Gamma = new ReadOnlySpan<double>(&r->Aber, 6).ToArray(),
+                UserMultipliers = new ReadOnlySpan<float>(&r->UserMul, 4).ToArray(),
+                Brightness = r->Bright,
+                Threshold = r->Threshold,
+                HalfSize = r->HalfSize != 0,
+                FourColorRgb = r->FourColorRgb != 0,
+                HighlightMode = r->Highlight,
+                UseAutoWb = r->UseAutoWb != 0,
+                UseCameraWb = r->UseCameraWb != 0,
+                UseCameraMatrix = r->UseCameraMatrix != 0,
+                OutputColor = (LibRawColorSpace)r->OutputColor,
+                OutputProfile = Marshal.PtrToStringAnsi(r->OutputProfile),
+                CameraProfile = Marshal.PtrToStringAnsi(r->CameraProfile),
+                BadPixels = Marshal.PtrToStringAnsi(r->BadPixels),
+                DarkFrame = Marshal.PtrToStringAnsi(r->DarkFrame),
+                OutputBps = r->OutputBps,
+                OutputTiff = r->OutputTiff != 0,
+                OutputFlags = r->OutputFlags,
+                UserFlip = r->UserFlip,
+                UserQual = (DemosaicAlgorithm)r->UserQual,
+                UserBlack = r->UserBlack,
+                UserCBlack = new ReadOnlySpan<int>(&r->UserCblack, 4).ToArray(),
+                UserSaturation = r->UserSat,
+                MedianPasses = r->MedPasses,
+                AutoBrightThr = r->AutoBrightThr,
+                AdjustMaximumThr = r->AdjustMaximumThr,
+                NoAutoBright = r->NoAutoBright != 0,
+                UseFujiRotate = r->UseFujiRotate != 0,
+                GreenMatching = r->GreenMatching,
+                DcbIterations = r->DcbIterations,
+                DcbEnhanceFl = r->DcbEnhanceFl,
+                FbddNoiserd = r->FbddNoiserd,
+                ExpCorrec = r->ExpCorrec != 0,
+                ExpShift = r->ExpShift,
+                ExpPreser = r->ExpPreser,
+                AutoScale = r->NoAutoScale == 0,
+                Interpolation = r->NoInterpolation != 0,
+            };
+        }
+
+        unsafe static OutputParams FromLibRawX86(IntPtr rawData)
+        {
+            LibRawDataX86* data = (LibRawDataX86*)rawData;
+            OutputParamsX86* r = &data->OutputParams;
+            return new OutputParams
+            {
+                Greybox = Rectangle.FromLTRB((int)r->Greybox, (int)*(&r->Greybox + 1), (int)*(&r->Greybox + 2), (int)*(&r->Greybox + 3)),
+                Cropbox = Rectangle.FromLTRB((int)r->Cropbox, (int)*(&r->Cropbox + 1), (int)*(&r->Cropbox + 2), (int)*(&r->Cropbox + 3)),
+                Aber = new ReadOnlySpan<double>(&r->Aber, 4).ToArray(),
+                Gamma = new ReadOnlySpan<double>(&r->Aber, 6).ToArray(),
+                UserMultipliers = new ReadOnlySpan<float>(&r->UserMul, 4).ToArray(),
+                Brightness = r->Bright,
+                Threshold = r->Threshold,
+                HalfSize = r->HalfSize != 0,
+                FourColorRgb = r->FourColorRgb != 0,
+                HighlightMode = r->Highlight,
+                UseAutoWb = r->UseAutoWb != 0,
+                UseCameraWb = r->UseCameraWb != 0,
+                UseCameraMatrix = r->UseCameraMatrix != 0,
+                OutputColor = (LibRawColorSpace)r->OutputColor,
+                OutputProfile = Marshal.PtrToStringAnsi(r->OutputProfile),
+                CameraProfile = Marshal.PtrToStringAnsi(r->CameraProfile),
+                BadPixels = Marshal.PtrToStringAnsi(r->BadPixels),
+                DarkFrame = Marshal.PtrToStringAnsi(r->DarkFrame),
+                OutputBps = r->OutputBps,
+                OutputTiff = r->OutputTiff != 0,
+                OutputFlags = r->OutputFlags,
+                UserFlip = r->UserFlip,
+                UserQual = (DemosaicAlgorithm)r->UserQual,
+                UserBlack = r->UserBlack,
+                UserCBlack = new ReadOnlySpan<int>(&r->UserCblack, 4).ToArray(),
+                UserSaturation = r->UserSat,
+                MedianPasses = r->MedPasses,
+                AutoBrightThr = r->AutoBrightThr,
+                AdjustMaximumThr = r->AdjustMaximumThr,
+                NoAutoBright = r->NoAutoBright != 0,
+                UseFujiRotate = r->UseFujiRotate != 0,
+                GreenMatching = r->GreenMatching,
+                DcbIterations = r->DcbIterations,
+                DcbEnhanceFl = r->DcbEnhanceFl,
+                FbddNoiserd = r->FbddNoiserd,
+                ExpCorrec = r->ExpCorrec != 0,
+                ExpShift = r->ExpShift,
+                ExpPreser = r->ExpPreser,
+                AutoScale = r->NoAutoScale == 0,
+                Interpolation = r->NoInterpolation != 0,
+            };
+        }
     }
 
     /// <summary>
-    /// Converts the OutputParams object to a LibRawOutputParams object.
+    /// Updates the LibRaw raw data from the specified pointer. 
     /// </summary>
-    /// <returns>The LibRawOutputParams object</returns>
-    public LibRawOutputParams ToLibRaw()
+    /// <param name="rawData">The pointer of libraw_data_t</param>
+    /// <exception cref="ArgumentException">Array element size not match.</exception>
+    public void Commit(IntPtr rawData)
     {
-        return new LibRawOutputParams
+        // Check array lengths
+        if (Aber.Length != 4)
+            throw new ArgumentException("Aber array must contain exactly 4 elements", nameof(Aber));
+        if (Gamma.Length != 6)
+            throw new ArgumentException("Gamma array must contain exactly 6 elements", nameof(Gamma));
+        if (UserMultipliers.Length != 4)
+            throw new ArgumentException("UserMultipliers array must contain exactly 4 elements", nameof(UserMultipliers));
+        if (UserCBlack.Length != 4)
+            throw new ArgumentException("UserCBlack array must contain exactly 4 elements", nameof(UserCBlack));
+
+        if (IntPtr.Size == 8)
         {
-            Greybox = new uint[] { (uint)Greybox.X, (uint)Greybox.Y, (uint)Greybox.Right, (uint)Greybox.Bottom },
-            Cropbox = new uint[] { (uint)Cropbox.X, (uint)Cropbox.Y, (uint)Cropbox.Right, (uint)Cropbox.Bottom },
-            Aber = Aber,
-            Gamma = Array.ConvertAll(Gamma, x => (double)x),
-            UserMultipliers = UserMultipliers,
-            Brightness = Brightness,
-            Threshold = Threshold,
-            HalfSize = HalfSize,
-            FourColorRgb = FourColorRgb,
-            Highlight = HighlightMode,
-            UseAutoWb = UseAutoWb,
-            UseCameraWb = UseCameraWb,
-            UseCameraMatrix = UseCameraMatrix,
-            OutputColor = OutputColor,
-            OutputProfile = Marshal.StringToHGlobalAnsi(OutputProfile),
-            CameraProfile = Marshal.StringToHGlobalAnsi(CameraProfile),
-            BadPixels = Marshal.StringToHGlobalAnsi(BadPixels),
-            DarkFrame = Marshal.StringToHGlobalAnsi(DarkFrame),
-            OutputBps = OutputBps,
-            OutputTiff = OutputTiff,
-            OutputFlags = OutputFlags,
-            UserFlip = UserFlip,
-            UserQual = (int)UserQual,
-            UserBlack = UserBlack,
-            UserCBlack = UserCBlack,
-            UserSaturation = UserSaturation,
-            MedianPasses = MedianPasses,
-            AutoBrightThr = AutoBrightThr,
-            AdjustMaximumThr = AdjustMaximumThr,
-            NoAutoBright = NoAutoBright,
-            UseFujiRotate = UseFujiRotate,
-            GreenMatching = GreenMatching,
-            DcbIterations = DcbIterations,
-            DcbEnhanceFl = DcbEnhanceFl,
-            FbddNoiserd = FbddNoiserd,
-            ExpCorrec = ExpCorrec,
-            ExpShift = ExpShift,
-            ExpPreser = ExpPreser,
-            NoAutoScale = !AutoScale,
-            NoInterpolation = !Interpolation
-        };
+            UpdateX64(rawData);
+        }
+        else
+        {
+            UpdateX86(rawData);
+        }
+
+
+        unsafe void UpdateX64(IntPtr rawData)
+        {
+            LibRawDataX64* data = (LibRawDataX64*)rawData;
+            OutputParamsX64* r = &data->OutputParams;
+
+            new uint[] { (uint)Greybox.Left, (uint)Greybox.Top, (uint)Greybox.Right, (uint)Greybox.Bottom }.AsSpan().CopyTo(new Span<uint>(&r->Greybox, 4));
+            new uint[] { (uint)Cropbox.Left, (uint)Cropbox.Top, (uint)Cropbox.Right, (uint)Cropbox.Bottom }.AsSpan().CopyTo(new Span<uint>(&r->Cropbox, 4));
+
+            Aber.AsSpan().CopyTo(new Span<double>(&r->Aber, 4));
+            Gamma.AsSpan().CopyTo(new Span<double>(&r->Gamm, 6));
+            UserMultipliers.AsSpan().CopyTo(new Span<float>(&r->UserMul, 4));
+
+            r->Bright = Brightness;
+            r->Threshold = Threshold;
+            r->HalfSize = HalfSize ? 1 : 0;
+            r->FourColorRgb = FourColorRgb ? 1 : 0;
+            r->Highlight = HighlightMode;
+            r->UseAutoWb = UseAutoWb ? 1 : 0;
+            r->UseCameraWb = UseCameraWb ? 1 : 0;
+            r->UseCameraMatrix = UseCameraMatrix ? 1 : 0;
+            r->OutputColor = (int)OutputColor;
+            r->OutputProfile = Marshal.StringToHGlobalAnsi(OutputProfile);
+            r->CameraProfile = Marshal.StringToHGlobalAnsi(CameraProfile);
+            r->BadPixels = Marshal.StringToHGlobalAnsi(BadPixels);
+            r->DarkFrame = Marshal.StringToHGlobalAnsi(DarkFrame);
+            r->OutputBps = OutputBps;
+            r->OutputTiff = OutputTiff ? 1 : 0;
+            r->OutputFlags = OutputFlags;
+            r->UserFlip = UserFlip;
+            r->UserQual = (int)UserQual;
+            r->UserBlack = UserBlack;
+
+            UserCBlack.AsSpan().CopyTo(new Span<int>(&r->UserCblack, 4));
+
+            r->UserSat = UserSaturation;
+            r->MedPasses = MedianPasses;
+            r->AutoBrightThr = AutoBrightThr;
+            r->AdjustMaximumThr = AdjustMaximumThr;
+            r->NoAutoBright = NoAutoBright ? 1 : 0;
+            r->UseFujiRotate = UseFujiRotate ? 1 : 0;
+            r->GreenMatching = GreenMatching;
+            r->DcbIterations = DcbIterations;
+            r->DcbEnhanceFl = DcbEnhanceFl;
+            r->FbddNoiserd = FbddNoiserd;
+            r->ExpCorrec = ExpCorrec ? 1 : 0;
+            r->ExpShift = ExpShift;
+            r->ExpPreser = ExpPreser;
+            r->NoAutoScale = AutoScale ? 0 : 1;
+            r->NoInterpolation = Interpolation ? 0 : 1;
+        }
+
+        unsafe void UpdateX86(IntPtr rawData)
+        {
+            LibRawDataX86* data = (LibRawDataX86*)rawData;
+            OutputParamsX86* r = &data->OutputParams;
+
+            new uint[] { (uint)Greybox.Left, (uint)Greybox.Top, (uint)Greybox.Right, (uint)Greybox.Bottom }.AsSpan().CopyTo(new Span<uint>(&r->Greybox, 4));
+            new uint[] { (uint)Cropbox.Left, (uint)Cropbox.Top, (uint)Cropbox.Right, (uint)Cropbox.Bottom }.AsSpan().CopyTo(new Span<uint>(&r->Cropbox, 4));
+
+            Aber.AsSpan().CopyTo(new Span<double>(&r->Aber, 4));
+            Gamma.AsSpan().CopyTo(new Span<double>(&r->Gamm, 6));
+            UserMultipliers.AsSpan().CopyTo(new Span<float>(&r->UserMul, 4));
+
+            r->Bright = Brightness;
+            r->Threshold = Threshold;
+            r->HalfSize = HalfSize ? 1 : 0;
+            r->FourColorRgb = FourColorRgb ? 1 : 0;
+            r->Highlight = HighlightMode;
+            r->UseAutoWb = UseAutoWb ? 1 : 0;
+            r->UseCameraWb = UseCameraWb ? 1 : 0;
+            r->UseCameraMatrix = UseCameraMatrix ? 1 : 0;
+            r->OutputColor = (int)OutputColor;
+            r->OutputProfile = Marshal.StringToHGlobalAnsi(OutputProfile);
+            r->CameraProfile = Marshal.StringToHGlobalAnsi(CameraProfile);
+            r->BadPixels = Marshal.StringToHGlobalAnsi(BadPixels);
+            r->DarkFrame = Marshal.StringToHGlobalAnsi(DarkFrame);
+            r->OutputBps = OutputBps;
+            r->OutputTiff = OutputTiff ? 1 : 0;
+            r->OutputFlags = OutputFlags;
+            r->UserFlip = UserFlip;
+            r->UserQual = (int)UserQual;
+            r->UserBlack = UserBlack;
+
+            UserCBlack.AsSpan().CopyTo(new Span<int>(&r->UserCblack, 4));
+
+            r->UserSat = UserSaturation;
+            r->MedPasses = MedianPasses;
+            r->AutoBrightThr = AutoBrightThr;
+            r->AdjustMaximumThr = AdjustMaximumThr;
+            r->NoAutoBright = NoAutoBright ? 1 : 0;
+            r->UseFujiRotate = UseFujiRotate ? 1 : 0;
+            r->GreenMatching = GreenMatching;
+            r->DcbIterations = DcbIterations;
+            r->DcbEnhanceFl = DcbEnhanceFl;
+            r->FbddNoiserd = FbddNoiserd;
+            r->ExpCorrec = ExpCorrec ? 1 : 0;
+            r->ExpShift = ExpShift;
+            r->ExpPreser = ExpPreser;
+            r->NoAutoScale = AutoScale ? 1 : 0;
+            r->NoInterpolation = Interpolation ? 1 : 0;
+        }
     }
 
+
     /// <summary>
-    /// Frees the memory allocated for strings in <paramref name="r"/>.
+    /// Frees the memory allocated for strings in <see cref="OutputParamsX64"/> or <see cref="OutputParamsX86"/>.
     /// </summary>
-    /// <param name="r">The <see cref="LibRawOutputParams"/> containing strings to be freed.</param>
-    public static void FreeLibRawStrings(in LibRawOutputParams r)
+    /// <param name="rawData">libraw_data_t that containing libraw_output_params_t's strings to free.</param>
+    public static void FreeLibRawStrings(IntPtr rawData)
     {
-        Marshal.FreeHGlobal(r.OutputProfile);
-        Marshal.FreeHGlobal(r.CameraProfile);
-        Marshal.FreeHGlobal(r.BadPixels);
-        Marshal.FreeHGlobal(r.DarkFrame);
+        if (IntPtr.Size == 8)
+        {
+            FreeX64(rawData);
+        }
+        else
+        {
+            FreeX86(rawData);
+        }
+
+        unsafe void FreeX64(IntPtr rawData)
+        {
+            LibRawDataX64* data = (LibRawDataX64*)rawData;
+            OutputParamsX64* r = &data->OutputParams;
+
+            Marshal.FreeHGlobal(r->OutputProfile);
+            r->OutputProfile = IntPtr.Zero;
+            Marshal.FreeHGlobal(r->CameraProfile);
+            r->CameraProfile = IntPtr.Zero;
+            Marshal.FreeHGlobal(r->BadPixels);
+            r->BadPixels = IntPtr.Zero;
+            Marshal.FreeHGlobal(r->DarkFrame);
+            r->DarkFrame = IntPtr.Zero;
+        }
+
+        unsafe void FreeX86(IntPtr rawData)
+        {
+            LibRawDataX86* data = (LibRawDataX86*)rawData;
+            OutputParamsX86* r = &data->OutputParams;
+
+            Marshal.FreeHGlobal(r->OutputProfile);
+            r->OutputProfile = IntPtr.Zero;
+            Marshal.FreeHGlobal(r->CameraProfile);
+            r->CameraProfile = IntPtr.Zero;
+            Marshal.FreeHGlobal(r->BadPixels);
+            r->BadPixels = IntPtr.Zero;
+            Marshal.FreeHGlobal(r->DarkFrame);
+            r->DarkFrame = IntPtr.Zero;
+        }
     }
 }

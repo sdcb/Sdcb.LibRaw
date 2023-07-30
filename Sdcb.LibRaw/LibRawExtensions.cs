@@ -16,12 +16,11 @@ public static class LibRawExtensions
     /// <param name="r">The RawContext object.</param>
     /// <param name="configure">The OutputParams configuration action.</param>
     /// <returns>The ProcessedImage object.</returns>
-    [SupportedOSPlatform("windows")]
     public static ProcessedImage ExportRawImage(this RawContext r, Action<OutputParams> configure)
     {
         if (r is null) throw new ArgumentNullException(nameof(r));
 
-        if (((int)r.RawData.ProgressFlags & LibRawNative.ProgressThumbMask) < (int)LibRawProgress.LoadRaw)
+        if (((int)r.Progress & LibRawNative.ProgressThumbMask) < (int)LibRawProgress.LoadRaw)
         {
             r.Unpack();
         }
@@ -45,7 +44,7 @@ public static class LibRawExtensions
     {
         if (r is null) throw new ArgumentNullException(nameof(r));
 
-        if (((int)r.RawData.ProgressFlags & LibRawNative.ProgressThumbMask) < (int)LibRawProgress.LoadRaw)
+        if (((int)r.Progress & LibRawNative.ProgressThumbMask) < (int)LibRawProgress.LoadRaw)
         {
             r.Unpack();
         }
@@ -71,7 +70,6 @@ public static class LibRawExtensions
     /// <param name="r">The RawContext object.</param>
     /// <param name="fileName">The output file name.</param>
     /// <param name="configure">The OutputParams configuration action, only supported in windows.</param>
-    [SupportedOSPlatform("windows")]
     public static void SaveRawImage(this RawContext r, string fileName, Action<OutputParams> configure)
     {
         PreCheckAndUnpack(r, fileName);
@@ -107,7 +105,7 @@ public static class LibRawExtensions
             throw new LibRawException($"Unsupported file extension {ext}, supported formats: .ppm|.tif|.tiff");
         }
 
-        if (((int)r.RawData.ProgressFlags & LibRawNative.ProgressThumbMask) < (int)LibRawProgress.LoadRaw)
+        if (((int)r.Progress & LibRawNative.ProgressThumbMask) < (int)LibRawProgress.LoadRaw)
         {
             r.Unpack();
         }

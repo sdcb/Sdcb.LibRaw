@@ -130,14 +130,17 @@ public class ProcessTests : BaseTest
         Assert.Equal(255, d[12].G);
     }
 
-    [Fact(Skip = "Linux binary structure is not the same as windows.")]
-    [SupportedOSPlatform("windows")]
+    [Fact]
     public void NoInterpolationTest()
     {
         using RawContext ctx = ExampleBayer();
 
         ctx.Unpack();
-        ctx.DcrawProcess(c => c.Interpolation = false);
+        ctx.DcrawProcess(c =>
+        {
+            c.Interpolation = false;
+            c.Gamma[0] = 1;
+        });
         using ProcessedImage image = ctx.MakeDcrawMemoryImage();
         Span<RGB24> d = image.GetData<RGB24>();
         StringBuilder sb = new();
@@ -151,7 +154,7 @@ public class ProcessTests : BaseTest
             sb.AppendLine();
         }
         _console.WriteLine(sb.ToString());
-        Assert.Equal(179, d[0].R);
+        Assert.Equal(127, d[0].R);
         Assert.Equal(0, d[1].R);
         Assert.Equal(0, d[5].R);
         Assert.Equal(0, d[14].B);
@@ -176,8 +179,7 @@ public class ProcessTests : BaseTest
         }
     }
 
-    [Fact(Skip = "Linux binary structure is not the same as windows.")]
-    [SupportedOSPlatform("windows")]
+    [Fact]
     public void CropTest()
     {
         using RawContext ctx = ExampleBayer();

@@ -1,12 +1,16 @@
 ﻿using Sdcb.LibRaw.Natives;
-using System.Drawing;
+using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
+using Xunit.Abstractions;
 
 namespace Sdcb.LibRaw.UnitTests.RawApiTests;
 
-public class StructureSizeTest
+public class StructureSizeTest : BaseCApiTest
 {
+    public StructureSizeTest(ITestOutputHelper console) : base(console)
+    {
+    }
+
     [Fact]
     public void LibRawMakerNotesLensSizeTest()
     {
@@ -211,5 +215,60 @@ public class StructureSizeTest
     public void LibRawSizeTest()
     {
         Assert.Equal(381064 + 24 * IntPtr.Size, Marshal.SizeOf<LibRawData>());
+    }
+
+    [Fact]
+    public unsafe void NativeOutputParamsSizeTest()
+    {
+        if (IntPtr.Size == 8)
+        {
+            Assert.Equal(304, GetNativeOutputParamsX64());
+        }
+        else
+        {
+            Assert.Equal(280, GetNativeOutputParamsX86());
+        }
+
+        unsafe int GetNativeOutputParamsX64() => sizeof(OutputParamsX64);
+        unsafe int GetNativeOutputParamsX86() => sizeof(OutputParamsX86);
+    }
+
+    [Fact]
+    public unsafe void TryIdentifyOutputTiff()
+    {
+        IntPtr handle = LibRawFromExampleBayer();
+
+        try
+        {
+            if (IntPtr.Size == 8)
+            {
+                X64();
+            }
+            else
+            {
+                X86();
+            }
+        }
+        finally
+        {
+            LibRawNative.Recycle(handle);
+            LibRawNative.Close(handle);
+        }
+        
+        void X86()
+        {
+            LibRawDataX86* data = (LibRawDataX86*)handle;
+            Assert.Equal(0, data->OutputParams.OutputTiff);
+            LibRawNative.SetOutputTiff(handle, 1);
+            Assert.Equal(1, data->OutputParams.OutputTiff);
+        }
+
+        void X64()
+        {
+            LibRawDataX64* data = (LibRawDataX64*)handle;
+            Assert.Equal(0, data->OutputParams.OutputTiff);
+            LibRawNative.SetOutputTiff(handle, 1);
+            Assert.Equal(1, data->OutputParams.OutputTiff);
+        }
     }
 }

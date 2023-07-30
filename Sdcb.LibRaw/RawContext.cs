@@ -80,6 +80,25 @@ public class RawContext : IDisposable
         }
     }
 
+    internal LibRawProgress Progress
+    {
+        get
+        {
+            CheckDisposed();
+            if (IntPtr.Size == 8)
+            {
+                return GetX64();
+            }
+            else
+            {
+                return GetX86();
+            }
+
+            unsafe LibRawProgress GetX86() => ((LibRawDataX86*)_r)->Progress;
+            unsafe LibRawProgress GetX64() => ((LibRawDataX64*)_r)->Progress;
+        }
+    }
+
     /// <summary>Property representing whether to output tiff.</summary>
     /// <remarks>Corresponds to the C API function: libraw_set_output_tif</remarks>
     public bool OutputTiff
@@ -87,7 +106,17 @@ public class RawContext : IDisposable
         get
         {
             CheckDisposed();
-            return RawData.OutputParams.OutputTiff;
+            if (IntPtr.Size == 8)
+            {
+                return GetX64();
+            }
+            else
+            {
+                return GetX86();
+            }
+
+            unsafe bool GetX86() => ((LibRawDataX86*)_r)->OutputParams.OutputTiff != 0;
+            unsafe bool GetX64() => ((LibRawDataX64*)_r)->OutputParams.OutputTiff != 0;
         }
 
         set
@@ -104,7 +133,17 @@ public class RawContext : IDisposable
         get
         {
             CheckDisposed();
-            return RawData.OutputParams.OutputBps;
+            if (IntPtr.Size == 8)
+            {
+                return GetX64();
+            }
+            else
+            {
+                return GetX86();
+            }
+
+            unsafe int GetX86() => ((LibRawDataX86*)_r)->OutputParams.OutputBps;
+            unsafe int GetX64() => ((LibRawDataX64*)_r)->OutputParams.OutputBps;
         }
 
         set
@@ -122,7 +161,17 @@ public class RawContext : IDisposable
         get
         {
             CheckDisposed();
-            return RawData.OutputParams.OutputColor;
+            if (IntPtr.Size == 8)
+            {
+                return GetX64();
+            }
+            else
+            {
+                return GetX86();
+            }
+
+            unsafe LibRawColorSpace GetX86() => (LibRawColorSpace)((LibRawDataX86*)_r)->OutputParams.OutputColor;
+            unsafe LibRawColorSpace GetX64() => (LibRawColorSpace)((LibRawDataX64*)_r)->OutputParams.OutputColor;
         }
 
         set
@@ -166,7 +215,17 @@ public class RawContext : IDisposable
         get
         {
             CheckDisposed();
-            return (DemosaicAlgorithm)RawData.OutputParams.UserQual;
+            if (IntPtr.Size == 8)
+            {
+                return GetX64();
+            }
+            else
+            {
+                return GetX86();
+            }
+
+            unsafe DemosaicAlgorithm GetX86() => (DemosaicAlgorithm)((LibRawDataX86*)_r)->OutputParams.UserQual;
+            unsafe DemosaicAlgorithm GetX64() => (DemosaicAlgorithm)((LibRawDataX64*)_r)->OutputParams.UserQual;
         }
         set
         {
@@ -188,7 +247,17 @@ public class RawContext : IDisposable
         get
         {
             CheckDisposed();
-            return RawData.OutputParams.AdjustMaximumThr;
+            if (IntPtr.Size == 8)
+            {
+                return GetX64();
+            }
+            else
+            {
+                return GetX86();
+            }
+
+            unsafe float GetX86() => ((LibRawDataX86*)_r)->OutputParams.AdjustMaximumThr;
+            unsafe float GetX64() => ((LibRawDataX64*)_r)->OutputParams.AdjustMaximumThr;
         }
         set
         {
@@ -208,7 +277,17 @@ public class RawContext : IDisposable
         get
         {
             CheckDisposed();
-            return !RawData.OutputParams.NoAutoBright;
+            if (IntPtr.Size == 8)
+            {
+                return GetX64();
+            }
+            else
+            {
+                return GetX86();
+            }
+
+            unsafe bool GetX86() => ((LibRawDataX86*)_r)->OutputParams.NoAutoBright == 0;
+            unsafe bool GetX64() => ((LibRawDataX64*)_r)->OutputParams.NoAutoBright == 0;
         }
         set
         {
@@ -224,7 +303,17 @@ public class RawContext : IDisposable
         get
         {
             CheckDisposed();
-            return RawData.OutputParams.Brightness;
+            if (IntPtr.Size == 8)
+            {
+                return GetX64();
+            }
+            else
+            {
+                return GetX86();
+            }
+
+            unsafe float GetX86() => ((LibRawDataX86*)_r)->OutputParams.Bright;
+            unsafe float GetX64() => ((LibRawDataX64*)_r)->OutputParams.Bright;
         }
         set
         {
@@ -240,7 +329,17 @@ public class RawContext : IDisposable
         get
         {
             CheckDisposed();
-            return RawData.OutputParams.Highlight;
+            if (IntPtr.Size == 8)
+            {
+                return GetX64();
+            }
+            else
+            {
+                return GetX86();
+            }
+
+            unsafe int GetX86() => ((LibRawDataX86*)_r)->OutputParams.Highlight;
+            unsafe int GetX64() => ((LibRawDataX64*)_r)->OutputParams.Highlight;
         }
         set
         {
@@ -492,22 +591,20 @@ public class RawContext : IDisposable
     /// <summary>Converts the raw data into a processed image.</summary>
     /// <exception cref="LibRawException" />
     /// <remarks>Corresponds to the C API function: libraw_dcraw_process</remarks>
-    [SupportedOSPlatform("windows")]
     public void DcrawProcess(Action<OutputParams> configure)
     {
         CheckDisposed();
-        LibRawData data = RawData;
-        OutputParams p = OutputParams.FromLibRaw(data.OutputParams);
+        OutputParams p = OutputParams.FromLibRaw(_r);
         configure(p);
-        data.OutputParams = p.ToLibRaw();
-        RawData = data;
+        p.Commit(_r);
+
         try
         {
             LibRawException.ThrowIfFailed(LibRawNative.ProcessDcraw(_r));
         }
         finally
         {
-            OutputParams.FreeLibRawStrings(data.OutputParams);
+            OutputParams.FreeLibRawStrings(_r);
         }
     }
 

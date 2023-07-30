@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+
+[assembly: InternalsVisibleTo("Sdcb.LibRaw.UnitTests")]
 
 namespace Sdcb.LibRaw.Natives
 {
