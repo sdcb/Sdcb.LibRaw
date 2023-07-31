@@ -211,7 +211,7 @@ public record OutputParams
     /// Updates the LibRaw raw data from the specified pointer. 
     /// </summary>
     /// <param name="rawData">The pointer of libraw_data_t</param>
-    /// <exception cref="ArgumentException">Array element size not match.</exception>
+    /// <exception cref="InvalidOperationException">Array element size not match.</exception>
     public void Commit(IntPtr rawData)
     {
         // Check array lengths
