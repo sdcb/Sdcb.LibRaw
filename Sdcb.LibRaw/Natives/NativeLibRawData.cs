@@ -6,7 +6,7 @@ namespace Sdcb.LibRaw.Natives;
 internal struct LibRawDataX86
 {
     [FieldOffset(5008)]
-    public OutputParamsX86 OutputParams;
+    public NativeOutputParams OutputParams;
 
     [FieldOffset(5332)]
     public LibRawProgress Progress;
@@ -16,7 +16,7 @@ internal struct LibRawDataX86
 internal struct LibRawDataX64
 {
     [FieldOffset(5024)]
-    public OutputParamsX64 OutputParams;
+    public NativeOutputParams OutputParams;
 
     [FieldOffset(5376)]
     public LibRawProgress Progress;

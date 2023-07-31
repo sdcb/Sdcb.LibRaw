@@ -148,63 +148,26 @@ public record OutputParams
         unsafe static OutputParams FromLibRawX64(IntPtr rawData)
         {
             LibRawDataX64* data = (LibRawDataX64*)rawData;
-            OutputParamsX64* r = &data->OutputParams;
-            return new OutputParams
-            {
-                Greybox = Rectangle.FromLTRB((int)r->Greybox, (int)*(&r->Greybox + 1), (int)*(&r->Greybox + 2), (int)*(&r->Greybox + 3)),
-                Cropbox = Rectangle.FromLTRB((int)r->Cropbox, (int)*(&r->Cropbox + 1), (int)*(&r->Cropbox + 2), (int)*(&r->Cropbox + 3)),
-                Aber = new ReadOnlySpan<double>(&r->Aber, 4).ToArray(),
-                Gamma = new ReadOnlySpan<double>(&r->Aber, 6).ToArray(),
-                UserMultipliers = new ReadOnlySpan<float>(&r->UserMul, 4).ToArray(),
-                Brightness = r->Bright,
-                Threshold = r->Threshold,
-                HalfSize = r->HalfSize != 0,
-                FourColorRgb = r->FourColorRgb != 0,
-                HighlightMode = r->Highlight,
-                UseAutoWb = r->UseAutoWb != 0,
-                UseCameraWb = r->UseCameraWb != 0,
-                UseCameraMatrix = r->UseCameraMatrix != 0,
-                OutputColor = (LibRawColorSpace)r->OutputColor,
-                OutputProfile = Marshal.PtrToStringAnsi(r->OutputProfile),
-                CameraProfile = Marshal.PtrToStringAnsi(r->CameraProfile),
-                BadPixels = Marshal.PtrToStringAnsi(r->BadPixels),
-                DarkFrame = Marshal.PtrToStringAnsi(r->DarkFrame),
-                OutputBps = r->OutputBps,
-                OutputTiff = r->OutputTiff != 0,
-                OutputFlags = r->OutputFlags,
-                UserFlip = r->UserFlip,
-                UserQual = (DemosaicAlgorithm)r->UserQual,
-                UserBlack = r->UserBlack,
-                UserCBlack = new ReadOnlySpan<int>(&r->UserCblack, 4).ToArray(),
-                UserSaturation = r->UserSat,
-                MedianPasses = r->MedPasses,
-                AutoBrightThr = r->AutoBrightThr,
-                AdjustMaximumThr = r->AdjustMaximumThr,
-                NoAutoBright = r->NoAutoBright != 0,
-                UseFujiRotate = r->UseFujiRotate != 0,
-                GreenMatching = r->GreenMatching,
-                DcbIterations = r->DcbIterations,
-                DcbEnhanceFl = r->DcbEnhanceFl,
-                FbddNoiserd = r->FbddNoiserd,
-                ExpCorrec = r->ExpCorrec != 0,
-                ExpShift = r->ExpShift,
-                ExpPreser = r->ExpPreser,
-                AutoScale = r->NoAutoScale == 0,
-                Interpolation = r->NoInterpolation != 0,
-            };
+            NativeOutputParams* r = &data->OutputParams;
+            return ReadFromNative(r);
         }
 
         unsafe static OutputParams FromLibRawX86(IntPtr rawData)
         {
             LibRawDataX86* data = (LibRawDataX86*)rawData;
-            OutputParamsX86* r = &data->OutputParams;
+            NativeOutputParams* r = &data->OutputParams;
+            return ReadFromNative(r);
+        }
+
+        unsafe static OutputParams ReadFromNative(NativeOutputParams* r)
+        {
             return new OutputParams
             {
-                Greybox = Rectangle.FromLTRB((int)r->Greybox, (int)*(&r->Greybox + 1), (int)*(&r->Greybox + 2), (int)*(&r->Greybox + 3)),
-                Cropbox = Rectangle.FromLTRB((int)r->Cropbox, (int)*(&r->Cropbox + 1), (int)*(&r->Cropbox + 2), (int)*(&r->Cropbox + 3)),
-                Aber = new ReadOnlySpan<double>(&r->Aber, 4).ToArray(),
-                Gamma = new ReadOnlySpan<double>(&r->Aber, 6).ToArray(),
-                UserMultipliers = new ReadOnlySpan<float>(&r->UserMul, 4).ToArray(),
+                Greybox = Rectangle.FromLTRB((int)r->Greybox[0], (int)r->Greybox[1], (int)r->Greybox[2], (int)r->Greybox[3]),
+                Cropbox = Rectangle.FromLTRB((int)r->Cropbox[0], (int)r->Cropbox[1], (int)r->Cropbox[2], (int)r->Cropbox[3]),
+                Aber = new ReadOnlySpan<double>(r->Aber, 4).ToArray(),
+                Gamma = new ReadOnlySpan<double>(r->Gamm, 6).ToArray(),
+                UserMultipliers = new ReadOnlySpan<float>(r->UserMul, 4).ToArray(),
                 Brightness = r->Bright,
                 Threshold = r->Threshold,
                 HalfSize = r->HalfSize != 0,
@@ -224,7 +187,7 @@ public record OutputParams
                 UserFlip = r->UserFlip,
                 UserQual = (DemosaicAlgorithm)r->UserQual,
                 UserBlack = r->UserBlack,
-                UserCBlack = new ReadOnlySpan<int>(&r->UserCblack, 4).ToArray(),
+                UserCBlack = new ReadOnlySpan<int>(r->UserCblack, 4).ToArray(),
                 UserSaturation = r->UserSat,
                 MedianPasses = r->MedPasses,
                 AutoBrightThr = r->AutoBrightThr,
@@ -239,7 +202,7 @@ public record OutputParams
                 ExpShift = r->ExpShift,
                 ExpPreser = r->ExpPreser,
                 AutoScale = r->NoAutoScale == 0,
-                Interpolation = r->NoInterpolation != 0,
+                Interpolation = r->NoInterpolation == 0,
             };
         }
     }
@@ -270,18 +233,28 @@ public record OutputParams
             UpdateX86(rawData);
         }
 
-
         unsafe void UpdateX64(IntPtr rawData)
         {
             LibRawDataX64* data = (LibRawDataX64*)rawData;
-            OutputParamsX64* r = &data->OutputParams;
+            NativeOutputParams* r = &data->OutputParams;
+            UpdateRaw(r);
+        }
 
-            new uint[] { (uint)Greybox.Left, (uint)Greybox.Top, (uint)Greybox.Right, (uint)Greybox.Bottom }.AsSpan().CopyTo(new Span<uint>(&r->Greybox, 4));
-            new uint[] { (uint)Cropbox.Left, (uint)Cropbox.Top, (uint)Cropbox.Right, (uint)Cropbox.Bottom }.AsSpan().CopyTo(new Span<uint>(&r->Cropbox, 4));
+        unsafe void UpdateX86(IntPtr rawData)
+        {
+            LibRawDataX86* data = (LibRawDataX86*)rawData;
+            NativeOutputParams* r = &data->OutputParams;
+            UpdateRaw(r);
+        }
 
-            Aber.AsSpan().CopyTo(new Span<double>(&r->Aber, 4));
-            Gamma.AsSpan().CopyTo(new Span<double>(&r->Gamm, 6));
-            UserMultipliers.AsSpan().CopyTo(new Span<float>(&r->UserMul, 4));
+        unsafe void UpdateRaw(NativeOutputParams* r)
+        {
+            new uint[] { (uint)Greybox.Left, (uint)Greybox.Top, (uint)Greybox.Right, (uint)Greybox.Bottom }.AsSpan().CopyTo(new Span<uint>(r->Greybox, 4));
+            new uint[] { (uint)Cropbox.Left, (uint)Cropbox.Top, (uint)Cropbox.Right, (uint)Cropbox.Bottom }.AsSpan().CopyTo(new Span<uint>(r->Cropbox, 4));
+
+            Aber.AsSpan().CopyTo(new Span<double>(r->Aber, 4));
+            Gamma.AsSpan().CopyTo(new Span<double>(r->Gamm, 6));
+            UserMultipliers.AsSpan().CopyTo(new Span<float>(r->UserMul, 4));
 
             r->Bright = Brightness;
             r->Threshold = Threshold;
@@ -303,7 +276,7 @@ public record OutputParams
             r->UserQual = (int)UserQual;
             r->UserBlack = UserBlack;
 
-            UserCBlack.AsSpan().CopyTo(new Span<int>(&r->UserCblack, 4));
+            UserCBlack.AsSpan().CopyTo(new Span<int>(r->UserCblack, 4));
 
             r->UserSat = UserSaturation;
             r->MedPasses = MedianPasses;
@@ -321,62 +294,11 @@ public record OutputParams
             r->NoAutoScale = AutoScale ? 0 : 1;
             r->NoInterpolation = Interpolation ? 0 : 1;
         }
-
-        unsafe void UpdateX86(IntPtr rawData)
-        {
-            LibRawDataX86* data = (LibRawDataX86*)rawData;
-            OutputParamsX86* r = &data->OutputParams;
-
-            new uint[] { (uint)Greybox.Left, (uint)Greybox.Top, (uint)Greybox.Right, (uint)Greybox.Bottom }.AsSpan().CopyTo(new Span<uint>(&r->Greybox, 4));
-            new uint[] { (uint)Cropbox.Left, (uint)Cropbox.Top, (uint)Cropbox.Right, (uint)Cropbox.Bottom }.AsSpan().CopyTo(new Span<uint>(&r->Cropbox, 4));
-
-            Aber.AsSpan().CopyTo(new Span<double>(&r->Aber, 4));
-            Gamma.AsSpan().CopyTo(new Span<double>(&r->Gamm, 6));
-            UserMultipliers.AsSpan().CopyTo(new Span<float>(&r->UserMul, 4));
-
-            r->Bright = Brightness;
-            r->Threshold = Threshold;
-            r->HalfSize = HalfSize ? 1 : 0;
-            r->FourColorRgb = FourColorRgb ? 1 : 0;
-            r->Highlight = HighlightMode;
-            r->UseAutoWb = UseAutoWb ? 1 : 0;
-            r->UseCameraWb = UseCameraWb ? 1 : 0;
-            r->UseCameraMatrix = UseCameraMatrix ? 1 : 0;
-            r->OutputColor = (int)OutputColor;
-            r->OutputProfile = Marshal.StringToHGlobalAnsi(OutputProfile);
-            r->CameraProfile = Marshal.StringToHGlobalAnsi(CameraProfile);
-            r->BadPixels = Marshal.StringToHGlobalAnsi(BadPixels);
-            r->DarkFrame = Marshal.StringToHGlobalAnsi(DarkFrame);
-            r->OutputBps = OutputBps;
-            r->OutputTiff = OutputTiff ? 1 : 0;
-            r->OutputFlags = OutputFlags;
-            r->UserFlip = UserFlip;
-            r->UserQual = (int)UserQual;
-            r->UserBlack = UserBlack;
-
-            UserCBlack.AsSpan().CopyTo(new Span<int>(&r->UserCblack, 4));
-
-            r->UserSat = UserSaturation;
-            r->MedPasses = MedianPasses;
-            r->AutoBrightThr = AutoBrightThr;
-            r->AdjustMaximumThr = AdjustMaximumThr;
-            r->NoAutoBright = NoAutoBright ? 1 : 0;
-            r->UseFujiRotate = UseFujiRotate ? 1 : 0;
-            r->GreenMatching = GreenMatching;
-            r->DcbIterations = DcbIterations;
-            r->DcbEnhanceFl = DcbEnhanceFl;
-            r->FbddNoiserd = FbddNoiserd;
-            r->ExpCorrec = ExpCorrec ? 1 : 0;
-            r->ExpShift = ExpShift;
-            r->ExpPreser = ExpPreser;
-            r->NoAutoScale = AutoScale ? 1 : 0;
-            r->NoInterpolation = Interpolation ? 1 : 0;
-        }
     }
 
 
     /// <summary>
-    /// Frees the memory allocated for strings in <see cref="OutputParamsX64"/> or <see cref="OutputParamsX86"/>.
+    /// Frees the memory allocated for strings in <see cref="NativeOutputParams"/> or <see cref="OutputParamsX86"/>.
     /// </summary>
     /// <param name="rawData">libraw_data_t that containing libraw_output_params_t's strings to free.</param>
     public static void FreeLibRawStrings(IntPtr rawData)
@@ -390,26 +312,22 @@ public record OutputParams
             FreeX86(rawData);
         }
 
-        unsafe void FreeX64(IntPtr rawData)
+        unsafe static void FreeX64(IntPtr rawData)
         {
             LibRawDataX64* data = (LibRawDataX64*)rawData;
-            OutputParamsX64* r = &data->OutputParams;
-
-            Marshal.FreeHGlobal(r->OutputProfile);
-            r->OutputProfile = IntPtr.Zero;
-            Marshal.FreeHGlobal(r->CameraProfile);
-            r->CameraProfile = IntPtr.Zero;
-            Marshal.FreeHGlobal(r->BadPixels);
-            r->BadPixels = IntPtr.Zero;
-            Marshal.FreeHGlobal(r->DarkFrame);
-            r->DarkFrame = IntPtr.Zero;
+            NativeOutputParams* r = &data->OutputParams;
+            FreeRaw(r);
         }
 
-        unsafe void FreeX86(IntPtr rawData)
+        unsafe static void FreeX86(IntPtr rawData)
         {
-            LibRawDataX86* data = (LibRawDataX86*)rawData;
-            OutputParamsX86* r = &data->OutputParams;
+            LibRawDataX64* data = (LibRawDataX64*)rawData;
+            NativeOutputParams* r = &data->OutputParams;
+            FreeRaw(r);
+        }
 
+        unsafe static void FreeRaw(NativeOutputParams* r)
+        {
             Marshal.FreeHGlobal(r->OutputProfile);
             r->OutputProfile = IntPtr.Zero;
             Marshal.FreeHGlobal(r->CameraProfile);

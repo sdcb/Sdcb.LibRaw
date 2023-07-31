@@ -220,17 +220,15 @@ public class StructureSizeTest : BaseCApiTest
     [Fact]
     public unsafe void NativeOutputParamsSizeTest()
     {
+        _console.WriteLine($"sizeof(NativeOutputParams)={sizeof(NativeOutputParams)}");
         if (IntPtr.Size == 8)
         {
-            Assert.Equal(304, GetNativeOutputParamsX64());
+            Assert.Equal(304, sizeof(NativeOutputParams));
         }
         else
         {
-            Assert.Equal(280, GetNativeOutputParamsX86());
+            Assert.Equal(280, sizeof(NativeOutputParams));
         }
-
-        unsafe int GetNativeOutputParamsX64() => sizeof(OutputParamsX64);
-        unsafe int GetNativeOutputParamsX86() => sizeof(OutputParamsX86);
     }
 
     [Fact]
