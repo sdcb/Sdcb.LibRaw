@@ -321,7 +321,7 @@ public record OutputParams
 
         unsafe static void FreeX86(IntPtr rawData)
         {
-            LibRawDataX64* data = (LibRawDataX64*)rawData;
+            LibRawDataX86* data = (LibRawDataX86*)rawData;
             NativeOutputParams* r = &data->OutputParams;
             FreeRaw(r);
         }

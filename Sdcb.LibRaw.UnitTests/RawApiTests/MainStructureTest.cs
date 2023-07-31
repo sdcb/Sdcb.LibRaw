@@ -147,52 +147,78 @@ public class MainStructureTest : BaseCApiTest
         try
         {
             OutputParams p = OutputParams.FromLibRaw(ptr);
-            Assert.Equal(new uint[] { 0, 0, 4294967295, 4294967295 }, new uint[] { (uint)p.Greybox.Left, (uint)p.Greybox.Top, (uint)p.Greybox.Right, (uint)p.Greybox.Bottom });
-            Assert.Equal(new uint[] { 0, 0, 4294967295, 4294967295 }, new uint[] { (uint)p.Cropbox.Left, (uint)p.Cropbox.Top, (uint)p.Cropbox.Right, (uint)p.Cropbox.Bottom });
-            Assert.Equal(new double[] { 1.00000000000000, 1.000000000000000, 1.00000000000000, 1.00000000000000 }, p.Aber);
-            Assert.Equal(new double[] { 0.450000000000000, 4.5000000000000000, 0.0000000000000000, 0.0000000000000000, 0.0000000000000000, 0.0000000000000000 }, p.Gamma);
-            Assert.Equal(new float[] { 0.00000000f, 0.00000000f, 0.00000000f, 0.00000000f }, p.UserMultipliers);
-            Assert.Equal(1.0f, p.Brightness);
-            Assert.Equal(0.0f, p.Threshold);
-            Assert.False(p.HalfSize);
-            Assert.False(p.FourColorRgb);
-            Assert.Equal(0, p.HighlightMode);
-            Assert.False(p.UseAutoWb);
-            Assert.False(p.UseCameraWb);
-            Assert.True(p.UseCameraMatrix);
-            Assert.Equal(LibRawColorSpace.SRGB, p.OutputColor);
-            Assert.Null(p.OutputProfile);
-            Assert.Null(p.CameraProfile);
-            Assert.Null(p.BadPixels);
-            Assert.Null(p.DarkFrame);
-            Assert.Equal(8, p.OutputBps);
-            Assert.False(p.OutputTiff);
-            Assert.Equal(0, p.OutputFlags);
-            Assert.Equal(-1, p.UserFlip);
-            Assert.Equal(DemosaicAlgorithm.Default, p.UserQual);
-            Assert.Equal(-1, p.UserBlack);
-            Assert.Equal(new int[] { -1000001, -1000001, -1000001, -1000001 }, p.UserCBlack);
-            Assert.Equal(-1, p.UserSaturation);
-            Assert.Equal(0, p.MedianPasses);
-            Assert.Equal((float)0.00999999978, p.AutoBrightThr);
-            Assert.Equal((float)0.750000000, p.AdjustMaximumThr);
-            Assert.False(p.NoAutoBright);
-            Assert.True(p.UseFujiRotate);
-            Assert.Equal(0, p.GreenMatching);
-            Assert.Equal(0, p.DcbIterations);
-            Assert.Equal(0, p.DcbEnhanceFl);
-            Assert.Equal(0, p.FbddNoiserd);
-            Assert.False(p.ExpCorrec);
-            Assert.Equal(1.0f, p.ExpShift);
-            Assert.Equal(0.0f, p.ExpPreser);
-            Assert.True(p.AutoScale);
-            Assert.True(p.Interpolation);
+            CheckAll(p);
         }
         finally
         {
             LibRawNative.Recycle(ptr);
             LibRawNative.Close(ptr);
         }
+    }
+
+    [Fact]
+    public unsafe void NotChangedAfterSubmit()
+    {
+        IntPtr ptr = LibRawFromExampleFile();
+        try
+        {
+            {
+                OutputParams p = OutputParams.FromLibRaw(ptr);
+                p.Commit(ptr);
+            }
+            
+            OutputParams p2 = OutputParams.FromLibRaw(ptr);
+            CheckAll(p2);
+        }
+        finally
+        {
+            LibRawNative.Recycle(ptr);
+            LibRawNative.Close(ptr);
+        }
+    }
+
+    private static unsafe void CheckAll(OutputParams p)
+    {
+        Assert.Equal(new uint[] { 0, 0, 4294967295, 4294967295 }, new uint[] { (uint)p.Greybox.Left, (uint)p.Greybox.Top, (uint)p.Greybox.Right, (uint)p.Greybox.Bottom });
+        Assert.Equal(new uint[] { 0, 0, 4294967295, 4294967295 }, new uint[] { (uint)p.Cropbox.Left, (uint)p.Cropbox.Top, (uint)p.Cropbox.Right, (uint)p.Cropbox.Bottom });
+        Assert.Equal(new double[] { 1.00000000000000, 1.000000000000000, 1.00000000000000, 1.00000000000000 }, p.Aber);
+        Assert.Equal(new double[] { 0.450000000000000, 4.5000000000000000, 0.0000000000000000, 0.0000000000000000, 0.0000000000000000, 0.0000000000000000 }, p.Gamma);
+        Assert.Equal(new float[] { 0.00000000f, 0.00000000f, 0.00000000f, 0.00000000f }, p.UserMultipliers);
+        Assert.Equal(1.0f, p.Brightness);
+        Assert.Equal(0.0f, p.Threshold);
+        Assert.False(p.HalfSize);
+        Assert.False(p.FourColorRgb);
+        Assert.Equal(0, p.HighlightMode);
+        Assert.False(p.UseAutoWb);
+        Assert.False(p.UseCameraWb);
+        Assert.True(p.UseCameraMatrix);
+        Assert.Equal(LibRawColorSpace.SRGB, p.OutputColor);
+        Assert.Null(p.OutputProfile);
+        Assert.Null(p.CameraProfile);
+        Assert.Null(p.BadPixels);
+        Assert.Null(p.DarkFrame);
+        Assert.Equal(8, p.OutputBps);
+        Assert.False(p.OutputTiff);
+        Assert.Equal(0, p.OutputFlags);
+        Assert.Equal(-1, p.UserFlip);
+        Assert.Equal(DemosaicAlgorithm.Default, p.UserQual);
+        Assert.Equal(-1, p.UserBlack);
+        Assert.Equal(new int[] { -1000001, -1000001, -1000001, -1000001 }, p.UserCBlack);
+        Assert.Equal(-1, p.UserSaturation);
+        Assert.Equal(0, p.MedianPasses);
+        Assert.Equal((float)0.00999999978, p.AutoBrightThr);
+        Assert.Equal((float)0.750000000, p.AdjustMaximumThr);
+        Assert.False(p.NoAutoBright);
+        Assert.True(p.UseFujiRotate);
+        Assert.Equal(0, p.GreenMatching);
+        Assert.Equal(0, p.DcbIterations);
+        Assert.Equal(0, p.DcbEnhanceFl);
+        Assert.Equal(0, p.FbddNoiserd);
+        Assert.False(p.ExpCorrec);
+        Assert.Equal(1.0f, p.ExpShift);
+        Assert.Equal(0.0f, p.ExpPreser);
+        Assert.True(p.AutoScale);
+        Assert.True(p.Interpolation);
     }
 
     [Fact]
