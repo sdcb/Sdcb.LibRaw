@@ -216,13 +216,13 @@ public record OutputParams
     {
         // Check array lengths
         if (Aber.Length != 4)
-            throw new ArgumentException("Aber array must contain exactly 4 elements", nameof(Aber));
+            throw new InvalidOperationException($"{nameof(Aber)} array must contain exactly 4 elements");
         if (Gamma.Length != 6)
-            throw new ArgumentException("Gamma array must contain exactly 6 elements", nameof(Gamma));
+            throw new InvalidOperationException($"{nameof(Gamma)} array must contain exactly 6 elements");
         if (UserMultipliers.Length != 4)
-            throw new ArgumentException("UserMultipliers array must contain exactly 4 elements", nameof(UserMultipliers));
+            throw new InvalidOperationException($"{nameof(UserMultipliers)} array must contain exactly 4 elements");
         if (UserCBlack.Length != 4)
-            throw new ArgumentException("UserCBlack array must contain exactly 4 elements", nameof(UserCBlack));
+            throw new InvalidOperationException($"{nameof(UserCBlack)} array must contain exactly 4 elements");
 
         if (IntPtr.Size == 8)
         {
@@ -298,7 +298,7 @@ public record OutputParams
 
 
     /// <summary>
-    /// Frees the memory allocated for strings in <see cref="NativeOutputParams"/> or <see cref="OutputParamsX86"/>.
+    /// Frees the memory allocated for strings in <see cref="NativeOutputParams"/>.
     /// </summary>
     /// <param name="rawData">libraw_data_t that containing libraw_output_params_t's strings to free.</param>
     public static void FreeLibRawStrings(IntPtr rawData)
