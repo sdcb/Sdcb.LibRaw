@@ -1,5 +1,5 @@
 ﻿using Sdcb.LibRaw.UnitTests.RawApiTests;
-using System.Runtime.Versioning;
+using System.Drawing;
 using System.Text;
 using Xunit.Abstractions;
 
@@ -184,9 +184,9 @@ public class ProcessTests : BaseTest
     {
         using RawContext ctx = ExampleBayer();
         ctx.Unpack();
-        ctx.DcrawProcess(c => c.Cropbox = new System.Drawing.Rectangle(0, 0, 2, 3));
+        ctx.DcrawProcess(c => c.Cropbox = Rectangle.FromLTRB(1, 1, 2, 3));
         using ProcessedImage image = ctx.MakeDcrawMemoryImage();
-        Assert.Equal(2, image.Width);
-        Assert.Equal(3, image.Height);
+        Assert.Equal(1, image.Width);
+        Assert.Equal(2, image.Height);
     }
 }

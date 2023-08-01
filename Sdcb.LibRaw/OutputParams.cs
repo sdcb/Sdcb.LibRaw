@@ -163,8 +163,8 @@ public record OutputParams
         {
             return new OutputParams
             {
-                Greybox = Rectangle.FromLTRB((int)r->Greybox[0], (int)r->Greybox[1], (int)r->Greybox[2], (int)r->Greybox[3]),
-                Cropbox = Rectangle.FromLTRB((int)r->Cropbox[0], (int)r->Cropbox[1], (int)r->Cropbox[2], (int)r->Cropbox[3]),
+                Greybox = new Rectangle((int)r->Greybox[0], (int)r->Greybox[1], (int)r->Greybox[2], (int)r->Greybox[3]),
+                Cropbox = new Rectangle((int)r->Cropbox[0], (int)r->Cropbox[1], (int)r->Cropbox[2], (int)r->Cropbox[3]),
                 Aber = new ReadOnlySpan<double>(r->Aber, 4).ToArray(),
                 Gamma = new ReadOnlySpan<double>(r->Gamm, 6).ToArray(),
                 UserMultipliers = new ReadOnlySpan<float>(r->UserMul, 4).ToArray(),
@@ -249,8 +249,8 @@ public record OutputParams
 
         unsafe void UpdateRaw(NativeOutputParams* r)
         {
-            new uint[] { (uint)Greybox.Left, (uint)Greybox.Top, (uint)Greybox.Right, (uint)Greybox.Bottom }.AsSpan().CopyTo(new Span<uint>(r->Greybox, 4));
-            new uint[] { (uint)Cropbox.Left, (uint)Cropbox.Top, (uint)Cropbox.Right, (uint)Cropbox.Bottom }.AsSpan().CopyTo(new Span<uint>(r->Cropbox, 4));
+            new uint[] { (uint)Greybox.Left, (uint)Greybox.Top, (uint)Greybox.Width, (uint)Greybox.Height }.AsSpan().CopyTo(new Span<uint>(r->Greybox, 4));
+            new uint[] { (uint)Cropbox.Left, (uint)Cropbox.Top, (uint)Cropbox.Width, (uint)Cropbox.Height }.AsSpan().CopyTo(new Span<uint>(r->Cropbox, 4));
 
             Aber.AsSpan().CopyTo(new Span<double>(r->Aber, 4));
             Gamma.AsSpan().CopyTo(new Span<double>(r->Gamm, 6));

@@ -179,8 +179,8 @@ public class MainStructureTest : BaseCApiTest
 
     private static unsafe void CheckAll(OutputParams p)
     {
-        Assert.Equal(new uint[] { 0, 0, 4294967295, 4294967295 }, new uint[] { (uint)p.Greybox.Left, (uint)p.Greybox.Top, (uint)p.Greybox.Right, (uint)p.Greybox.Bottom });
-        Assert.Equal(new uint[] { 0, 0, 4294967295, 4294967295 }, new uint[] { (uint)p.Cropbox.Left, (uint)p.Cropbox.Top, (uint)p.Cropbox.Right, (uint)p.Cropbox.Bottom });
+        Assert.Equal(new uint[] { 0, 0, 4294967295, 4294967295 }, new uint[] { (uint)p.Greybox.Left, (uint)p.Greybox.Top, (uint)p.Greybox.Width, (uint)p.Greybox.Height });
+        Assert.Equal(new uint[] { 0, 0, 4294967295, 4294967295 }, new uint[] { (uint)p.Cropbox.Left, (uint)p.Cropbox.Top, (uint)p.Cropbox.Width, (uint)p.Cropbox.Height });
         Assert.Equal(new double[] { 1.00000000000000, 1.000000000000000, 1.00000000000000, 1.00000000000000 }, p.Aber);
         Assert.Equal(new double[] { 0.450000000000000, 4.5000000000000000, 0.0000000000000000, 0.0000000000000000, 0.0000000000000000, 0.0000000000000000 }, p.Gamma);
         Assert.Equal(new float[] { 0.00000000f, 0.00000000f, 0.00000000f, 0.00000000f }, p.UserMultipliers);
