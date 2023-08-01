@@ -28,7 +28,7 @@ public class ProcessTests : BaseTest
         ctx.Unpack();
         ctx.DcrawProcess();
         using ProcessedImage image = ctx.MakeDcrawMemoryImage();
-        Span<RGB24> d = image.GetData<RGB24>();
+        Span<RGB24> d = image.AsSpan<RGB24>();
         StringBuilder sb = new();
         for (int y = 0; y < ctx.RawHeight; ++y)
         {
@@ -86,7 +86,7 @@ public class ProcessTests : BaseTest
             ctx.UnpackThumbnail(0);
             using ProcessedImage image0 = ctx.MakeDcrawMemoryThumbnail();
             Assert.Equal(ProcessedImageType.Jpeg, image0.ImageType);
-            Assert.Equal(386458, image0.GetData<byte>().Length);
+            Assert.Equal(386458, image0.AsSpan<byte>().Length);
             ctx.WriteDcrawThumbnail("test.jpg");
             Assert.True(File.Exists("test.jpg"));
             File.Delete("test.jpg");
@@ -95,7 +95,7 @@ public class ProcessTests : BaseTest
             ctx.UnpackThumbnail(1);
             using ProcessedImage image1 = ctx.MakeDcrawMemoryThumbnail();
             Assert.Equal(ProcessedImageType.Jpeg, image1.ImageType);
-            Assert.Equal(8817, image1.GetData<byte>().Length);
+            Assert.Equal(8817, image1.AsSpan<byte>().Length);
             ctx.WriteDcrawThumbnail("test.jpg");
             Assert.True(File.Exists("test.jpg"));
             File.Delete("test.jpg");
@@ -111,7 +111,7 @@ public class ProcessTests : BaseTest
         ctx.Gamma[0] = 1;
         ctx.DcrawProcess();
         using ProcessedImage image = ctx.MakeDcrawMemoryImage();
-        Span<RGB24> d = image.GetData<RGB24>();
+        Span<RGB24> d = image.AsSpan<RGB24>();
         StringBuilder sb = new();
         for (int y = 0; y < ctx.RawHeight; ++y)
         {
@@ -142,7 +142,7 @@ public class ProcessTests : BaseTest
             c.Gamma[0] = 1;
         });
         using ProcessedImage image = ctx.MakeDcrawMemoryImage();
-        Span<RGB24> d = image.GetData<RGB24>();
+        Span<RGB24> d = image.AsSpan<RGB24>();
         StringBuilder sb = new();
         for (int y = 0; y < ctx.RawHeight; ++y)
         {

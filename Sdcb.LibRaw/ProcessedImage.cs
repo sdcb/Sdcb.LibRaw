@@ -12,7 +12,10 @@ public unsafe class ProcessedImage : IDisposable
     /// <param name="image">The LibRaw processed image.</param>
     public ProcessedImage(LibRawProcessedImage* image)
     {
+        if (image == null) throw new ArgumentNullException(nameof(image));
+
         _image = image;
+        GC.AddMemoryPressure(_image->DataSize);
     }
 
     /// <summary>Gets a value indicating whether this instance has been disposed.</summary>
@@ -36,10 +39,34 @@ public unsafe class ProcessedImage : IDisposable
     /// <summary>Gets the image data length in byte.</summary>
     public int DataSize => _image->DataSize;
 
+    /// <summary>Gets the pointer to the first byte of the image data.</summary>
+    public IntPtr DataPointer => (IntPtr)(&_image->FirstData);
+
     /// <summary>Gets the data as an array-like <see cref="Span{T}"/> object.</summary>
     /// <typeparam name="T">The type of the data.</typeparam>
     /// <returns>The data in a <see cref="Span{T}"/> object.</returns>
-    public Span<T> GetData<T>() => _image->GetData<T>();
+    public Span<T> AsSpan<T>() => _image->GetData<T>();
+
+    /// <summary>Swaps the red and blue bytes of the image data of a bitmap image.</summary>
+    /// <exception cref="InvalidOperationException">Throw when <see cref="ImageType"/> is not <see cref="ProcessedImageType.Bitmap"/></exception>
+    public unsafe void SwapRGB()
+    {
+        if (ImageType != ProcessedImageType.Bitmap)
+        {
+            throw new InvalidOperationException($"Only bitmap image can be swapped.");
+        }
+
+        byte* from = &_image->FirstData;
+        byte* to = from + _image->Width * _image->Height * 3;
+        for (byte* ptr = from; ptr < to; ptr += 3)
+        {
+            byte red = ptr[0];
+            byte blue = ptr[2];
+
+            ptr[0] = blue;
+            ptr[2] = red;
+        }
+    }
 
     #region Dispose Pattern
 
@@ -72,7 +99,9 @@ public unsafe class ProcessedImage : IDisposable
     /// <summary>Frees the memory used by this instance.</summary>
     private void FreeImage()
     {
+        int size = _image->DataSize;
         LibRawNative.ClearDcrawMemory((IntPtr)_image);
+        GC.RemoveMemoryPressure(size);
         _image = null;
     }
 
