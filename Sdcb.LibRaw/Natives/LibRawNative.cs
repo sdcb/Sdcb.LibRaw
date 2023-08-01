@@ -12,7 +12,7 @@ public static class LibRawNative
     static LibRawNative()
     {
         LibRawNativeLoader.Init();
-        OpenMPThreadCount ??= Environment.ProcessorCount.ToString();
+        OpenMPThreadCount ??= Math.Clamp(Environment.ProcessorCount / 2, 1, Environment.ProcessorCount / 2).ToString();
     }
 
     /// <summary>
