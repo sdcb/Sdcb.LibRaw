@@ -680,4 +680,45 @@ public class RawContext : IDisposable
         CheckDisposed();
         LibRawException.ThrowIfFailed(LibRawNative.WriteDcrawThumbnail(_r, fileName));
     }
+
+    /// <summary>
+    /// Get the image parameters of the raw file.
+    /// </summary>
+    /// <returns>The image parameters of the raw file.</returns>
+    public LibRawImageParams ImageParams
+    {
+        get
+        {
+            CheckDisposed();
+            IntPtr ptr = LibRawNative.GetImageParameters(_r);
+            return Marshal.PtrToStructure<LibRawImageParams>(ptr);
+        }
+    }
+
+    /// <summary>
+    /// Gets the others image parameters.
+    /// </summary>
+    /// <returns>The others image parameters of the raw file.</returns>
+    public LibRawImageOtherParams ImageOtherParams
+    {
+        get
+        {
+            CheckDisposed();
+            IntPtr ptr = LibRawNative.GetImageOtherParameters(_r);
+            return Marshal.PtrToStructure<LibRawImageOtherParams>(ptr);
+        }
+    }
+
+    /// <summary>
+    /// Gets the lens information used to take the photograph.
+    /// </summary>
+    public LibRawLensInfo LensInfo
+    {
+        get
+        {
+            CheckDisposed();
+            IntPtr ptr = LibRawNative.GetLensInformation(_r);
+            return Marshal.PtrToStructure<LibRawLensInfo>(ptr);
+        }
+    }
 }
