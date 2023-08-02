@@ -1,6 +1,6 @@
-# Sdcb.LibRaw [![NuGet](https://img.shields.io/nuget/v/Sdcb.LibRaw.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/Sdcb.LibRaw/) [![NuGet](https://img.shields.io/nuget/dt/Sdcb.LibRaw.svg?style=flat-square)](https://www.nuget.org/packages/Sdcb.LibRaw/) [![GitHub](https://img.shields.io/github/license/sdcb/Sdcb.LibRaw.svg?style=flat-square&label=license)](https://github.com/sdcb/Sdcb.LibRaw/blob/master/LICENSE.txt)
+﻿# Sdcb.LibRaw ![NuGet](https://img.shields.io/nuget/v/Sdcb.LibRaw.svg?style=flat-square&label=nuget) ![NuGet](https://img.shields.io/nuget/dt/Sdcb.LibRaw.svg?style=flat-square) ![GitHub](https://img.shields.io/github/license/sdcb/Sdcb.LibRaw.svg?style=flat-square&label=license)
 
-Advanced raw image processing library in C# based on [LibRaw](https://www.libraw.org/).
+Sdcb.LibRaw is an advanced raw image processing library in C#, based on [LibRaw](https://www.libraw.org/).
 
 ## NuGet Packages
 
@@ -12,15 +12,13 @@ Advanced raw image processing library in C# based on [LibRaw](https://www.libraw
 | Sdcb.LibRaw.runtime.linux64 | [![NuGet](https://img.shields.io/nuget/v/Sdcb.LibRaw.runtime.linux64.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/Sdcb.LibRaw.runtime.linux64/) | LGPL-2.1-only OR CDDL-1.0 | Ubuntu 22.04 x64 runtime   |
 
 ## Install
-Please note all examples below need install following NuGet packages:
+Please note all examples below need to install at least two of the following NuGet packages:
 * Sdcb.LibRaw
-* Sdcb.LibRaw.runtime.win64 
-* Sdcb.LibRaw.runtime.win32
-* Sdcb.LibRaw.runtime.linux-64 (for Ubuntu22.04 support)
+* Sdcb.LibRaw.runtime.win64 (or other system-specific runtime packages)
 
 All native packages are pre-compiled using `vcpkg`.
 
-Please note the `Sdcb.LibRaw.runtime.linux-64` package is only support Ubuntu22.04, if you using .NET in Docker, you should append `jammy` when write docker file, for example, you should write:
+Please note the `Sdcb.LibRaw.runtime.linux-64` package is only supported on Ubuntu 22.04. If you are using .NET in Docker, append `jammy` to your docker file. For example, write:
 
 ```
 FROM mcr.microsoft.com/dotnet/sdk:6.0-jammy
@@ -32,26 +30,15 @@ Instead of:
 FROM mcr.microsoft.com/dotnet/sdk:6.0
 ```
 
-if you want to use in other Linux distros without docker, please install `libraw` using OS provided package manager, for example, in `Debian 11`, you can install by running following bash command to install:
+## High-Level API Usage
+The `RawContext` class wraps all `LibRaw` native functions for high-level API usage. See the following examples for more details.
 
-```bash
-echo "deb http://deb.debian.org/debian experimental main" | tee -a /etc/apt/sources.list
-echo "deb-src http://deb.debian.org/debian experimental main" | tee -a /etc/apt/sources.list
-apt-get update
-apt-get -t experimental install libraw-dev
-```
-
-Likewise in MacOS, you also need to install `libraw` using MacOS provided package manager.
-
-## High level API Usage
-For high level API usage, I created `RawContext` class to wrap all `LibRaw` native functions, you can refer to following examples for more details.
-
-### Convert raw file into bitmap
+### Convert a RAW file into a Bitmap
 
 ```csharp
 using Sdcb.LibRaw;
 
-using RawContext r = RawContext.OpenFile(@"C:\Users\ZhouJie\Pictures\a7r3\11030126\DSC02653.ARW");
+using RawContext r = RawContext.OpenFile(@"C:\a7r3\DSC02653.ARW");
 r.Unpack();
 r.DcrawProcess();
 using ProcessedImage image = r.MakeDcrawMemoryImage();
@@ -59,65 +46,97 @@ using Bitmap bmp = ProcessedImageToBitmap(image);
 
 Bitmap ProcessedImageToBitmap(ProcessedImage rgbImage)
 {
-    fixed (void* data = rgbImage.GetData<byte>())
-    {
-        SwapRedAndBlue(rgbImage.GetData<byte>(), rgbImage.Width, rgbImage.Height);
-        using Bitmap bmp = new Bitmap(rgbImage.Width, rgbImage.Height, rgbImage.Width * 3, System.Drawing.Imaging.PixelFormat.Format24bppRgb, (IntPtr)data);
-        return new Bitmap(bmp);
-    }
+    rgbImage.SwapRGB();
+    using Bitmap bmp = new Bitmap(rgbImage.Width, rgbImage.Height, rgbImage.Width * 3, System.Drawing.Imaging.PixelFormat.Format24bppRgb, rgbImage.DataPointer);
+    return new Bitmap(bmp);
 }
+```
 
-void SwapRedAndBlue(Span<byte> rgbData, int width, int height)
+This code shows how to convert a RAW file into a Bitmap image. It's worth noting that the pixel format output by `LibRaw` is slightly different from Bitmap's. In the code above, `rgbImage.SwapRGB();` is used to swap the red and blue color channels, i.e., converting RGB24 to BGR24.
+
+Although the example is based on the `.ARW` photo, it actually supports almost all RAW format photos, including `.CR2` and `.DNG`. You can retrieve a list of supported cameras using `RawContext.SupportedCameras`. As of the current version, it supports 1182 camera models:
+
+```csharp
+Console.WriteLine("Sdcb.LibRaw supported cameras:");
+foreach (string model in RawContext.SupportedCameras)
 {
-    int totalPixels = width * height;
-    for (int i = 0; i < totalPixels; i++)
-    {
-        int pixelIndex = i * 3;
-        byte red = rgbData[pixelIndex];
-        byte blue = rgbData[pixelIndex + 2];
-
-        rgbData[pixelIndex] = blue;
-        rgbData[pixelIndex + 2] = red;
-    }
+	Console.WriteLine(model);
 }
 ```
 
-### Convert raw file into bitmap with custom settings
+### Convert a RAW file into a Bitmap with custom settings
 
 ```csharp
 using Sdcb.LibRaw;
 
-using RawContext r = RawContext.OpenFile(@"C:\Users\ZhouJie\Pictures\a7r3\11030126\DSC02653.ARW");
-// r.ExportRawImage is a shortcut for r.Unpack() + r.DcrawProcess() + r.MakeDcrawMemoryImage()
-r.Gamma[0] = 0.55f; // gamma for inverse power
-r.Gamma[1] = 3.5f;  // gamma for slope
-using ProcessedImage rgbImage = r.ExportRawImage();
+using RawContext r = RawContext.OpenFile(@"C:\a7r3\DSC02653.ARW");
+r.DcrawProcess(c =>
+{
+    c.HalfSize = false; // Reduce the image size to 1/4
+    c.UseCameraWb = true; // Use camera white balance; if false, the white balance will be controlled by UserMultipliers
+    c.Gamma[0] = 0.35; // Adjust the exponent of the gamma curve
+    c.Gamma[1] = 3.5;  // Adjust the slope of the gamma curve
+    c.Brightness = 2.2f; // Brightness
+    c.Interpolation = true; // Perform demosaic operation
+    c.OutputBps = 8; // Output bit depth is 8 bits
+    c.OutputTiff = false; // Output a TIFF file? If false, a Bitmap will be output
+    // c.Cropbox = new Rectangle(4000, 2000, 1500, 700); // Crop the image
+    // Many other settings can be explored at will
+});
+using ProcessedImage rgbImage = r.MakeDcrawMemoryImage();
 using Bitmap bmp = ProcessedImageToBitmap(rgbImage);
-
-// ProcessedImageToBitmap is the same as above
-// SwapRedAndBlue is the same as above
 ```
 
-### Get raw file thumbnail
+### Get a thumbnail from a RAW file
 
 ```csharp
 using Sdcb.LibRaw;
 
-using RawContext r = RawContext.OpenFile(@"C:\Users\ZhouJie\Pictures\a7r3\11030126\DSC02653.ARW");
-// r.ExportThumbnail() is a shortcut for r.UnpackThumbnail() + r.MakeDcrawMemoryThumbnail()
+using RawContext r = RawContext.OpenFile(@"C:\a7r3\DSC02653.ARW");
 using ProcessedImage image = r.ExportThumbnail(thumbnailIndex: 0);
-using Bitmap bmp = (Bitmap)Bitmap.FromStream(new MemoryStream(image.GetData<byte>().ToArray()));
+using Bitmap bmp = (Bitmap)Bitmap.FromStream(new MemoryStream(image.AsSpan<byte>().ToArray()));
 ```
 
-### Save raw file as tiff into local file
+Modern RAW format photos often contain one or more JPEG format thumbnails. You can use `Sdcb.LibRaw` to extract these thumbnails. The above example shows how to extract the first thumbnail from an `ARW` photo and convert it into a `Bitmap`.
+
+### Save a RAW file as a local TIFF file
 
 ```csharp
 using Sdcb.LibRaw;
 
-using RawContext r = RawContext.OpenFile(@"C:\Users\ZhouJie\Pictures\a7r3\11030126\DSC02653.ARW");
-// r.SaveRawImage() is a shortcut for r.Unpack() + r.DcrawProcess() + r.WriteDcrawPpmTiff(fileName)
+using RawContext r = RawContext.OpenFile(@"C:\a7r3\DSC02653.ARW");
 r.SaveRawImage(@"C:\test\test.tiff");
 ```
+
+### Get metadata from a photo
+
+```csharp
+using RawContext r = RawContext.OpenFile(@"C:\a7r3\DSC02653.ARW");
+LibRawImageParams imageParams = r.ImageParams;
+LibRawImageOtherParams otherParams = r.ImageOtherParams;
+LibRawLensInfo lensInfo = r.LensInfo;
+
+Console.WriteLine($"Camera: {imageParams.Model}");
+Console.WriteLine($"Version: {imageParams.Software}");
+Console.WriteLine($"ISO: {otherParams.IsoSpeed}");
+Console.WriteLine($"Shutter Speed: 1/{1 / otherParams.Shutter:F0}s");
+Console.WriteLine($"Focal Length: {otherParams.FocalLength}mm");
+Console.WriteLine($"Artist Tag: {otherParams.Artist}");
+Console.WriteLine($"Shot Date: {new DateTime(1970, 1, 1, 8, 0, 0).AddSeconds(otherParams.Timestamp)}");
+Console.WriteLine($"Lens Name: {lensInfo.Lens}");
+```
+
+## Performance and Comparison
+
+| Method                      | Time (ms) | Notes                |
+| --------------------------- | --------- | -------------------- |
+| Sdcb.LibRaw                 | 1627      |                      |
+| Windows Imaging Component   | 2177      | Limited post-process |
+| Magick.NET                  | 5496      | Limited post-process |
+| Native C code               | 1619      |                      |
+
+As you can see, `Sdcb.LibRaw` has top-tier performance and its powerful image post-processing capability is based on Bayer data.
+
 
 ## Low level API
 
@@ -134,3 +153,10 @@ You can refer to existing [unit tests](https://github.com/sdcb/Sdcb.LibRaw/tree/
 The primary project(Sdcb.LibRaw) is licensed under the [MIT license](./LICENSE.txt), but native packages are licensed under **LGPL-2.1-only OR CDDL-1.0**.
 
 Please refer to [LibRaw license](https://www.libraw.org/) for more details.
+
+## Conclusion
+I understand that not many people need to process RAW format photos with code. However, with the development of smartphones, many mobile phones can now shoot RAW format photos. I firmly believe that this tool will bring great help to those who need it. I will continue to put effort into this field, add more features to `Sdcb.LibRaw`, and solve possible problems.
+
+The above content is just a part of the features of the `Sdcb.LibRaw` library I created. Its powerful functions and high efficiency will bring unprecedented convenience to your processing of RAW format photos. I sincerely hope that more `.NET` enthusiasts can join me to explore the world of RAW photo processing. `Sdcb.LibRaw` will always remain useful and free. Let's look forward to more wonderful features!
+
+If you are interested in trying `Sdcb.LibRaw`, welcome to visit my [Github](https://github.com/sdcb/Sdcb.LibRaw), and please give a Star 🌟
