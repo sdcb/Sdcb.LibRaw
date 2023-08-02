@@ -1,4 +1,4 @@
-﻿# Sdcb.LibRaw ![NuGet](https://img.shields.io/nuget/v/Sdcb.LibRaw.svg?style=flat-square&label=nuget) ![NuGet](https://img.shields.io/nuget/dt/Sdcb.LibRaw.svg?style=flat-square) ![GitHub](https://img.shields.io/github/license/sdcb/Sdcb.LibRaw.svg?style=flat-square&label=license)
+﻿# Sdcb.LibRaw ![NuGet](https://img.shields.io/nuget/v/Sdcb.LibRaw.svg?style=flat-square&label=nuget) ![NuGet](https://img.shields.io/nuget/dt/Sdcb.LibRaw.svg?style=flat-square) ![GitHub](https://img.shields.io/github/license/sdcb/Sdcb.LibRaw.svg?style=flat-square&label=license) [![QQ](https://img.shields.io/badge/QQ_Group-495782587-52B6EF?style=social&logo=tencent-qq&logoColor=000&logoWidth=20)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=mma4msRKd372Z6dWpmBp4JZ9RL4Jrf8X&authKey=gccTx0h0RaH5b8B8jtuPJocU7MgFRUznqbV%2FLgsKdsK8RqZE%2BOhnETQ7nYVTp1W0&noverify=0&group_code=495782587)
 
 Sdcb.LibRaw is an advanced raw image processing library in C#, based on [LibRaw](https://www.libraw.org/).
 
