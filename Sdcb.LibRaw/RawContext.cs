@@ -21,7 +21,9 @@ public class RawContext : IDisposable
     internal protected LibRawData RawData
     {
         get => Marshal.PtrToStructure<LibRawData>(_r);
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("windows")]
+#endif
         set => Marshal.StructureToPtr(value, _r, fDeleteOld: false);
     }
 

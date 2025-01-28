@@ -11,8 +11,10 @@ public static class LibRawNative
 {
     static LibRawNative()
     {
+#if NET6_0_OR_GREATER
         LibRawNativeLoader.Init();
         OpenMPThreadCount ??= Math.Clamp(Environment.ProcessorCount / 2, 1, Environment.ProcessorCount / 2).ToString();
+#endif
     }
 
     /// <summary>
@@ -148,7 +150,9 @@ public static class LibRawNative
     /// <param name="data">The LibRaw data IntPtr.</param>
     /// <param name="fileName">The wide-character file name to open.</param>
     /// <returns>The status of the operation.</returns>
+#if NET6_0_OR_GREATER
     [SupportedOSPlatform("windows")]
+#endif
     [DllImport(Dll, EntryPoint = "libraw_open_wfile")]
     public static extern LibRawError OpenFileW(IntPtr data, [MarshalAs(UnmanagedType.LPWStr)] string fileName);
 
